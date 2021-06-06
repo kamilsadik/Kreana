@@ -5,7 +5,7 @@ import "./creatortokenhelper.sol";
 import "./erc1155.sol";
 import "./safemath.sol";
 
-contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
+contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
 
 	using SafeMath for uint256;
 	using SafeMath32 for uint32;

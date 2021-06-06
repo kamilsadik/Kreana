@@ -1,20 +1,27 @@
 // figure out which version you need to use
 pragma solidity ^0.4.25;
 
-contract ERC1155 {
+contract ERC1155PresetMinterPauser {
 	// Using ERC1155 protocol in order to create/manage multiple tokens in a single smart contract
+	// Using ERC1155PresetMinterPauser preset: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol
 
 	// Transfer event
-	event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId);
+	event TransferSingle(address indexed _operator, address indexed _from, address indexed _to, uint256 indexed _id, uint256 value);
 	// Approval event
-	event Approval(address indexed _owner, address indexed _approved, uint256 indexed _tokenId);
+	event ApprovalForAll(address indexed _account, address indexed _operator, bool approved);
 
-	// _mint function
-	function _mint(address account, uint256 amount) internal;
-	// _burn function
-	function _burn(address account, uint256 amount) internal;
-	// _transfer function
-	function _transfer(address sender, address recipient, uint256 amount) internal;
+	// Pause all token transfers
+	function pause() public;
+	// Unpause all token transfers
+	function unpause() public;
+
+	// mint function
+	function mint(address _to, uint256 _id, uint256 _amount, bytes _data) internal;
+	// burn function
+	function burn(address _account, uint256 _id, uint256 _value) internal;
+	
+	// transfer function
+	function _safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes _data) internal;
 
 	// totalSupply function
 	function totalSupply() external view returns (uint256);
