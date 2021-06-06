@@ -17,6 +17,11 @@ contract CreatorTokenFactory is Ownable {
 	// platform keeps 2% of total sale proceeds)
 	uint platformFee = 0.10;
 
+	// wallet holding liquity pool (fill in address)
+	address liquidtyPool;
+	// address to which platformFee gets sent (fill in address)
+	address platformWallet;
+
 	struct CreatorToken {
 		address creatorAddress;
 		string name;
