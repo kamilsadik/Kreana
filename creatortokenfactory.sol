@@ -10,7 +10,7 @@ contract CreatorTokenFactory is Ownable {
 	using SafeMath32 for uint32;
 	using SafeMath16 for uint16;
 
-	event NewCreatorToken(uint tokenId, string name) //add in parameteres needed for new token
+	event NewCreatorToken(uint tokenId, string name) //add in whatever other params are necessary
 
 	struct CreatorToken {
 		address creatorAddress;
