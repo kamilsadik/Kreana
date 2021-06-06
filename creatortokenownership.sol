@@ -11,10 +11,6 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	using SafeMath32 for uint32;
 	using SafeMath16 for uint16;
 
-
-	// Might need to override all the ERC-20 functions I'm using so that I can
-	// also specify the tokenId in question. See how CryptoZombies does this.
-
 	// Event that fires whena new transaction occurs
 	event NewTransaction(uint amount, string type, uint tokenId, string name, string symbol) //add in whatever other params are necessary
 
@@ -31,10 +27,10 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		}
 		// Calculate proceedsRequired in order for user to buy _amount tokens (unclear if this calc will be done off-chain via AWS Lambda, or on-chain)
 		uint proceedsRequired = 0 ether;
-		// Make sure that user sends enough ether to cover the cost of _amount tokens
+		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens
 		require(msg.value == proceedsRequired);
 		// Mint _amount tokens at the user's address
-		_mint(msg.sender, _amount);
+		mint(msg.sender, _tokenId, _amount);
 		// Emit new transaction event
 		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
@@ -46,9 +42,9 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Calculate proceedsRequired in order to buy back _amount tokens from user (unclear if this calc will be done off-chain via AWS Lambda, or on-chain)
 		uint proceedsRequired = 0 ether;
 		// Burn _amount tokens from user's address
-		_burn(msg.sender, _amount);
-		// Send user proceedsRequired in exchange for the burned tokens
-		_transfer(liquidityPool, msg.sender, proceedsRequired);
+		burn(msg.sender, _tokenId, _amount);
+		// Send user proceedsRequired ether in exchange for the burned tokens
+		msg.sender.transfer(proceedsRequired);
 		// Emit new transaction event
 		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
@@ -62,13 +58,13 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 
 		// Calculate creator's cut of remaining excess liquidity to be transferred
 		uint creatorCut = (totalProfit - alreadyTransferred) * (1 - platformFee);
-		// Transfer creator's cut to creator
-		_transfer(liquidityPool, creatorTokens.creatorAddress[_tokenId], creatorCut); // is this the right function? I want to transfer eth...
+		// Transfer creatorCut ether to creator
+		creatorTokens.creatorAddress[_tokenId].transfer(creatorCut); // is this the right function? I want to transfer eth...
 
 		// Calculate platform's cut of remaining excess liquidity to be transferred
 		uint platformCut = (totalProfit - alreadyTransferred) * platformFee;
-		// Transform platform fee to platform wallet
-		_transfer(liquidityPool, platformWallet, platformCut); // is this the right function? I want to transfer eth...
+		// Transform platformCut ether to platform wallet
+		platformWallet.transfer(platformCut); // is this the right function? I want to transfer eth...
 	}
 }
 

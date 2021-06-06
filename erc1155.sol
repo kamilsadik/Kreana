@@ -15,21 +15,20 @@ contract ERC1155PresetMinterPauser {
 	// Unpause all token transfers
 	function unpause() public;
 
-	// mint function
+	// Mint a token
 	function mint(address _to, uint256 _id, uint256 _amount, bytes _data) internal;
-	// burn function
+	// Burn a token
 	function burn(address _account, uint256 _id, uint256 _value) internal;
-	
-	// transfer function
+
+	// Transfer a token
 	function _safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes _data) internal;
 
-	// totalSupply function
-	function totalSupply() external view returns (uint256);
-	// balanceOf function
-	function balanceOf(address _owner) external view returns (uint256);
-	// transferFrom function
-	function transferFrom(address _sender, address _receipient, uint256 amount) external payable;
-	// approve function
-	function approve(address _approved, uint256 amount);
+	// Return balance of a given token at a given address
+	function balanceOf(address _account, uint256 id) external view returns (uint256);
+
+	// Give operator permission to transfer caller's tokens
+	function setApprovalForAll(address _operator, bool approved);
+	// Denotes whether operator is approved to transfer accounts' tokens
+	function isApprovedForAll(address _account, address _operator);
 
 }
