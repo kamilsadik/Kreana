@@ -19,45 +19,43 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC20 {
 	//     approve
 
 	// create a buyCreatorToken function (fnc of amount being bought) <= might make this private, and call it in a payable ERC-20 fnc
-	function buyCreatorToken(uint _tokenId, uint _amount, uint _buyerAddress) external {
-		// require that owner transacting with a given address owns that address
-		require(msg.sender == _buyerAddress);
+	function buyCreatorToken(uint _tokenId, uint _amount) external {
 		// increase outstanding amount of token by amount
 		creatorTokens[_tokenId].outstanding.add(_amount);
 		// if token amount outstanding > max supply, update max supply (and call value transfer function?)
 		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
 			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
+			// call _payout to transfer excess liquidity
+			_payout(_tokenId);
 		}
 		// DAMM  MATH => calculate AUC (buy_price_fnc) to compute cost of amount tokens
 
 		// emit newtransaction event
-		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol)
+		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// mint amount of tokens (automatically triggers Transfer event)
-		_mint(_buyerAddress)
+		_mint(msg.sender, _amount);
 	}
 
 	// create a sellCreatorToken function (fnc of amount being sold) <= might make this private, and call it in a payable ERC-20 fnc
-	function sellCreatorToken(uint _tokenId, uint _amount, uint _sellerAddress) external {
-		// require that owner transacting with a given address owns that address
-		require(msg.sender == _sellerAddress);
-		// require that quantity being sold is less than token amount outstanding <= what about simultaneous sales that both get filled at too high a price before the block updates?
-		require(_amount < creatorTokens[_tokenId].outstanding)
+	function sellCreatorToken(uint _tokenId, uint _amount) external {
 		// decrease outstanding amount of token by amount
-		creatorTokens[_tokenId].outstanding.sub(_amount)
+		creatorTokens[_tokenId].outstanding.sub(_amount);
 		// DAMM  MATH => calculate AUC (sale_price_fnc) to compute proceeds earned for amount of tokens sold
 
 		// emit newtransaction event
-		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol)
+		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// burn amount of tokens (automatically triggers Transfer event)
-
+		_burn(msg.sender, _amount);
 	}
 
-
-
-
-	// create a transferValue function
-	//     for a given token, transfer a certain amount of ETH to the creator of that token upon a purchase
-	//     transfer a certain amount to protocol owner's wallet (separate wallet from the protocol wallet)
+	// create function transferring excess liquidity to creator/protocol wallet when we hit a new maxSupply
+	function _payout(uint _tokenId) private {
+		uint alreadyTransferred = tokenValueTransferred[_tokenId];
+		// DAMM MATH => calculate how much more value needs to be transferred
+		uint totalRevenue = 0;
+		// transfer diff between totalRevenue and alreadyTransferred
+		transferFrom(protocolWallet, creatorTokens.creatorTokens[_tokenId], totalRevenue-alreadyTransferred);
+	}
 
 
 }

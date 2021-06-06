@@ -21,12 +21,14 @@ contract ERC20 {
 	function _mint(address account, uint256 amount) internal;
 	// burn
 	function _burn(address account, uint256 amount) internal;
+	// transfer
+	function _transfer(address sender, address recipient, uint256 amount) internal;
 
 	// totalSupply
 	function totalSupply() external view returns (uint256);
 	// balanceOf
 	function balanceOf(address _owner) external view returns (uint256);
-	// transfer
+	// transferFrom
 	function transferFrom(address _sender, address _receipient, uint256 amount) external payable;
 	// approve
 	function approve(address _approved, uint256 amount);
