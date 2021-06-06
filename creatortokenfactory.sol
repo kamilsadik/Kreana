@@ -24,7 +24,6 @@ contract CreatorTokenFactory is Ownable {
 	CreatorToken[] public creatorTokens;
 
 	mapping (uint => address) public tokenToCreator; //maps token id (index of token in CreatorTokens) to creator
-	mapping (address => uint) public holderToTokens; //shows number of tokens held by a given holder... key should prly be tuple of address and token id
 	mapping (uint => uint) private tokenValueTransferred; //shows amount of value transferred off-protocol for a given token
 
 	function _createCreatorToken(address _creator, string _name, string _description) internal {
@@ -33,5 +32,3 @@ contract CreatorTokenFactory is Ownable {
 		emit NewCreatorToken(id, _name); // emit token creation event
 	}
 }
-
-// hello
