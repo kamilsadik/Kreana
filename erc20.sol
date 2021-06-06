@@ -12,25 +12,25 @@ contract ERC20 {
 	// still needs to be included in the ERC20 token. Not to mention that we need some provision for
 	// tranferring value to the token creator / protocol wallet.
 
-	// Transfer
+	// Transfer event
 	event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId);
-	// Approval
+	// Approval event
 	event Approval(address indexed _owner, address indexed _approved, uint256 indexed _tokenId);
 
-	// mint
+	// _mint function
 	function _mint(address account, uint256 amount) internal;
-	// burn
+	// _burn function
 	function _burn(address account, uint256 amount) internal;
-	// transfer
+	// _transfer function
 	function _transfer(address sender, address recipient, uint256 amount) internal;
 
-	// totalSupply
+	// totalSupply function
 	function totalSupply() external view returns (uint256);
-	// balanceOf
+	// balanceOf function
 	function balanceOf(address _owner) external view returns (uint256);
-	// transferFrom
+	// transferFrom function
 	function transferFrom(address _sender, address _receipient, uint256 amount) external payable;
-	// approve
+	// approve function
 	function approve(address _approved, uint256 amount);
 
 }

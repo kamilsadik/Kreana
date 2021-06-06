@@ -9,59 +9,64 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC20 {
 	using SafeMath32 for uint32;
 	using SafeMath16 for uint16;
 
-	// newtransaction event
+
+	// Might need to override all the ERC-20 functions I'm using so that I can
+	// also specify the tokenId in question. See how CryptoZombies does this.
+
+	// Event that fires whena new transaction occurs
 	event NewTransaction(uint amount, string type, uint tokenId, string name, string symbol) //add in whatever other params are necessary
 
-	// create a buyCreatorToken function (fnc of amount being bought) <= might make this private, and call it in a payable ERC-20 fnc
+	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
-		// increase outstanding amount of token by amount
+		// Increase outstanding amount of token by _amount
 		creatorTokens[_tokenId].outstanding.add(_amount);
-		// if token amount outstanding > max supply
+		// Check if new outstanding amount of token is greater than maxSupply
 		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
-			// update maxSupply
+			// Update maxSupply
 			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
-			// call _payout to transfer excess liquidity
+			// Call _payout to transfer excess liquidity
 			_payout(_tokenId);
 		}
-		// DAMM  MATH => calculate AUC (buy_price_fnc) to compute cost of amount tokens in ether
+		// Calculate proceedsRequired in order for user to buy _amount tokens (unclear if this calc will be done off-chain via AWS Lambda, or on-chain)
 		uint proceedsRequired = 0 ether;
-		// make sure user sends enough ether to cover cost of tokens
+		// Make sure that user sends enough ether to cover the cost of _amount tokens
 		require(msg.value == proceedsRequired);
-		// mint amount of tokens (automatically triggers Transfer event)
+		// Mint _amount tokens at the user's address
 		_mint(msg.sender, _amount);
-		// emit newtransaction event
+		// Emit new transaction event
 		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
 
-	// create a sellCreatorToken function (fnc of amount being sold) <= might make this private, and call it in a payable ERC-20 fnc
+	// Allow user to sell a given CreatorToken back to the platform
 	function sellCreatorToken(uint _tokenId, uint _amount) external payable {
-		// decrease outstanding amount of token by amount
+		// Decrease outstanding amount of token by _amount
 		creatorTokens[_tokenId].outstanding.sub(_amount);
-		// DAMM  MATH => calculate AUC (sale_price_fnc) to compute proceeds earned for amount of tokens sold
+		// Calculate proceedsRequired in order to buy back _amount tokens from user (unclear if this calc will be done off-chain via AWS Lambda, or on-chain)
 		uint proceedsRequired = 0 ether;
-		// burn amount of tokens (automatically triggers Transfer event)
+		// Burn _amount tokens from user's address
 		_burn(msg.sender, _amount);
-		// send user enough ether to cover cost of tokens (make sure this can only get triggered if tokens are successfully burned)
+		// Send user proceedsRequired in exchange for the burned tokens
 		_transfer(liquidityPool, msg.sender, proceedsRequired);
-		// emit newtransaction event
+		// Emit new transaction event
 		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
 
-	// transfer excess liquidity to creator/platform wallet when we hit a new maxSupply
+	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
 	function _payout(uint _tokenId) private {
+		// Create a variable showing excess liquidity that has already been transferred out of this token's liquidity pool
 		uint alreadyTransferred = tokenValueTransferred[_tokenId];
-		// DAMM MATH => calculate area between buy price func and sale price func from 0 to maxSupply
-		uint totalRevenue = 0;
+		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
+		uint totalProfit = 0;
 
-		// calculate creator's cut
-		uint creatorCut = (totalRevenue - alreadyTransferred) * (1 - platformFee);
-		// transfer creator's cut to creator
-		_transfer(liquidityPool, creatorTokens.creatorTokens[_tokenId], creatorCut);
+		// Calculate creator's cut of remaining excess liquidity to be transferred
+		uint creatorCut = (totalProfit - alreadyTransferred) * (1 - platformFee);
+		// Transfer creator's cut to creator
+		_transfer(liquidityPool, creatorTokens.creatorAddress[_tokenId], creatorCut); // is this the right function? I want to transfer eth...
 
-		// calculate platform's cut
-		uint platformCut = (totalRevenue - alreadyTransferred) * platformFee;
-		// transfer platform fee to platform wallet
-		_transfer(liquidityPool, platformWallet, platformCut);
+		// Calculate platform's cut of remaining excess liquidity to be transferred
+		uint platformCut = (totalProfit - alreadyTransferred) * platformFee;
+		// Transform platform fee to platform wallet
+		_transfer(liquidityPool, platformWallet, platformCut); // is this the right function? I want to transfer eth...
 	}
 }
 

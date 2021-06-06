@@ -10,16 +10,15 @@ contract CreatorTokenFactory is Ownable {
 	using SafeMath32 for uint32;
 	using SafeMath16 for uint16;
 
+	// Event that fires whenever a new CreatorToken is created
 	event NewCreatorToken(uint tokenId, string name, string symbol) //add in whatever other params are necessary
 
-	// percentage of creator's revenue that goes to platfrom
-	// (e.g., if platformFee = 0.10 and creator has profit margin of 0.20,
-	// platform keeps 2% of total sale proceeds)
-	uint platformFee = 0.10;
+	// Percentage of creator's profit margin that goes to platform
+	uint platformFee = 0.10; // e.g., if platformFee == 0.1, and creator's profit margin is 20%, platform keeps 2% of total token sale proceeds
 
-	// wallet holding liquity pool (fill in address)
+	// Address of liquidityPool (might not need this... doesn't the smart contract itself have an address?)
 	address liquidtyPool;
-	// address to which platformFee gets sent (fill in address)
+	// Address where platform's cut gets routed
 	address platformWallet;
 
 	struct CreatorToken {
@@ -32,15 +31,23 @@ contract CreatorTokenFactory is Ownable {
 		uint16 maxSupply; //optimize which uint you use
 	}
 
+	// Array of all CreatorTokens
 	CreatorToken[] public creatorTokens;
 
-	mapping (uint => address) public tokenToCreator; //maps token id (index of token in CreatorTokens) to creator
-	mapping (uint => uint) private tokenValueTransferred; //shows amount of value transferred off-protocol for a given token
+	// Mapping from tokenId to creatorAddress
+	mapping (uint => address) public tokenToCreator;
+	// Mapping from tokenId to token value transferred (to creator/platform)
+	mapping (uint => uint) private tokenValueTransferred;
 
+	// Create a new CreatorToken
 	function _createCreatorToken(address _creatorAddress, string _name, string, _symbol, string _description) internal {
-		uint id = creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, False, 0, 0)) - 1; // create token id, and add token to list of tokens
-		tokenToCreator[id] = _creatorAddress; // map this token id to the creator's address
-		tokenValueTransferred[id] = 0; // at inception, no value has been transferred to the creator / protocol wallet
-		emit NewCreatorToken(id, _name, _symbol); // emit token creation event
+		// Create token id, and add token to creatorTokens array
+		uint id = creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, False, 0, 0)) - 1;
+		// Map from token id to creator's address
+		tokenToCreator[id] = _creatorAddress;
+		// Map from token id to amount of value transferred (0 at inception)
+		tokenValueTransferred[id] = 0;
+		// Emit token creation event
+		emit NewCreatorToken(id, _name, _symbol);
 	}
 }
