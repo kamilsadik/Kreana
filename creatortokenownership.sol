@@ -11,7 +11,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	using SafeMath32 for uint32;
 	using SafeMath16 for uint16;
 
-	// Event that fires whena new transaction occurs
+	// Event that fires when a new transaction occurs
 	event NewTransaction(uint amount, string type, uint tokenId, string name, string symbol) //add in whatever other params are necessary
 
 	// Allow user to buy a given CreatorToken from the platform
