@@ -10,7 +10,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC20 {
 	using SafeMath16 for uint16;
 
 	// newtransaction event
-	event NewTransaction(uint qty, string type, uint tokenId, string name) //add in whatever other params are necessary
+	event NewTransaction(uint amount, string type, uint tokenId, string name, string symbol) //add in whatever other params are necessary
 
 
 	// implement the functions (and trigger the events) included in ERC20.sol. possibilities include:
@@ -18,38 +18,38 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC20 {
 	//     transferFrom
 	//     approve
 
-	// create a buyCreatorToken function (fnc of qty being bought) <= might make this private, and call it in a payable ERC-20 fnc
-	function buyCreatorToken(uint _tokenId, uint _qty, uint _buyerAddress) external {
+	// create a buyCreatorToken function (fnc of amount being bought) <= might make this private, and call it in a payable ERC-20 fnc
+	function buyCreatorToken(uint _tokenId, uint _amount, uint _buyerAddress) external {
 		//     require that owner transacting with a given address owns that address
 		require(msg.sender == _buyerAddress);
-		//     increase outstanding amount of token by qty
-		creatorTokens[_tokenId].outstanding.add(_qty);
+		//     increase outstanding amount of token by amount
+		creatorTokens[_tokenId].outstanding.add(_amount);
 		//     if token amount outstanding > max supply, update max supply (and call value transfer function?)
 		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
 			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
 		}
-		//     DAMM  MATH => calculate AUC (buy_price_fnc) to compute cost of qty tokens
+		//     DAMM  MATH => calculate AUC (buy_price_fnc) to compute cost of amount tokens
 
 		//     emit newtransaction event
-		emit NewTransaction(_qty, "buy", _tokenId, creatorTokens[_tokenId].name)
-		//     emit relevant ERC20 event
+		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol)
+		//     emit relevant ERC20 event (need to mint a token)
 
 	}
 
-	// create a sellCreatorToken function (fnc of qty being sold) <= might make this private, and call it in a payable ERC-20 fnc
-	function sellCreatorToken(uint _tokenId, uint _qty, uint _sellerAddress) external {
+	// create a sellCreatorToken function (fnc of amount being sold) <= might make this private, and call it in a payable ERC-20 fnc
+	function sellCreatorToken(uint _tokenId, uint _amount, uint _sellerAddress) external {
 		//     require that owner transacting with a given address owns that address
 		require(msg.sender == _sellerAddress);
 		//     require that quantity being sold is less than token amount outstanding <= what about simultaneous sales that both get filled at too high a price before the block updates?
-		require(_qty < creatorTokens[_tokenId].outstanding)
-		//     decrease outstanding amount of token by qty
-		creatorTokens[_tokenId].outstanding.sub(_qty)
-		//     DAMM  MATH => calculate AUC (sale_price_fnc) to compute proceeds earned for qty of tokens sold
+		require(_amount < creatorTokens[_tokenId].outstanding)
+		//     decrease outstanding amount of token by amount
+		creatorTokens[_tokenId].outstanding.sub(_amount)
+		//     DAMM  MATH => calculate AUC (sale_price_fnc) to compute proceeds earned for amount of tokens sold
 
 		//     emit newtransaction event
-		emit NewTransaction(_qty, "sell", _tokenId, creatorTokens[_tokenId].name)
-		//     emit relevant ERC20 event
-		
+		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol)
+		//     emit relevant ERC20 event (need to burn the token)
+
 	}
 
 

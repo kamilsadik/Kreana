@@ -10,11 +10,12 @@ contract CreatorTokenFactory is Ownable {
 	using SafeMath32 for uint32;
 	using SafeMath16 for uint16;
 
-	event NewCreatorToken(uint tokenId, string name) //add in whatever other params are necessary
+	event NewCreatorToken(uint tokenId, string name, string symbol) //add in whatever other params are necessary
 
 	struct CreatorToken {
 		address creatorAddress;
 		string name;
+		string symbol,
 		string description;
 		bool verified;
 		uint16 outstanding; //optimize which uint you use
@@ -26,9 +27,9 @@ contract CreatorTokenFactory is Ownable {
 	mapping (uint => address) public tokenToCreator; //maps token id (index of token in CreatorTokens) to creator
 	mapping (uint => uint) private tokenValueTransferred; //shows amount of value transferred off-protocol for a given token
 
-	function _createCreatorToken(address _creatorAddress, string _name, string _description) internal {
-		uint id = creatorTokens.push(CreatorToken(_creatorAddress, _name, _description, False, 0, 0)) - 1; // create token id, and add token to list of tokens
+	function _createCreatorToken(address _creatorAddress, string _name, string, _symbol, string _description) internal {
+		uint id = creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, False, 0, 0)) - 1; // create token id, and add token to list of tokens
 		tokenToCreator[id] = _creatorAddress; // map this token id to the creator's address
-		emit NewCreatorToken(id, _name); // emit token creation event
+		emit NewCreatorToken(id, _name, _symbol); // emit token creation event
 	}
 }

@@ -33,6 +33,11 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 		creatorTokens[_tokenId].name = _newName;
 	}
 
+	// function letting user change token symbol
+	function changeName(uint _tokenId, string _newSymbol) external onlyCreatorOf {
+		creatorTokens[_tokenId].symbol = _newSymbol;
+	}
+
 	// function letting user change description (onlyCreatorOf token id)
 	function changeDescriptoin(uint _tokenId, string _newDescription) external onlyCreatorOf {
 		creatorTokens[_tokenId] = _newDescription;
