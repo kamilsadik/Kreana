@@ -13,8 +13,8 @@ contract CreatorTokenFactory is Ownable {
 	// Event that fires whenever a new CreatorToken is created
 	event NewCreatorToken(uint tokenId, string name, string symbol) //add in whatever other params are necessary
 
-	// Percentage of creator's profit margin that goes to platform
-	uint platformFee = 0.10; // e.g., if platformFee == 0.1, and creator's profit margin is 20%, platform keeps 2% of total token sale proceeds
+	// Pay-on-top style platform fee on each transaction
+	uint platformFee = 0.10; // e.g., if platformFee == 0.01, the platform earns 1% of each transaction's value
 
 	// Address of liquidityPool (might not need this... doesn't the smart contract itself have an address?)
 	address liquidtyPool;

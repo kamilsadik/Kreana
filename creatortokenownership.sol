@@ -27,8 +27,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		}
 		// Calculate proceedsRequired in order for user to buy _amount tokens (unclear if this calc will be done off-chain via AWS Lambda, or on-chain)
 		uint proceedsRequired = 0 ether;
-		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens
-		require(msg.value == proceedsRequired);
+		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
+		require(msg.value == proceedsRequired * (1 + platformFee));
 		// Mint _amount tokens at the user's address
 		mint(msg.sender, _tokenId, _amount);
 		// Emit new transaction event
@@ -43,8 +43,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		uint proceedsRequired = 0 ether;
 		// Burn _amount tokens from user's address
 		burn(msg.sender, _tokenId, _amount);
-		// Send user proceedsRequired ether in exchange for the burned tokens
-		msg.sender.transfer(proceedsRequired);
+		// Send user proceedsRequired ether in exchange for the burned tokens, less the platform fee
+		msg.sender.transfer(proceedsRequired * (1 - platformFee));
 		// Emit new transaction event
 		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
@@ -56,18 +56,9 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
 		uint totalProfit = 0;
 
-		// Calculate creator's cut of remaining excess liquidity to be transferred
-		uint creatorCut = (totalProfit - alreadyTransferred) * (1 - platformFee);
+		// Calculate creator's new profit from remaining excess liquidity to be transferred
+		uint newProfit = totalProfit - alreadyTransferred
 		// Transfer creatorCut ether to creator
-		creatorTokens.creatorAddress[_tokenId].transfer(creatorCut); // is this the right function? I want to transfer eth...
-
-		// Calculate platform's cut of remaining excess liquidity to be transferred
-		uint platformCut = (totalProfit - alreadyTransferred) * platformFee;
-		// Transform platformCut ether to platform wallet
-		platformWallet.transfer(platformCut); // is this the right function? I want to transfer eth...
+		creatorTokens.creatorAddress[_tokenId].transfer(newProfit); // is this the right function? I want to transfer eth...
 	}
 }
-
-
-
-
