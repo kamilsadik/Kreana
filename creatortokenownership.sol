@@ -23,12 +23,13 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 			// Update maxSupply
 			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
 			// Call _payout to transfer excess liquidity
-			_payout(_tokenId);
+			_payCreator(_tokenId);
 		}
 		// Calculate proceedsRequired in order for user to buy _amount tokens (unclear if this calc will be done off-chain via AWS Lambda, or on-chain)
 		uint proceedsRequired = 0 ether;
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
-		require(msg.value == proceedsRequired * (1 + platformFee));
+		// Note we don't transfer the platform fee to the platformWallet, since owner is able to withdraw anyway
+		require(msg.value == proceedsRequired.mult((1.add(platformFee))));
 		// Mint _amount tokens at the user's address
 		mint(msg.sender, _tokenId, _amount);
 		// Emit new transaction event
@@ -44,21 +45,30 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Burn _amount tokens from user's address
 		burn(msg.sender, _tokenId, _amount);
 		// Send user proceedsRequired ether in exchange for the burned tokens, less the platform fee
-		msg.sender.transfer(proceedsRequired * (1 - platformFee));
+		// Note we don't transfer the platform fee to the platformWallet, since owner is able to withdraw anyway
+		msg.sender.transfer(proceedsRequired.mult((1.sub(platformFee))));
 		// Emit new transaction event
 		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
 
 	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
-	function _payout(uint _tokenId) private {
+	function _payCreator(uint _tokenId) private {
 		// Create a variable showing excess liquidity that has already been transferred out of this token's liquidity pool
 		uint alreadyTransferred = tokenValueTransferred[_tokenId];
 		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
 		uint totalProfit = 0;
-
-		// Calculate creator's new profit from remaining excess liquidity to be transferred
-		uint newProfit = totalProfit - alreadyTransferred
-		// Transfer creatorCut ether to creator
-		creatorTokens.creatorAddress[_tokenId].transfer(newProfit); // is this the right function? I want to transfer eth...
+		// Calculate creator's new profit created from new excess liquidity created
+		uint newProfit = totalProfit.sub(alreadyTransferred);
+		// Transfer newProfit ether to creator
+		creatorTokens.creatorAddress[_tokenId].transfer(newProfit);
+		// Update amount of value transferred to creator
+		tokenValueTransferred[_tokenId] = totalProfit;
 	}
 }
+
+
+
+
+
+
+
