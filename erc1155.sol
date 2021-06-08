@@ -32,6 +32,7 @@ contract ERC1155PresetMinterPauser {
 	// Return balance of a given token at a given address
 	function balanceOf(address _account, uint256 id) external view returns (uint256);
 	// Return balance of a batch of tokens
+	function balanceOfBatch
 
 	// Give operator permission to transfer caller's tokens
 	function setApprovalForAll(address _operator, bool approved) external;
