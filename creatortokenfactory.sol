@@ -27,8 +27,8 @@ contract CreatorTokenFactory is Ownable {
 		string symbol,
 		string description;
 		bool verified;
-		uint16 outstanding; //optimize which uint you use
-		uint16 maxSupply; //optimize which uint you use
+		uint16 outstanding; //optimize which uint you use based on pricing formula, and the fact that you can't subdivide ERC-1155 tokens
+		uint16 maxSupply; //optimize which uint you use based on pricing formula, and the fact that you can't subdivide ERC-1155 tokens
 	}
 
 	// Array of all CreatorTokens
