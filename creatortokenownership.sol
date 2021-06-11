@@ -25,8 +25,12 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 			proceedsRequired = proceedsRequired.add(_buyFunction(i, m));
 		}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
-		// Note we don't transfer the platform fee to the platformWallet, since owner is able to withdraw anyway
+		// Note we don't transfer the platform fee to the owner, since owner is able to withdraw anyway
 		require(msg.value == proceedsRequired.mult((1.add(platformFee))));
+
+		// Update platform fee total
+		_platformFeeUpdater(proceedsRequired);
+
 		// Mint _amount tokens at the user's address
 		mint(msg.sender, _tokenId, _amount);
 		// Emit new transaction event
@@ -61,13 +65,18 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Burn _amount tokens from user's address
 		burn(msg.sender, _tokenId, _amount);
 		// Send user proceedsRequired ether in exchange for the burned tokens, less the platform fee
-		// Note we don't transfer the platform fee to the platformWallet, since owner is able to withdraw anyway
+		// Note we don't transfer the platform fee to the owner, since owner is able to withdraw anyway
 		msg.sender.transfer(proceedsRequired.mult((1.sub(platformFee))));
+
+		// Update platform fee total
+		_platformFeeUpdater(proceedsRequired);
+
 		// Emit new transaction event
 		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 
 		// Decrease outstanding amount of token by _amount
 		creatorTokens[_tokenId].outstanding.sub(_amount);
+
 	}
 
 	// Create a piecewise-defined sale price function based on slop of b(x), maxSupply, and profitMargin
@@ -97,6 +106,12 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		creatorTokens.creatorAddress[_tokenId].transfer(newProfit);
 		// Update amount of value transferred to creator
 		tokenValueTransferred[_tokenId] = totalProfit;
+	}
+
+	// Update platform fees tracker
+	function _platformFeeUpdater(uint _proceedsRequired) private {
+		totalPlatformFees = totalPlatformFees.add(_proceedsRequired.mult(platformFee));
+		platformFeesOwed = platformFeesOwed.add(_proceedsRequired.mult(platformFee));
 	}
 }
 

@@ -18,9 +18,12 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 	  _owner.transfer(address(this).balance);
 	}
 
-	// Allow owner to change platformWallet
-	function changeWallet(address _newPlatformWallet) external onlyOwner {
-		platformWallet = _newPlatformWallet;
+	// Payout platform fees owed to owner (might opt to call this daily)
+	function payoutPlatformFees() external onlyOwner {
+		address _owner = owner();
+		_owner.transfer(platformFeesOwed);
+		// Reset platformFeesOwed to zero after payout
+		platformFeesOwed = 0;
 	}
 
 	// Allow owner to change platformFee

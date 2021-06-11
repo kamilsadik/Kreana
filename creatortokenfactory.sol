@@ -15,13 +15,16 @@ contract CreatorTokenFactory is Ownable {
 
 	// Pay-on-top style platform fee on each transaction
 	uint platformFee = 1/100; // e.g., if platformFee == 1/100, the platform earns 1% of each transaction's value
+	// Variable to track total platform fees generated
+	uint totalPlatformFees = 0 ether;
+	// Variable to track platform fees owed, but not yet paid to owner
+	uint platformFeesOwed = 0 ether;
+
 	// Profit margin (percentage of total revenue) directed toward creator
 	uint profitMargin = 20/100;
 	// Slope of buy price function
 	uint m = 9/100000;
 
-	// Address where platform fee gets routed
-	address platformWallet;
 
 	struct CreatorToken {
 		address creatorAddress;
