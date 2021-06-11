@@ -30,13 +30,13 @@ contract ERC1155PresetMinterPauser {
 	function safeBatchTransferFrom(address _from, address _to, uint256[] _ids, uint256[] _amounts, bytes data) public;
 
 	// Return balance of a given token at a given address
-	function balanceOf(address _account, uint256 id) external view returns (uint256);
+	function balanceOf(address _account, uint256 _id) external view returns (uint256);
 	// Return balance of a batch of tokens
-	function balanceOfBatch
+	function balanceOfBatch(address _accounts[], uint256 _ids[]) external view returns (uint256);
 
 	// Give operator permission to transfer caller's tokens
 	function setApprovalForAll(address _operator, bool approved) external;
 	// Denotes whether operator is approved to transfer accounts' tokens
 	function isApprovedForAll(address _account, address _operator) external;
-
+	
 }

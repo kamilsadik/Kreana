@@ -26,7 +26,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
 		// Note we don't transfer the platform fee to the owner, since owner is able to withdraw anyway
-		require(msg.value == proceedsRequired.mult((1.add(platformFee))));
+		require(msg.value == proceedsRequired.mul((1.add(platformFee))));
 
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
@@ -66,7 +66,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		burn(msg.sender, _tokenId, _amount);
 		// Send user proceedsRequired ether in exchange for the burned tokens, less the platform fee
 		// Note we don't transfer the platform fee to the owner, since owner is able to withdraw anyway
-		msg.sender.transfer(proceedsRequired.mult((1.sub(platformFee))));
+		msg.sender.transfer(proceedsRequired.mul((1.sub(platformFee))));
 
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
@@ -110,8 +110,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 
 	// Update platform fees tracker
 	function _platformFeeUpdater(uint _proceedsRequired) private {
-		totalPlatformFees = totalPlatformFees.add(_proceedsRequired.mult(platformFee));
-		platformFeesOwed = platformFeesOwed.add(_proceedsRequired.mult(platformFee));
+		totalPlatformFees = totalPlatformFees.add(_proceedsRequired.mul(platformFee));
+		platformFeesOwed = platformFeesOwed.add(_proceedsRequired.mul(platformFee));
 	}
 }
 
