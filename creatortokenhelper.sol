@@ -18,6 +18,21 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 	  _owner.transfer(address(this).balance);
 	}
 
+	// Allow owner to change platformWallet
+	function changeWallet(address _newPlatformWallet) external onlyOwner {
+		platformWallet = _newPlatformWallet;
+	}
+
+	// Allow owner to change platformFee
+	function changePlatformFee(uint _newPlatformFee) external onlyOwner {
+		platformFee = _newPlatformFee;
+	}
+
+	// Allow owner to change profit_margin
+	function changeProfitMargin(address _newProfitMargin) external onlyOwner {
+		profitMargin = _newProfitMargin;
+	}
+
 	// Allow owner to verify (or undo verification) of a CreatorToken
 	function changeVerification(uint _tokenId, bool _verified) external onlyOwner {
 		creatorTokens[_tokenId].verified = _verified;

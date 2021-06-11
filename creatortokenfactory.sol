@@ -15,10 +15,12 @@ contract CreatorTokenFactory is Ownable {
 
 	// Pay-on-top style platform fee on each transaction
 	uint platformFee = 1/100; // e.g., if platformFee == 1/100, the platform earns 1% of each transaction's value
+	// Profit margin (percentage of total revenue) directed toward creator
+	uint profitMargin = 20/100;
+	// Slope of buy price function
+	uint m = 9/100000;
 
-	// Address of liquidityPool (might not need this... doesn't the smart contract itself have an address?)
-	address liquidtyPool;
-	// Address where platform's cut gets routed
+	// Address where platform fee gets routed
 	address platformWallet;
 
 	struct CreatorToken {
