@@ -11,7 +11,7 @@ contract CreatorTokenFactory is Ownable {
 	using SafeMath16 for uint16;
 
 	// Event that fires whenever a new CreatorToken is created
-	event NewCreatorToken(uint tokenId, string name, string symbol) //add in whatever other params are necessary
+	event NewCreatorToken(uint tokenId, string name, string symbol)
 
 	// Pay-on-top style platform fee on each transaction
 	uint platformFee = 1/100; // e.g., if platformFee == 1/100, the platform earns 1% of each transaction's value
@@ -29,11 +29,11 @@ contract CreatorTokenFactory is Ownable {
 	struct CreatorToken {
 		address creatorAddress;
 		string name;
-		string symbol,
+		string symbol;
 		string description;
 		bool verified;
-		uint16 outstanding; //optimize which uint you use based on pricing formula, and the fact that you can't subdivide ERC-1155 tokens
-		uint16 maxSupply; //optimize which uint you use based on pricing formula, and the fact that you can't subdivide ERC-1155 tokens
+		uint outstanding;
+		uint maxSupply;
 	}
 
 	// Array of all CreatorTokens
@@ -45,7 +45,7 @@ contract CreatorTokenFactory is Ownable {
 	mapping (uint => uint) private tokenValueTransferred;
 
 	// Create a new CreatorToken
-	function _createCreatorToken(address _creatorAddress, string _name, string, _symbol, string _description) internal {
+	function _createCreatorToken(address _creatorAddress, string _name, string _symbol, string _description) internal {
 		// Create token id, and add token to creatorTokens array
 		uint id = creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, False, 0, 0)) - 1;
 		// Map from token id to creator's address

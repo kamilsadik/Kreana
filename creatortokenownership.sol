@@ -25,17 +25,13 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 			proceedsRequired = proceedsRequired.add(_buyFunction(i, m));
 		}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
-		// Note we don't transfer the platform fee to the owner, since owner is able to withdraw anyway
 		require(msg.value == proceedsRequired.mul((1.add(platformFee))));
-
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
-
 		// Mint _amount tokens at the user's address
 		mint(msg.sender, _tokenId, _amount);
 		// Emit new transaction event
 		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
-
 		// Increase outstanding amount of token by _amount
 		creatorTokens[_tokenId].outstanding.add(_amount);
 		// Check if new outstanding amount of token is greater than maxSupply
@@ -49,7 +45,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 
 	// Create a linear buy price function wtih slope _m
 	function _buyFunction(uint _x, uint _m) private {
-		return _m * _x
+		return _m.mul(_x);
 	}
 
 	// Allow user to sell a given CreatorToken back to the platform
@@ -67,30 +63,25 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Send user proceedsRequired ether in exchange for the burned tokens, less the platform fee
 		// Note we don't transfer the platform fee to the owner, since owner is able to withdraw anyway
 		msg.sender.transfer(proceedsRequired.mul((1.sub(platformFee))));
-
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
-
 		// Emit new transaction event
 		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
-
 		// Decrease outstanding amount of token by _amount
 		creatorTokens[_tokenId].outstanding.sub(_amount);
-
 	}
 
 	// Create a piecewise-defined sale price function based on slop of b(x), maxSupply, and profitMargin
-	// NEED TO UPDATE THIS TO USE SAFEMATH
 	function _saleFunction(uint _tokenId, uint _x, uint _m, uint _maxSupply, uint _profitMargin) external {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
-		uint a = _maxSupply/2;
-		uint b = (2 * (1-_profitMargin)*_maxSupply*_m-_maxSupply*_m)/2;
+		uint a = _maxSupply.div(2);
+		uint b = (2.mul((1.sub(_profitMargin))).mul(_maxSupply).mul(_m).sub(_maxSupply.mul(_m))).div(2);
 
 		// Create the piecewise defined function
 		if (0<=_x<=a) {
-			return (b/a)*(x-a)+b
+			return (b.div(a)).div(mul((x.sub(a)))).add(b);
 		} else if (a<x<=_maxSupply) {
-			return ((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b
+			return ((_m.mul(_maxSupply).sub(b)).div((_maxSupply.sub(a)))).mul((_x.sub(a))).add(b);
 		}
 	}
 
@@ -98,8 +89,12 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	function _payCreator(uint _tokenId) private {
 		// Create a variable showing excess liquidity that has already been transferred out of this token's liquidity pool
 		uint alreadyTransferred = tokenValueTransferred[_tokenId];
+		// Initialize totalProfit
+		uint totalProfit = 0 ether;
 		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
-		uint totalProfit = 0;
+		for (uint i = 1, creatorTokens[_tokenId].maxSupply, i++) {
+			totalProfit += _buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
+		}
 		// Calculate creator's new profit created from new excess liquidity created
 		uint newProfit = totalProfit.sub(alreadyTransferred);
 		// Transfer newProfit ether to creator

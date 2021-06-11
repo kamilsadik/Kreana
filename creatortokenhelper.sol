@@ -2,6 +2,7 @@
 // figure out which version you need to use
 pragma solidity ^0.4.25;
 
+import "./ownable.sol";
 import "./creatortokenfactor.sol";
 
 contract CreatorTokenHelper is CreatorTokenFactory {
@@ -23,7 +24,7 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 		address _owner = owner();
 		_owner.transfer(platformFeesOwed);
 		// Reset platformFeesOwed to zero after payout
-		platformFeesOwed = 0;
+		platformFeesOwed = 0 ether;
 	}
 
 	// Allow owner to change platformFee
@@ -58,6 +59,6 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 
 	// Allow token creator to change the description of their token
 	function changeDescriptoin(uint _tokenId, string _newDescription) external onlyCreatorOf {
-		creatorTokens[_tokenId] = _newDescription;
+		creatorTokens[_tokenId].description = _newDescription;
 	}
 }
