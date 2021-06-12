@@ -1,7 +1,7 @@
 pragma solidity ^0.8.0;
 
 import "./ownable.sol";
-import "./safemath.sol";
+//import "./safemath.sol";
 
 contract CreatorTokenFactory is Ownable {
 
@@ -25,7 +25,7 @@ contract CreatorTokenFactory is Ownable {
 	// Slope of buy price function
 	uint m_numerator = 9;
 	uint m_denominator = 100000;
-	uint m = m_numerator.div(m_denominator);
+	uint m = m_numerator/m_denominator;
 
 
 	struct CreatorToken {

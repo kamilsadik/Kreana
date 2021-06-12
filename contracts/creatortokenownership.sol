@@ -2,7 +2,7 @@ pragma solidity ^0.8.0;
 
 import "./creatortokenhelper.sol";
 import "./erc1155.sol";
-import "./safemath.sol";
+//import "./safemath.sol";
 
 contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
 
@@ -20,18 +20,18 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute buy proceeds
-		for (uint i = startingSupply.add(1); i<startingSupply.add(_amount).add(1); i++) {
+		for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
 			// If the current token number is < maxSupply
 			if (i < creatorTokens[_tokenId].maxSupply) {
 				// Then user is buying along sale price function
-				proceedsRequired = proceedsRequired.add(_saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin));
+				proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 			} else { // Else (if the current token number is >= maxSupply)
 				// Then user is buying along buy price function
-				proceedsRequired = proceedsRequired.add(_buyFunction(i, m));
+				proceedsRequired += _buyFunction(i, m);
 			}
 		}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
-		require(msg.value == proceedsRequired.add(proceedsRequired.mul(platformFee).div(100)));
+		require(msg.value == proceedsRequired + proceedsRequired*platformFee/100);
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address
@@ -39,7 +39,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Emit new transaction event
 		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// Increase outstanding amount of token by _amount
-		creatorTokens[_tokenId].outstanding.add(_amount);
+		creatorTokens[_tokenId].outstanding += _amount;
 		// Check if new outstanding amount of token is greater than maxSupply
 		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
 			// Update maxSupply
@@ -52,7 +52,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	// Create a linear buy price function wtih slope _m
 	function _buyFunction(uint _x, uint _m) private pure returns (uint256) {
 		// b(x) = m*x
-		return _m.mul(_x);
+		return _m*_x;
 	}
 
 	// Allow user to sell a given CreatorToken back to the platform
@@ -62,31 +62,31 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Iterate to compute sale proceeds required
-		for (uint i = startingSupply.add(1); i>startingSupply.sub(_amount).add(1); i--) {
-			proceedsRequired = proceedsRequired.add(_saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin));
+		for (uint i = startingSupply+1; i>startingSupply-_amount+1; i--) {
+			proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 		}
 		// Burn _amount tokens from user's address
 		burn(msg.sender, _tokenId, _amount);
 		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
-		msg.sender.transfer(proceedsRequired.sub(proceedsRequired.mul(platformFee).div(100)));
+		msg.sender.transfer(proceedsRequired - proceedsRequired*platformFee/100);
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Emit new transaction event
 		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// Decrease outstanding amount of token by _amount
-		creatorTokens[_tokenId].outstanding.sub(_amount);
+		creatorTokens[_tokenId].outstanding -= _amount;
 	}
 
 	// Create a piecewise-defined sale price function based on slope of b(x), maxSupply, and profitMargin
 	function _saleFunction(uint _tokenId, uint _x, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256) {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
-		uint a = _maxSupply.div(2);
-		uint b = ((2.sub(2.mul(_profitMargin.div(100)))).mul(_maxSupply).mul(_m).sub(_maxSupply.mul(_m))).div(2);
+		uint a = _maxSupply/2;
+		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
 		// Create the piecewise defined function
 		if (0<=_x<=a) {
-			return (b.div(a)).mul(_x.sub(a)).add(b);
+			return (b/a)*(_x-a)+b;
 		} else if (a<_x<=_maxSupply) {
-			return ((_m.mul(_maxSupply).sub(b)).div((_maxSupply.sub(a)))).mul((_x.sub(a))).add(b);
+			return ((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b;
 		}
 	}
 
@@ -97,11 +97,11 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Initialize totalProfit
 		uint totalProfit = 0 ether;
 		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
-		for (uint i = 1; i<creatorTokens[_tokenId].maxSupply.add(1); i++) {
+		for (uint i = 1; i<creatorTokens[_tokenId].maxSupply+1; i++) {
 			totalProfit += _buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 		}
 		// Calculate creator's new profit created from new excess liquidity created
-		uint newProfit = totalProfit.sub(alreadyTransferred);
+		uint newProfit = totalProfit - alreadyTransferred;
 		// Transfer newProfit ether to creator
 		creatorTokens.creatorAddress[_tokenId].transfer(newProfit);
 		// Update amount of value transferred to creator
@@ -110,8 +110,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 
 	// Update platform fees tracker
 	function _platformFeeUpdater(uint _proceedsRequired) private {
-		totalPlatformFees = totalPlatformFees.add(_proceedsRequired.mul(platformFee).div(100));
-		platformFeesOwed = platformFeesOwed.add(_proceedsRequired.mul(platformFee).div(100));
+		totalPlatformFees += _proceedsRequired*platformFee/100;
+		platformFeesOwed += _proceedsRequired*platformFee/100;
 	}
 }
 
