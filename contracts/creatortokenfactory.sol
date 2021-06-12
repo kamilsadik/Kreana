@@ -1,5 +1,4 @@
-// figure out which version you need to use
-pragma solidity ^0.4.25;
+pragma solidity ^0.8.0;
 
 import "./ownable.sol";
 import "./safemath.sol";
@@ -11,19 +10,22 @@ contract CreatorTokenFactory is Ownable {
 	using SafeMath16 for uint16;
 
 	// Event that fires whenever a new CreatorToken is created
-	event NewCreatorToken(uint tokenId, string name, string symbol)
+	event NewCreatorToken(uint tokenId, string name, string symbol);
 
 	// Pay-on-top style platform fee on each transaction
-	uint platformFee = 1/100; // e.g., if platformFee == 1/100, the platform earns 1% of each transaction's value
+	uint platformFee = 1; // e.g., if platformFee == 1/, the platform earns 1% of each transaction's value
 	// Variable to track total platform fees generated
 	uint totalPlatformFees = 0 ether;
 	// Variable to track platform fees owed, but not yet paid to owner
 	uint platformFeesOwed = 0 ether;
 
 	// Profit margin (percentage of total revenue) directed toward creator
-	uint profitMargin = 20/100;
+	uint profitMargin = 20;
+
 	// Slope of buy price function
-	uint m = 9/100000;
+	uint m_numerator = 9;
+	uint m_denominator = 100000;
+	uint m = m_numerator.div(m_denominator);
 
 
 	struct CreatorToken {
@@ -42,12 +44,12 @@ contract CreatorTokenFactory is Ownable {
 	// Mapping from tokenId to creatorAddress
 	mapping (uint => address) public tokenToCreator;
 	// Mapping from tokenId to token value transferred (to creator/platform)
-	mapping (uint => uint) private tokenValueTransferred;
+	mapping (uint => uint) internal tokenValueTransferred;
 
 	// Create a new CreatorToken
-	function _createCreatorToken(address _creatorAddress, string _name, string _symbol, string _description) internal {
+	function _createCreatorToken(address _creatorAddress, string memory _name, string memory _symbol, string memory _description) public {
 		// Create token id, and add token to creatorTokens array
-		uint id = creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, False, 0, 0)) - 1;
+		uint id = creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, false, 0, 0)) - 1;
 		// Map from token id to creator's address
 		tokenToCreator[id] = _creatorAddress;
 		// Map from token id to amount of value transferred (0 at inception)

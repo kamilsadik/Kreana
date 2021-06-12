@@ -1,9 +1,7 @@
-
-// figure out which version you need to use
-pragma solidity ^0.4.25;
+pragma solidity ^0.8.0;
 
 import "./ownable.sol";
-import "./creatortokenfactor.sol";
+import "./creatortokenfactory.sol";
 
 contract CreatorTokenHelper is CreatorTokenFactory {
 
@@ -14,14 +12,12 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 	}
 
 	// Ownable function allowing for withdrawal
-	function withdraw() external onlyOwner {
-	  address _owner = owner();
+	function withdraw(address payable _owner) external onlyOwner {
 	  _owner.transfer(address(this).balance);
 	}
 
 	// Payout platform fees owed to owner (might opt to call this daily)
-	function payoutPlatformFees() external onlyOwner {
-		address _owner = owner();
+	function payoutPlatformFees(address payable _owner) external onlyOwner {
 		_owner.transfer(platformFeesOwed);
 		// Reset platformFeesOwed to zero after payout
 		platformFeesOwed = 0 ether;
@@ -34,7 +30,7 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 
 	// Allow owner to change profit_margin
 	function changeProfitMargin(address _newProfitMargin) external onlyOwner {
-		profitMargin = _newProfitMargin;
+		profitMargin = uint(_newProfitMargin);
 	}
 
 	// Allow owner to verify (or undo verification) of a CreatorToken
@@ -43,22 +39,22 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 	}
 
 	// Allow token creator to change their address
-	function changeAddress(uint _tokenId, address _newCreatorAddress) external onlyCreatorOf {
+	function changeAddress(uint _tokenId, address _newCreatorAddress) external onlyCreatorOf(_tokenId) {
 		creatorTokens[_tokenId].creatorAddress = _newCreatorAddress;
 	}
 
 	// Allow token creator to change the name of their token
-	function changeName(uint _tokenId, string _newName) external onlyCreatorOf {
+	function changeName(uint _tokenId, string calldata _newName) external onlyCreatorOf(_tokenId) {
 		creatorTokens[_tokenId].name = _newName;
 	}
 
 	// Allow token creator to change the symbol of their token
-	function changeName(uint _tokenId, string _newSymbol) external onlyCreatorOf {
+	function changeSymbol(uint _tokenId, string calldata _newSymbol) external onlyCreatorOf(_tokenId) {
 		creatorTokens[_tokenId].symbol = _newSymbol;
 	}
 
 	// Allow token creator to change the description of their token
-	function changeDescriptoin(uint _tokenId, string _newDescription) external onlyCreatorOf {
+	function changeDescriptoin(uint _tokenId, string calldata _newDescription) external onlyCreatorOf(_tokenId) {
 		creatorTokens[_tokenId].description = _newDescription;
 	}
 }
