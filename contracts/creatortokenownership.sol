@@ -3,13 +3,8 @@ pragma solidity ^0.8.0;
 
 import "./creatortokenhelper.sol";
 import "./erc1155.sol";
-//import "./safemath.sol";
 
 contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
-
-	//using SafeMath for uint256;
-	//using SafeMath32 for uint32;
-	//using SafeMath16 for uint16;
 
 	constructor() public ERC1155PresetMinterPauser() { }
 
@@ -45,6 +40,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Decrease token amount outstanding
 		creatorTokens[_id].outstanding -= _amount;
 		// Do I also need to transfer the actual tokens to from user to address(0)?
+		// Emit single transfer event
 		emit TransferSingle(msg.sender, _to, address(0), _id, _amount);
 	}
 
@@ -65,31 +61,57 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	// Transfer a token
 	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public {
 		// Reduce tokenHoldership holdings of _from
+		tokenHoldership[_id][_from] -= _amount;
 		// Increase tokenHoldership holdings of _to
+		tokenHoldership[_id][_to] += _amount;
+		// Do I also need to transfer the actual tokens from _from to _to?
+		// Emit single transfer event
+		emit TransferSingle(msg.sender, _from, _to, _id, _amount);
 	}
-	// Transfer a batchof tokens
+
+	// Transfer a batch of tokens
 	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public {
-		// Iterate through 
-		// Reduce tokenHoldership holdings of _from
-		// Increase tokenHoldership holdings of _to
+		// Iterate through _ids
+		for (uint256 i=0; i<_ids.length; i++) {
+			// Reduce tokenHoldership holdings of _from
+			tokenHoldership[_ids[i]][_from] -= _amounts[i];
+			// Increase tokenHoldership holdings of _to
+			tokenHoldership[_ids[i]][_to] += _amounts[i];
+		}
+		// Do I also need to transfer the actual tokens from _from to _to?
+		// Emit batch transfer event
+		emit TransferBatch(msg.sender, _from, _to, _ids, _amounts);
 	}
 
 	// Return balance of a given token at a given address
 	function balanceOf(address _account, uint256 _id) external view returns (uint256) {
-		// use a mapping showing balances
+		// Look up _account's holdings of _id in tokenHoldership
+		return tokenHoldership[_id][_account]
 	}
+
 	// Return balance of a batch of tokens
 	function balanceOfBatch(address[] calldata _accounts, uint256[] calldata _ids) external view returns (uint256) {
-		// use a mapping showing balances
+		// Initialize output array
+		uint256[] memory batchBalances = new uint256[](_accounts.length);
+		// Iterate through _accounts
+		for (uint256 i = 0; i < accounts.length; i++) {
+			// Look up _account's holdings of _id in tokenHoldership
+			batchBalances[i] = balanceOf(_accounts[i], _ids[i]);
+		}
+		// Return output array
+		return batchBalances;
 	}
 
 	// Give operator permission to transfer caller's tokens
 	function setApprovalForAll(address _operator, bool approved) external  {
 		// use a mapping showing approvals
+		// emit Approval event
 	}
+
 	// Denotes whether operator is approved to transfer accounts' tokens
 	function isApprovedForAll(address _account, address _operator) external {
-		// use a mapping showing approvals
+		// look up mapping showing approvals
+		// emit Approval event
 	}
 
 
