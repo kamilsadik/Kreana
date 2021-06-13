@@ -22,27 +22,27 @@ contract ERC1155PresetMinterPauser {
 	function unpause() public;
 
 	// Mint a token
-	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public;
+	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public virtual;
 	// Mint a batch of tokens
-	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public;
+	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public virtual;
 	// Burn a token
-	function burn(address _account, uint256 _id, uint256 _value) public;
+	function burn(address _account, uint256 _id, uint256 _amount) public virtual;
 	// Burn a batch of tokens
-	function burnBatch(address account, uint256[] memory _ids, uint256[] memory _amounts) public;
+	function burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) public virtual;
 
 	// Transfer a token
-	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public;
+	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public virtual;
 	// Transfer a batchof tokens
-	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public;
+	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public virtual;
 
 	// Return balance of a given token at a given address
-	function balanceOf(address _account, uint256 _id) external view returns (uint256);
+	function balanceOf(address _account, uint256 _id) external view virtual returns (uint256);
 	// Return balance of a batch of tokens
-	function balanceOfBatch(address[] calldata _accounts, uint256[] calldata _ids) external view returns (uint256);
+	function balanceOfBatch(address[] calldata _accounts, uint256[] calldata _ids) external view virtual returns (uint256);
 
 	// Give operator permission to transfer caller's tokens
-	function setApprovalForAll(address _operator, bool approved) external;
+	function setApprovalForAll(address _operator, bool _approved) external virtual;
 	// Denotes whether operator is approved to transfer accounts' tokens
-	function isApprovedForAll(address _account, address _operator) external;
+	function isApprovedForAll(address _account, address _operator) external virtual;
 	
 }

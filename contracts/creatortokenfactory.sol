@@ -43,6 +43,8 @@ contract CreatorTokenFactory is Ownable {
 	mapping (uint => uint) internal tokenValueTransferred;
 	// Mapping from tokenId to mapping from address to quantity of tokenId held
 	mapping(uint256 => mapping(address => uint256)) internal tokenHoldership;
+	// Mapping from account to operator approvals
+	mapping(address => mapping(address => bool)) internal approvals;
 
 
 	// Create a new CreatorToken
