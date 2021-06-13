@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "./creatortokenhelper.sol";
@@ -6,113 +7,64 @@ import "./erc1155.sol";
 
 contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
 
-	using SafeMath for uint256;
-	using SafeMath32 for uint32;
-	using SafeMath16 for uint16;
+	//using SafeMath for uint256;
+	//using SafeMath32 for uint32;
+	//using SafeMath16 for uint16;
 
-	// Event that fires when a new transaction occurs
-	event NewTransaction(uint amount, string transactionType, uint tokenId, string name, string symbol);
+	constructor() public ERC1155PresetMinterPauser() { }
 
-	// Allow user to buy a given CreatorToken from the platform
-	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
-		// Initialize proceeds required;
-		uint proceedsRequired = 0 ether;
-		// Initialize pre-transaction supply
-		uint startingSupply = creatorTokens[_tokenId].outstanding;
-		// Compute buy proceeds
-		for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
-			// If the current token number is < maxSupply
-			if (i < creatorTokens[_tokenId].maxSupply) {
-				// Then user is buying along sale price function
-				proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
-			} else { // Else (if the current token number is >= maxSupply)
-				// Then user is buying along buy price function
-				proceedsRequired += _buyFunction(i, m);
-			}
-		}
-		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
-		require(msg.value == proceedsRequired + proceedsRequired*platformFee/100);
-		// Update platform fee total
-		_platformFeeUpdater(proceedsRequired);
-		// Mint _amount tokens at the user's address
-		mint(msg.sender, _tokenId, _amount, "");
-		// Emit new transaction event
-		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
-		// Increase outstanding amount of token by _amount
-		creatorTokens[_tokenId].outstanding += _amount;
-		// Check if new outstanding amount of token is greater than maxSupply
-		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
-			// Update maxSupply
-			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
-			// Call _payout to transfer excess liquidity
-			_payCreator(_tokenId);
-		}
+	// Mint a token
+	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public {
+		// Call _createCreatorToken
 	}
 
-	// Create a linear buy price function wtih slope _m
-	function _buyFunction(uint _x, uint _m) private pure returns (uint256) {
-		// b(x) = m*x
-		return _m*_x;
+	// Mint a batch of tokens
+	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public {
+		// _createCreatorToken
 	}
 
-	// Allow user to sell a given CreatorToken back to the platform
-	function sellCreatorToken(uint _tokenId, uint _amount) external payable {
-		// Initialize proceeds required
-		uint proceedsRequired = 0 ether;
-		// Initialize pre-transaction supply
-		uint startingSupply = creatorTokens[_tokenId].outstanding;
-		// Iterate to compute sale proceeds required
-		for (uint i = startingSupply+1; i>startingSupply-_amount+1; i--) {
-			proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
-		}
-		// Burn _amount tokens from user's address
-		burn(msg.sender, _tokenId, _amount);
-		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
-		msg.sender.transfer(proceedsRequired - proceedsRequired*platformFee/100);
-		// Update platform fee total
-		_platformFeeUpdater(proceedsRequired);
-		// Emit new transaction event
-		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
-		// Decrease outstanding amount of token by _amount
-		creatorTokens[_tokenId].outstanding -= _amount;
+	// Burn a token
+	function burn(address _account, uint256 _id, uint256 _value) public {
+		// transfer tokens from that account to 0 adddress
 	}
 
-	// Create a piecewise-defined sale price function based on slope of b(x), maxSupply, and profitMargin
-	function _saleFunction(uint _tokenId, uint _x, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256) {
-		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
-		uint a = _maxSupply/2;
-		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
-		// Create the piecewise defined function
-		if (0<=_x<=a) {
-			return (b/a)*(_x-a)+b;
-		} else if (a<_x<=_maxSupply) {
-			return ((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b;
-		}
+	// Burn a batch of tokens
+	function burnBatch(address account, uint256[] memory _ids, uint256[] memory _amounts) public {
+		// transfer tokens fromthat account to 0 address
 	}
 
-	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
-	function _payCreator(uint _tokenId) private {
-		// Create a variable showing excess liquidity that has already been transferred out of this token's liquidity pool
-		uint alreadyTransferred = tokenValueTransferred[_tokenId];
-		// Initialize totalProfit
-		uint totalProfit = 0 ether;
-		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
-		for (uint i = 1; i<creatorTokens[_tokenId].maxSupply+1; i++) {
-			totalProfit += _buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
-		}
-		// Calculate creator's new profit created from new excess liquidity created
-		uint newProfit = totalProfit - alreadyTransferred;
-		// Transfer newProfit ether to creator
-		creatorTokens.creatorAddress[_tokenId].transfer(newProfit);
-		// Update amount of value transferred to creator
-		tokenValueTransferred[_tokenId] = totalProfit;
+	// Transfer a token
+	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public {
+		// transfer from _from to _to?
+	}
+	// Transfer a batchof tokens
+	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public {
+		// transfer from _from to _to?
 	}
 
-	// Update platform fees tracker
-	function _platformFeeUpdater(uint _proceedsRequired) private {
-		totalPlatformFees += _proceedsRequired*platformFee/100;
-		platformFeesOwed += _proceedsRequired*platformFee/100;
+	// Return balance of a given token at a given address
+	function balanceOf(address _account, uint256 _id) external view returns (uint256) {
+		// use a mapping showing balances
 	}
+	// Return balance of a batch of tokens
+	function balanceOfBatch(address[] calldata _accounts, uint256[] calldata _ids) external view returns (uint256) {
+		// use a mapping showing balances
+	}
+
+	// Give operator permission to transfer caller's tokens
+	function setApprovalForAll(address _operator, bool approved) external  {
+		// use a mapping showing approvals
+	}
+	// Denotes whether operator is approved to transfer accounts' tokens
+	function isApprovedForAll(address _account, address _operator) external {
+		// use a mapping showing approvals
+	}
+
+
+
+
+
+
 }
 
 
