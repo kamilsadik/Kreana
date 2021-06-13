@@ -5,10 +5,16 @@ contract ERC1155PresetMinterPauser {
 	// Using ERC1155 protocol in order to create/manage multiple tokens in a single smart contract
 	// Using ERC1155PresetMinterPauser preset: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol
 
-	// Transfer event
-	event TransferSingle(address _operator, address indexed _from, address indexed _to, uint256 indexed _id, uint256 value);
+	// Single transfer event
+	event TransferSingle(address operator, address indexed from, address indexed to, uint256 indexed id, uint256 value);
+	// Batch transfer event
+	event TransferBatch(address operator, address indexed from, address indexed to, uint256[] ids, uint256[] values);
 	// Approval event
-	event ApprovalForAll(address indexed _account, address indexed _operator, bool approved);
+	event ApprovalForAll(address indexed account, address indexed operator, bool approved);
+	// Pause event
+	event Paused(address account);
+	// Unpause event
+	event Unpaused(address account);
 
 	// Pause all token transfers
 	function pause() public;

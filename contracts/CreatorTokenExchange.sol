@@ -29,12 +29,10 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		require(msg.value == proceedsRequired + proceedsRequired*platformFee/100);
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
-		// Mint _amount tokens at the user's address
+		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Emit new transaction event
 		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
-		// Increase outstanding amount of token by _amount
-		creatorTokens[_tokenId].outstanding += _amount;
 		// Check if new outstanding amount of token is greater than maxSupply
 		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
 			// Update maxSupply
@@ -60,7 +58,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		for (uint i = startingSupply+1; i>startingSupply-_amount+1; i--) {
 			proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 		}
-		// Burn _amount tokens from user's address
+		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(msg.sender, _tokenId, _amount);
 		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
 		msg.sender.transfer(proceedsRequired - proceedsRequired*platformFee/100);
@@ -68,8 +66,6 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		_platformFeeUpdater(proceedsRequired);
 		// Emit new transaction event
 		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
-		// Decrease outstanding amount of token by _amount
-		creatorTokens[_tokenId].outstanding -= _amount;
 	}
 
 	// Create a piecewise-defined sale price function based on slope of b(x), maxSupply, and profitMargin

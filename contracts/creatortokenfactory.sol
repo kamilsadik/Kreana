@@ -46,9 +46,12 @@ contract CreatorTokenFactory is Ownable {
 	mapping (uint => address) public tokenToCreator;
 	// Mapping from tokenId to token value transferred (to creator/platform)
 	mapping (uint => uint) internal tokenValueTransferred;
+	// Mapping from tokenId to mapping from address to quantity of tokenId held
+	mapping(uint256 => mapping(address => uint256)) internal tokenHoldership;
+
 
 	// Create a new CreatorToken
-	function _createCreatorToken(address _creatorAddress, string memory _name, string memory _symbol, string memory _description) public {
+	function createCreatorToken(address _creatorAddress, string memory _name, string memory _symbol, string memory _description) public {
 		// Create token id, and add token to creatorTokens array
 		uint id = creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, false, 0, 0)) - 1;
 		// Map from token id to creator's address
@@ -58,4 +61,6 @@ contract CreatorTokenFactory is Ownable {
 		// Emit token creation event
 		emit NewCreatorToken(id, _name, _symbol);
 	}
+
+
 }

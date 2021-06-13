@@ -15,31 +15,63 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 
 	// Mint a token
 	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public {
-		// Call _createCreatorToken
+		// Update tokenHoldership mapping
+		tokenHoldership[_id][_to] += _amount;
+		// Increase token amount outstanding
+		creatorTokens[_id].outstanding += _amount;
+		// Do I also need to transfer the actual tokens to the user?
+		// Emit single transfer event
+		emit TransferSingle(msg.sender, address(0), _to, _id, _amount);
 	}
 
 	// Mint a batch of tokens
 	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public {
-		// _createCreatorToken
+		// Iterate through _ids
+		for (uint256 i=0; i<_ids.length; i++) {
+			// Update tokenHoldership mapping
+			tokenHoldership[_ids[i]][_to] += _amounts[i];
+			// Increase token amount outstanding
+			creatorTokens[_ids[i]].outstanding += _amounts[i];
+		}
+		// Do I also need to transfer the actual tokens to the user?
+		// Emit batch transfer event
+		emit TransferBatch(msg.sender, address(0), _to, _ids, _amounts);
 	}
 
 	// Burn a token
 	function burn(address _account, uint256 _id, uint256 _value) public {
-		// transfer tokens from that account to 0 adddress
+		// Update tokenHoldership mapping
+		tokenHoldership[_id][_to] -= _amount;
+		// Decrease token amount outstanding
+		creatorTokens[_id].outstanding -= _amount;
+		// Do I also need to transfer the actual tokens to from user to address(0)?
+		emit TransferSingle(msg.sender, _to, address(0), _id, _amount);
 	}
 
 	// Burn a batch of tokens
 	function burnBatch(address account, uint256[] memory _ids, uint256[] memory _amounts) public {
-		// transfer tokens fromthat account to 0 address
+		// Iterate through _ids
+		for (uint256 i=0; i<_ids.length; i++) {
+			// Update tokenHoldership mapping
+			tokenHoldership[_ids[i]][_to] -= _amounts[i];
+			// Decrease token amount outstanding
+			creatorTokens[_ids[i]].outstanding -= _amounts[i];
+		}
+		// Do I also need to transfer the actual tokens to from user to address(0)?
+		// Emit batch transfer event
+		emit TransferBatch(msg.sender, _to, address(0), _ids, _amounts);
 	}
 
 	// Transfer a token
 	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public {
-		// transfer from _from to _to?
+		// Reduce tokenHoldership holdings of _from
+		// Increase tokenHoldership holdings of _to
 	}
 	// Transfer a batchof tokens
 	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public {
-		// transfer from _from to _to?
+		// Iterate through 
+		// Reduce tokenHoldership holdings of _from
+		// Increase tokenHoldership holdings of _to
 	}
 
 	// Return balance of a given token at a given address
