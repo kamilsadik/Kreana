@@ -2,14 +2,14 @@
 pragma solidity ^0.8.0;
 
 import "./creatortokenhelper.sol";
-import "@openzeppelin/contracts/presets/ERC1155PresetMinterPauser.sol";
+import "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol";
 
 contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
 
 	//constructor() public ERC1155PresetMinterPauser() { }
 
 	// Mint a token
-	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) override public {
+	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
 		// Update tokenHoldership mapping
 		tokenHoldership[_id][_to] += _amount;
 		// Increase token amount outstanding
@@ -20,7 +20,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Mint a batch of tokens
-	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) override public {
+	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
@@ -34,7 +34,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Burn a token
-	function burn(address _account, uint256 _id, uint256 _amount) override public {
+	function burn(address _account, uint256 _id, uint256 _amount) public override {
 		// Update tokenHoldership mapping
 		tokenHoldership[_id][_account] -= _amount;
 		// Decrease token amount outstanding
@@ -45,7 +45,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Burn a batch of tokens
-	function burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) override public {
+	function burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) public override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
@@ -59,7 +59,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Transfer a token
-	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) override public {
+	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
 		// Reduce tokenHoldership holdings of _from
 		tokenHoldership[_id][_from] -= _amount;
 		// Increase tokenHoldership holdings of _to
@@ -70,7 +70,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Transfer a batch of tokens
-	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) override public {
+	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Reduce tokenHoldership holdings of _from
@@ -84,13 +84,13 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Return balance of a given token at a given address
-	function balanceOf(address _account, uint256 _id) override external view returns (uint256) {
+	function balanceOf(address _account, uint256 _id) public view override returns (uint256) {
 		// Look up _account's holdings of _id in tokenHoldership
 		return tokenHoldership[_id][_account];
 	}
 
 	// Return balance of a batch of tokens
-	function balanceOfBatch(address[] calldata _accounts, uint256[] calldata _ids) override external view returns (uint256[] memory) {
+	function balanceOfBatch(address[] calldata _accounts, uint256[] calldata _ids) public view override returns (uint256[] memory) {
 		// Initialize output array
 		uint256[] memory batchBalances = new uint256[](_accounts.length);
 		// Iterate through _accounts
@@ -103,7 +103,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Give operator permission to transfer caller's tokens
-	function setApprovalForAll(address _operator, bool _approved) override external  {
+	function setApprovalForAll(address _operator, bool _approved) public override  {
 		// Update approvals mapping
 		approvals[msg.sender][_operator] = _approved;
 		// Emit Approval event
@@ -111,7 +111,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Denotes whether operator is approved to transfer accounts' tokens
-	function isApprovedForAll(address _account, address _operator) override external {
+	function isApprovedForAll(address _account, address _operator) public override {
 		// Look up approvals mapping
 		return approvals[_account][_operator];
 	}

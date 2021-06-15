@@ -82,7 +82,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
-	function _payCreator(uint _tokenId) private {
+	function _payCreator(uint _tokenId) internal {
 		// Create a variable showing excess liquidity that has already been transferred out of this token's liquidity pool
 		uint alreadyTransferred = tokenValueTransferred[_tokenId];
 		// Initialize totalProfit
@@ -100,7 +100,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Update platform fees tracker
-	function _platformFeeUpdater(uint _proceedsRequired) private {
+	function _platformFeeUpdater(uint _proceedsRequired) internal pure {
 		totalPlatformFees += _proceedsRequired*platformFee/100;
 		platformFeesOwed += _proceedsRequired*platformFee/100;
 	}
