@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.
 
 contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
 
-	//constructor() public ERC1155PresetMinterPauser() { }
+	constructor() public ERC1155()) { }
 
 	// Mint a token
 	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
@@ -103,7 +103,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Give operator permission to transfer caller's tokens
-	function setApprovalForAll(address _operator, bool _approved) public override  {
+	function setApprovalForAll(address _operator, bool _approved) public view override {
 		// Update approvals mapping
 		approvals[msg.sender][_operator] = _approved;
 		// Emit Approval event
@@ -111,7 +111,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Denotes whether operator is approved to transfer accounts' tokens
-	function isApprovedForAll(address _account, address _operator) public override {
+	function isApprovedForAll(address _account, address _operator) public override returns (bool) {
 		// Look up approvals mapping
 		return approvals[_account][_operator];
 	}

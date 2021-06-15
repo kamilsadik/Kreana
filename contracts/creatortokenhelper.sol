@@ -29,8 +29,8 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 	}
 
 	// Allow owner to change profit_margin
-	function changeProfitMargin(address _newProfitMargin) external onlyOwner {
-		profitMargin = uint(_newProfitMargin);
+	function changeProfitMargin(uint _newProfitMargin) external onlyOwner {
+		profitMargin = _newProfitMargin;
 	}
 
 	// Allow owner to verify (or undo verification) of a CreatorToken

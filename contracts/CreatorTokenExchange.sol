@@ -49,7 +49,9 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Allow user to sell a given CreatorToken back to the platform
-	function sellCreatorToken(uint _tokenId, uint _amount) external payable {
+	function sellCreatorToken(uint _tokenId, uint _amount, address payable _seller) external payable {
+		// Require that user calling function is selling own tokens
+		require(_seller == msg.sender);
 		// Initialize proceeds required
 		uint proceedsRequired = 0 ether;
 		// Initialize pre-transaction supply
@@ -59,9 +61,9 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 		}
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
-		burn(msg.sender, _tokenId, _amount);
+		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
-		msg.sender.transfer(proceedsRequired - proceedsRequired*platformFee/100);
+		_seller.transfer(proceedsRequired - proceedsRequired*platformFee/100);
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Emit new transaction event
