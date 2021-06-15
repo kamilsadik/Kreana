@@ -2,12 +2,11 @@
 pragma solidity ^0.8.0;
 
 import "./creatortokenhelper.sol";
-//import "./erc1155.sol";
-import "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol";
+import "@openzeppelin/contracts/presets/ERC1155PresetMinterPauser.sol";
 
 contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
 
-	constructor() public ERC1155PresetMinterPauser() { }
+	//constructor() public ERC1155PresetMinterPauser() { }
 
 	// Mint a token
 	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) override public {
