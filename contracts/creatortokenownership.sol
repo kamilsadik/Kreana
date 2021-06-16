@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.
 
 contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
 
-	constructor() public ERC1155()) { }
+	constructor() public ERC1155() { }
 
 	// Mint a token
 	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
