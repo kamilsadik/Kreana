@@ -103,7 +103,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Give operator permission to transfer caller's tokens
-	function setApprovalForAll(address _operator, bool _approved) public view override {
+	function setApprovalForAll(address _operator, bool _approved) public override {
 		// Update approvals mapping
 		approvals[msg.sender][_operator] = _approved;
 		// Emit Approval event

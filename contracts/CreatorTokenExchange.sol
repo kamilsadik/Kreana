@@ -104,7 +104,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Update platform fees tracker
-	function _platformFeeUpdater(uint _proceedsRequired) internal pure {
+	function _platformFeeUpdater(uint _proceedsRequired) internal {
 		totalPlatformFees += _proceedsRequired*platformFee/100;
 		platformFeesOwed += _proceedsRequired*platformFee/100;
 	}
