@@ -39,7 +39,7 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 	}
 
 	// Allow token creator to change their address
-	function changeAddress(uint _tokenId, address _newCreatorAddress) external onlyCreatorOf(_tokenId) {
+	function changeAddress(uint _tokenId, address payable _newCreatorAddress) external onlyCreatorOf(_tokenId) {
 		creatorTokens[_tokenId].creatorAddress = _newCreatorAddress;
 	}
 

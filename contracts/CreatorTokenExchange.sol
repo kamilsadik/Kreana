@@ -5,6 +5,8 @@ import "./creatortokenownership.sol";
 
 contract CreatorTokenExchange is CreatorTokenOwnership {
 
+	constructor(string memory uri) CreatorTokenOwnership(uri) { }
+
 	// Event that fires when a new transaction occurs
 	event NewTransaction(uint amount, string transactionType, uint tokenId, string name, string symbol);
 
@@ -38,7 +40,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			// Update maxSupply
 			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
 			// Call _payout to transfer excess liquidity
-			_payCreator(_tokenId);
+			_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
 		}
 	}
 
@@ -84,7 +86,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
-	function _payCreator(uint _tokenId) internal {
+	function _payCreator(uint _tokenId, address payable _creatorAddress) internal {
 		// Create a variable showing excess liquidity that has already been transferred out of this token's liquidity pool
 		uint alreadyTransferred = tokenValueTransferred[_tokenId];
 		// Initialize totalProfit
@@ -96,7 +98,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Calculate creator's new profit created from new excess liquidity created
 		uint newProfit = totalProfit - alreadyTransferred;
 		// Transfer newProfit ether to creator
-		creatorTokens.creatorAddress[_tokenId].transfer(newProfit);
+		_creatorAddress.transfer(newProfit);
 		// Update amount of value transferred to creator
 		tokenValueTransferred[_tokenId] = totalProfit;
 	}

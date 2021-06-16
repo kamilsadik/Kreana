@@ -23,9 +23,8 @@ contract CreatorTokenFactory is Ownable {
 	uint m_denominator = 100000;
 	uint m = m_numerator/m_denominator;
 
-
 	struct CreatorToken {
-		address creatorAddress;
+		address payable creatorAddress;
 		string name;
 		string symbol;
 		string description;
@@ -46,11 +45,12 @@ contract CreatorTokenFactory is Ownable {
 	// Mapping from account to operator approvals
 	mapping(address => mapping(address => bool)) internal approvals;
 
-
 	// Create a new CreatorToken
-	function createCreatorToken(address _creatorAddress, string memory _name, string memory _symbol, string memory _description) public {
-		// Create token id, and add token to creatorTokens array
-		uint id = creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, false, 0, 0)) - 1;
+	function createCreatorToken(address payable _creatorAddress, string memory _name, string memory _symbol, string memory _description) public {
+		// Add token to creatorTokens array
+		creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, false, 0, 0));
+		// Create token id
+		uint id = creatorTokens.length - 1;
 		// Map from token id to creator's address
 		tokenToCreator[id] = _creatorAddress;
 		// Map from token id to amount of value transferred (0 at inception)
