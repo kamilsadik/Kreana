@@ -18,11 +18,11 @@
  *
  */
 
-//const HDWalletProvider = require('@truffle/hdwallet-provider');
-//const infuraKey = "fj4jll3k.....";
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+const infuraKey = "b21953f6533c42fcab0899f24c94e690";
 
-//const fs = require('fs');
-//const mnemonic = fs.readFileSync(".secret").toString().trim();
+const fs = require('fs');
+const mnemonic = fs.readFileSync(".testnet_private_key").toString().trim();
 
 module.exports = {
   /**
@@ -41,7 +41,17 @@ module.exports = {
     // You should run a client (like ganache-cli, geth or parity) in a separate terminal
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
-    //
+
+    // Configuration for rinkeby network
+    rinkeby: {
+      // Special function to setup the provider
+      provider: function () {
+        // Setting the provider with the Infura Rinkeby address and Token
+        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/b21953f6533c42fcab0899f24c94e690")
+      },
+      network_id: 4 // `network_id` for the Rinkeby network.
+    }
+
     // development: {
     //  host: "127.0.0.1",     // Localhost (default: none)
     //  port: 8545,            // Standard Ethereum port (default: none)
