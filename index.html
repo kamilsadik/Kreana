@@ -22,8 +22,8 @@
           if (web3.eth.accounts[0] !== userAccount) {
             userAccount = web3.eth.accounts[0];
             // Call a function to update the UI with the new account <= for CTE, want to update with that user's HOLDINGS (not zombies...)
-            getZombiesByOwner(userAccount)
-            .then(displayZombies);
+            //getZombiesByOwner(userAccount)
+            //.then(displayZombies);
           }
         }, 100);
 
