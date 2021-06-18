@@ -1,4 +1,4 @@
 var CreatorTokenExchange = artifacts.require("./CreatorTokenExchange.sol");
 module.exports = function(deployer) {
-  deployer.deploy(CreatorTokenExchange);
+  deployer.deploy(CreatorTokenExchange, 'CreatorTokenExchange');
 };
