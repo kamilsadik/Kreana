@@ -35,6 +35,28 @@
       }
 
       // Display User Holdings
+      function displayuserHoldings(userAccount, ids) {
+        $("#tokens").empty();
+        for (id of ids) {
+          // Look up creatorToken details from our contract. Returns a `creatorTokene` object
+          getUserHoldings(userAccount, id)
+          .then(function(creatorToken) {
+            // Using ES6's "template literals" to inject variables into the HTML.
+            // Append each one to our #zombies div
+            $("#tokens").append(`<div class="creatorToken">
+              <ul>
+                <li>Creator Address: ${creatorToken.creatorAddress}</li>
+                <li>Name: ${creatorToken.name}</li>
+                <li>Symbol: ${creatorToken.symbol}</li>
+                <li>Description: ${creatorToken.description}</li>
+                <li>Verified?: ${creatorToken.verified}</li>
+                <li>Outstanding: ${creatorToken.outstanding}</li>
+                <li>Max Supply: ${creatorToken.maxSupply}</li>
+              </ul>
+            </div>`);
+          });
+        }
+      }
 
       // Display all Creator Tokens
       function displayCreatorTokens(ids) {
@@ -96,6 +118,10 @@
 
       function getTokenHoldership(id) {
         return creatorTokenExchange.methods.tokenHoldership(id).call()
+      }
+
+      function getUserHoldings(address) {
+        return creatorTokenExchange.methods.userToHoldings(address).call()
       }
 
       // MetaMask Listener
