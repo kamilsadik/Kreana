@@ -17,16 +17,16 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute buy proceeds
-		//for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
+		for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
 			// If the current token number is < maxSupply
-		//	if (i < creatorTokens[_tokenId].maxSupply) {
+			if (i < creatorTokens[_tokenId].maxSupply) {
 				// Then user is buying along sale price function
-		//		proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
-		//	} else { // Else (if the current token number is >= maxSupply)
+				proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
+			} else { // Else (if the current token number is >= maxSupply)
 		//		// Then user is buying along buy price function
-		//		proceedsRequired += _buyFunction(i, m);
-		//	}
-		//}
+				proceedsRequired += _buyFunction(i, m);
+			}
+		}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
 		//require(msg.value >= proceedsRequired + proceedsRequired*platformFee/100);
 		// Update platform fee total
