@@ -13,9 +13,9 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
 		// Initialize proceeds required;
-		//uint proceedsRequired = 0 ether;
+		uint proceedsRequired = 0;
 		// Initialize pre-transaction supply
-		//uint startingSupply = creatorTokens[_tokenId].outstanding;
+		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute buy proceeds
 		//for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
 			// If the current token number is < maxSupply
