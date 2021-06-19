@@ -30,7 +30,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
 		//require(msg.value >= proceedsRequired + proceedsRequired*platformFee/100);
 		// Update platform fee total
-		//_platformFeeUpdater(proceedsRequired);
+		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Update tokenHoldership mapping
@@ -40,12 +40,12 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Emit new transaction event
 		emit NewTransaction(msg.sender, _amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// Check if new outstanding amount of token is greater than maxSupply
-		//if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
+		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
 			// Update maxSupply
-		//	creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
+			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
 			// Call _payout to transfer excess liquidity
-		//	_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
-		//}
+			_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
+		}
 	}
 
 	// Create a linear buy price function wtih slope _m
