@@ -8,7 +8,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	constructor(string memory uri) CreatorTokenOwnership(uri) { }
 
 	// Event that fires when a new transaction occurs
-	event NewTransaction(uint amount, string transactionType, uint tokenId, string name, string symbol);
+	event NewTransaction(address indexed account, uint amount, string transactionType, uint tokenId, string name, string symbol);
 
 	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
@@ -33,8 +33,12 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
+		// Update tokenHoldership mapping
+		tokenHoldership[_tokenId][msg.sender] = _amount;
+		// Update userToHoldings mapping
+		userToHoldings[msg.sender][_tokenId] = _amount;
 		// Emit new transaction event
-		emit NewTransaction(_amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
+		emit NewTransaction(msg.sender, _amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// Check if new outstanding amount of token is greater than maxSupply
 		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
 			// Update maxSupply
@@ -66,10 +70,14 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
 		_seller.transfer(proceedsRequired - proceedsRequired*platformFee/100);
+		// Update tokenHoldership mapping
+		tokenHoldership[_tokenId][msg.sender] = _amount;
+		// Update userToHoldings mapping
+		userToHoldings[msg.sender][_tokenId] = _amount;
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Emit new transaction event
-		emit NewTransaction(_amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
+		emit NewTransaction(msg.sender, _amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
 
 	// Create a piecewise-defined sale price function based on slope of b(x), maxSupply, and profitMargin
