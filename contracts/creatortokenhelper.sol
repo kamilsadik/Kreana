@@ -54,7 +54,7 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 	}
 
 	// Allow token creator to change the description of their token
-	function changeDescriptoin(uint _tokenId, string calldata _newDescription) external onlyCreatorOf(_tokenId) {
+	function changeDescription(uint _tokenId, string calldata _newDescription) external onlyCreatorOf(_tokenId) {
 		creatorTokens[_tokenId].description = _newDescription;
 	}
 }
