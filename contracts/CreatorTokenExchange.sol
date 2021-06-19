@@ -28,15 +28,15 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			}
 		}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
-		//require(msg.value >= proceedsRequired + proceedsRequired*platformFee/100);
+		require(msg.value >= proceedsRequired + proceedsRequired*platformFee/100);
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Update tokenHoldership mapping
-		tokenHoldership[_tokenId][msg.sender] = _amount;
+		tokenHoldership[_tokenId][msg.sender] += _amount;
 		// Update userToHoldings mapping
-		userToHoldings[msg.sender][_tokenId] = _amount;
+		userToHoldings[msg.sender][_tokenId] += _amount;
 		// Emit new transaction event
 		emit NewTransaction(msg.sender, _amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// Check if new outstanding amount of token is greater than maxSupply
@@ -44,7 +44,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			// Update maxSupply
 			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
 			// Call _payout to transfer excess liquidity
-			_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
+			//_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
 		}
 	}
 
@@ -98,7 +98,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Create a variable showing excess liquidity that has already been transferred out of this token's liquidity pool
 		uint alreadyTransferred = tokenValueTransferred[_tokenId];
 		// Initialize totalProfit
-		uint totalProfit = 0 ether;
+		uint totalProfit = 0;
 		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
 		for (uint i = 1; i<creatorTokens[_tokenId].maxSupply+1; i++) {
 			totalProfit += _buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
