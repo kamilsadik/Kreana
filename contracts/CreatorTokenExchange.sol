@@ -13,24 +13,24 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
 		// Initialize proceeds required;
-		uint proceedsRequired = 0 ether;
+		//uint proceedsRequired = 0 ether;
 		// Initialize pre-transaction supply
-		uint startingSupply = creatorTokens[_tokenId].outstanding;
+		//uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute buy proceeds
-		for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
+		//for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
 			// If the current token number is < maxSupply
-			if (i < creatorTokens[_tokenId].maxSupply) {
+		//	if (i < creatorTokens[_tokenId].maxSupply) {
 				// Then user is buying along sale price function
-				proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
-			} else { // Else (if the current token number is >= maxSupply)
-				// Then user is buying along buy price function
-				proceedsRequired += _buyFunction(i, m);
-			}
-		}
+		//		proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
+		//	} else { // Else (if the current token number is >= maxSupply)
+		//		// Then user is buying along buy price function
+		//		proceedsRequired += _buyFunction(i, m);
+		//	}
+		//}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
 		//require(msg.value >= proceedsRequired + proceedsRequired*platformFee/100);
 		// Update platform fee total
-		_platformFeeUpdater(proceedsRequired);
+		//_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Update tokenHoldership mapping
@@ -40,12 +40,12 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Emit new transaction event
 		emit NewTransaction(msg.sender, _amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// Check if new outstanding amount of token is greater than maxSupply
-		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
+		//if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
 			// Update maxSupply
-			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
+		//	creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
 			// Call _payout to transfer excess liquidity
-			_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
-		}
+		//	_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
+		//}
 	}
 
 	// Create a linear buy price function wtih slope _m
