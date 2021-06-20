@@ -23,7 +23,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 				// Then user is buying along sale price function
 				proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 			} else { // Else (if the current token number is >= maxSupply)
-		//		// Then user is buying along buy price function
+				// Then user is buying along buy price function
 				proceedsRequired += _buyFunction(i, m);
 			}
 		}
