@@ -101,7 +101,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint totalProfit = 0;
 		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
 		for (uint i = 1; i<creatorTokens[_tokenId].maxSupply+1; i++) {
-			totalProfit += _buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
+			totalProfit += (_buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin));
 		}
 		// Calculate creator's new profit created from new excess liquidity created
 		uint newProfit = 10000000000000000000;//totalProfit - alreadyTransferred;
