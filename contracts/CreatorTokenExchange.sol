@@ -86,11 +86,12 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint a = _maxSupply/2;
 		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
 		// Create the piecewise defined function
-		if (_x<=a) {
-			return (b/a)*(_x-a)+b;
-		} else if (_x<=_maxSupply) {
-			return ((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b;
-		}
+		//if (_x<=a) {
+		//	return (b/a)*(_x-a)+b;
+		//} else if (_x<=_maxSupply) {
+		//	return ((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b;
+		//}
+		return 0;
 	}
 
 	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
