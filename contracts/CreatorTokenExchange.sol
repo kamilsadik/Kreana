@@ -80,17 +80,18 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		emit NewTransaction(msg.sender, _amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
 
+	// Calculate area under sale price function
 	// Create a piecewise-defined sale price function based on slope of b(x), maxSupply, and profitMargin
 	function _saleFunction(uint _tokenId, uint _x, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256) {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
 		uint a = _maxSupply/2;
 		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
 		// Create the piecewise defined function
-		if (_x<=a) {
-			return ((b/a)*(a-_x)+b); //((b/a)*(_x-a)+b);
-		} else if (_x<=_maxSupply) {
-			return (((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b); //(((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b);
-		}
+		//if (_x<=a) {
+		//	return ((b/a)*(a-_x)+b); //((b/a)*(_x-a)+b);
+		//} else if (_x<=_maxSupply) {
+		//	return (((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b); //(((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b);
+		//}
 	}
 
 	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
