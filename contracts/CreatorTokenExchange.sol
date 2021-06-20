@@ -96,20 +96,19 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
 	function _payCreator(uint _tokenId, address payable _creatorAddress) internal {
 		// Create a variable showing excess liquidity that has already been transferred out of this token's liquidity pool
-		uint alreadyTransferred = tokenValueTransferred[_tokenId];
+		//uint alreadyTransferred = tokenValueTransferred[_tokenId];
 		// Initialize totalProfit
-		uint totalProfit = 0;
+		//uint totalProfit = 0;
 		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
 		//for (uint i = 1; i<creatorTokens[_tokenId].maxSupply+1; i++) {
 		//	totalProfit += _buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 		//}
 		// Calculate creator's new profit created from new excess liquidity created
-		uint newProfit = totalProfit - alreadyTransferred;
-		newProfit = 10000000000000000000;
+		uint newProfit = 10000000000000000000;//totalProfit - alreadyTransferred;
 		// Transfer newProfit ether to creator
 		_creatorAddress.transfer(newProfit);
 		// Update amount of value transferred to creator
-		tokenValueTransferred[_tokenId] = totalProfit;
+		//tokenValueTransferred[_tokenId] = totalProfit;
 	}
 
 	// Update platform fees tracker
