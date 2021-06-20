@@ -87,9 +87,9 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
 		// Create the piecewise defined function
 		if (_x<=a) {
-			return b/a; //((b/a)*(_x-a)+b);
+			return _x*b/a; //((b/a)*(_x-a)+b);
 		} else if (_x<=_maxSupply) {
-			return b/a; //(((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b);
+			return _x*b/a; //(((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b);
 		}
 	}
 
