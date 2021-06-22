@@ -13,11 +13,31 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
 		// Initialize proceeds required;
-		uint proceedsRequired = 0;
+		uint proceedsRequired = 0 ether;
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
+		// Compute post-transaction supply
+		uint endSupply = startingSupply + _amount;
 
 		// Compute buy proceeds
+		// Check if endSupply <= maxSupply
+		if (endSupply < creatorTokens[_tokenId].maxSupply) {
+			// Scenario in which entire transaction takes place below maxSupply
+			// Just call s(x)
+			proceedsRequired += ;
+			// Call b(x) from maxSupply to endSupply
+		} else if (startingSupply < creatorTokens[_tokenId].maxSupply){
+			// Scenario in which supply begins below maxSupply and ends above pre-transaction maxSupply
+			// Use s(x) from startingSupply to maxSupply
+			// Use b(x) from maxSupply to endSupply
+		} else {
+			// Scenario in which transaction begins at maxSupply
+			// Just call b(x)
+		}
+		// Find area under b(x) from maxSupply to endSupply (maxSupply or startingSupply + _amount)
+		proceedsRequired += ;
+
+
 		for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
 			// If the current token number is < maxSupply
 			if (i < creatorTokens[_tokenId].maxSupply) {
@@ -50,10 +70,15 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		}
 	}
 
-	// Create a linear buy price function wtih slope _m
-	function _buyFunction(uint _x, uint _m) private pure returns (uint256) {
+	// Calculate area under buy price function
+	function _buyFunction(uint _startingSupply, uint _amount, uint _m) private pure returns (uint256) {
 		// b(x) = m*x
-		return _m*_x;
+		uint endSupply = _startingSupply + _amount;
+		uint base1 = _m*_startingSupply;
+		uint base2 = _m*endSupply;
+		uint height = endSupply-_startingSupply;
+		uint area = (base1 + base2) * height / 2;
+		return area
 	}
 
 	// Allow user to sell a given CreatorToken back to the platform
@@ -64,12 +89,8 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint proceedsRequired = 0 ether;
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
-
-		// Iterate to compute sale proceeds required
-		for (uint i = startingSupply+1; i>startingSupply-_amount+1; i--) {
-			proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
-		}
-
+		// Compute sale proceeds required
+		proceedsRequired = _saleFunction(startingSupply, _amount, m, creatorTokens[_tokenId].maxSupply, profitMargin)
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
@@ -89,9 +110,8 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
 		uint a = _maxSupply/2;
 		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
-
 		uint endSupply = _startingSupply - _amount;
-
+		// Check where _startingSupply is relative to the breakpoint
 		if (_startingSupply < a) {
 			// Just need trapezoidal area of partial entirely left of the breakpoint
 			uint base1 = ((b/a)*(a-endSupply)+b);
@@ -99,7 +119,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			uint height = _startingSupply-endSupply;
 			uint area = (base1 + base2) * height / 2;
 		} else if (endSupply < a) {
-			// In this scenario, _startingSupply >= a, and endSupply < a
+			// Scenario in which _startingSupply >= a, and endSupply < a
 			// There, need trapezoidal area of components both to right and left of breakpoint
 			uint leftBase1 = ((b/a)*(a-endSupply)+b);
 			uint sharedBase = b;
@@ -110,14 +130,13 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			uint rightArea = (sharedBase + rightBase2) * rightHeight / 2;
 			uint area = leftArea + rightArea;
 		} else {
-			// In this scenario, entire sale occurs to right of breakpoint
+			// Scenario in which entire sale occurs to right of breakpoint
 			// Just need trapezoidal area of partial entirely right of the breakpoint
 			uint base1 = (((_m*_maxSupply-b)/(_maxSupply-a))*(endSupply-a)+b);
 			uint base2 = (((_m*_maxSupply-b)/(_maxSupply-a))*(_startingSupply-a)+b);
 			uint height = _startingSupply-endSupply;
 			uint area = (base1 + base2) * height / 2;
 		}
-
 		return area
 	}
 
