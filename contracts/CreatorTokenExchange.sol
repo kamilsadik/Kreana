@@ -16,6 +16,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint proceedsRequired = 0;
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
+
 		// Compute buy proceeds
 		for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
 			// If the current token number is < maxSupply
@@ -27,6 +28,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 				proceedsRequired += _buyFunction(i, m);
 			}
 		}
+
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
 		require(msg.value == 20000000000000000000);//(proceedsRequired + proceedsRequired*platformFee/100));
 		// Update platform fee total
@@ -62,10 +64,12 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint proceedsRequired = 0 ether;
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
+
 		// Iterate to compute sale proceeds required
 		for (uint i = startingSupply+1; i>startingSupply-_amount+1; i--) {
 			proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 		}
+
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
@@ -100,10 +104,12 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint alreadyTransferred = tokenValueTransferred[_tokenId];
 		// Initialize totalProfit
 		uint totalProfit = 0;
+
 		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
 		for (uint i = 1; i<creatorTokens[_tokenId].maxSupply+1; i++) {
 			totalProfit += (_buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin));
 		}
+		
 		// Calculate creator's new profit created from new excess liquidity created
 		uint newProfit = 10000000000000000000;//totalProfit - alreadyTransferred;
 		// Transfer newProfit ether to creator
