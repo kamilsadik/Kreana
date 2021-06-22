@@ -85,17 +85,40 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Calculate area under sale price function
-	// Create a piecewise-defined sale price function based on slope of b(x), maxSupply, and profitMargin
-	function _saleFunction(uint _tokenId, uint _x, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256) {
+	function _saleFunction(uint _startingSupply, uint _amount, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256) {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
 		uint a = _maxSupply/2;
 		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
-		// Create the piecewise defined function
-		//if (_x<=a) {
-		//	return ((b/a)*(a-_x)+b); //((b/a)*(_x-a)+b);
-		//} else if (_x<=_maxSupply) {
-		//	return (((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b); //(((_m*_maxSupply-b)/(_maxSupply-a))*(_x-a)+b);
-		//}
+
+		uint endSupply = _startingSupply - _amount;
+
+		if (_startingSupply < a) {
+			// Just need trapezoidal area of partial entirely left of the breakpoint
+			uint base1 = ((b/a)*(a-endSupply)+b);
+			uint base2 = ((b/a)*(a-_startingSupply)+b);
+			uint height = _startingSupply-endSupply;
+			uint area = (base1 + base2) * height / 2;
+		} else if (endSupply < a) {
+			// In this scenario, _startingSupply >= a, and endSupply < a
+			// There, need trapezoidal area of components both to right and left of breakpoint
+			uint leftBase1 = ((b/a)*(a-endSupply)+b);
+			uint sharedBase = b;
+			uint leftHeight = a-endSupply;
+			uint leftArea = (leftBase1 + sharedBase) * leftHeight / 2;
+			uint rightBase2 = (((_m*_maxSupply-b)/(_maxSupply-a))*(_startingSupply-a)+b);
+			uint rightHeight = _startingSupply-a;
+			uint rightArea = (sharedBase + rightBase2) * rightHeight / 2;
+			uint area = leftArea + rightArea;
+		} else {
+			// In this scenario, entire sale occurs to right of breakpoint
+			// Just need trapezoidal area of partial entirely right of the breakpoint
+			uint base1 = (((_m*_maxSupply-b)/(_maxSupply-a))*(endSupply-a)+b);
+			uint base2 = (((_m*_maxSupply-b)/(_maxSupply-a))*(_startingSupply-a)+b);
+			uint height = _startingSupply-endSupply;
+			uint area = (base1 + base2) * height / 2;
+		}
+
+		return area
 	}
 
 	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
@@ -109,7 +132,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		for (uint i = 1; i<creatorTokens[_tokenId].maxSupply+1; i++) {
 			totalProfit += (_buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin));
 		}
-		
+
 		// Calculate creator's new profit created from new excess liquidity created
 		uint newProfit = 10000000000000000000;//totalProfit - alreadyTransferred;
 		// Transfer newProfit ether to creator
