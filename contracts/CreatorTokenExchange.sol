@@ -24,31 +24,18 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		if (endSupply < creatorTokens[_tokenId].maxSupply) {
 			// Scenario in which entire transaction takes place below maxSupply
 			// Just call s(x)
-			proceedsRequired += ;
-			// Call b(x) from maxSupply to endSupply
+			proceedsRequired = _saleFunction(startingSupply, _amount, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 		} else if (startingSupply < creatorTokens[_tokenId].maxSupply){
 			// Scenario in which supply begins below maxSupply and ends above pre-transaction maxSupply
 			// Use s(x) from startingSupply to maxSupply
+			proceedsRequired = _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply - startingSupply, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 			// Use b(x) from maxSupply to endSupply
+			proceedsRequired += _buyFunction(creatorTokens[_tokenId].maxSupply, _amount - (creatorTokens[_tokenId].maxSupply - startingSupply), m);
 		} else {
 			// Scenario in which transaction begins at maxSupply
 			// Just call b(x)
+			proceedsRequired = _buyFunction(startingSupply, _amount, m);
 		}
-		// Find area under b(x) from maxSupply to endSupply (maxSupply or startingSupply + _amount)
-		proceedsRequired += ;
-
-
-		for (uint i = startingSupply+1; i<startingSupply+_amount+1; i++) {
-			// If the current token number is < maxSupply
-			if (i < creatorTokens[_tokenId].maxSupply) {
-				// Then user is buying along sale price function
-				proceedsRequired += _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin);
-			} else { // Else (if the current token number is >= maxSupply)
-				// Then user is buying along buy price function
-				proceedsRequired += _buyFunction(i, m);
-			}
-		}
-
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
 		require(msg.value == 20000000000000000000);//(proceedsRequired + proceedsRequired*platformFee/100));
 		// Update platform fee total
@@ -146,12 +133,8 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint alreadyTransferred = tokenValueTransferred[_tokenId];
 		// Initialize totalProfit
 		uint totalProfit = 0;
-
-		// Calculate totalProfit (integral from 0 to maxSupply of b(x) - s(x) dx)
-		for (uint i = 1; i<creatorTokens[_tokenId].maxSupply+1; i++) {
-			totalProfit += (_buyFunction(i, m) - _saleFunction(_tokenId, i, m, creatorTokens[_tokenId].maxSupply, profitMargin));
-		}
-
+		// Calculate totalProfit (area between b(x) and s(x) from 0 to maxSupply)
+		totalProfit = _buyFunction(0, creatorTokens[_tokenId].maxSupply, m) - _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Calculate creator's new profit created from new excess liquidity created
 		uint newProfit = 10000000000000000000;//totalProfit - alreadyTransferred;
 		// Transfer newProfit ether to creator
