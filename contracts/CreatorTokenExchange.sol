@@ -95,6 +95,9 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	// Calculate area under sale price function
 	function _saleFunction(uint _startingSupply, uint _amount, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256) {
 		// Calculate breakpoint and endSupply
+		uint a;
+		uint b;
+		uint endSupply;
 		(a, b, endSupply) = _breakpoint(_startingSupply, _amount, _m, _maxSupply, _profitMargin);
 		// Initialize area under curve
 		uint area = 0;
@@ -114,7 +117,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Calculate breakpoint and other key inputs into _saleFunction
-	function _breakpoint(uint _startingSupply, uint _amount, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256[]) {
+	function _breakpoint(uint _startingSupply, uint _amount, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256[] memory) {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
 		uint a = _maxSupply/2;
 		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
@@ -136,7 +139,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint sharedBase = _b;
 		uint leftHeight = _a-_endSupply;
 		uint leftArea = (leftBase1 + sharedBase) * leftHeight / 2;
-		uint rightBase2 = (_m*_maxSupply-_b)/(_maxSupply-_a))*(_startingSupply-_a)+_b;
+		uint rightBase2 = (_m*_maxSupply-_b)/(_maxSupply-_a)*(_startingSupply-_a)+_b;
 		uint rightHeight = _startingSupply-_a;
 		uint rightArea = (sharedBase + rightBase2) * rightHeight / 2;
 		return leftArea + rightArea;
