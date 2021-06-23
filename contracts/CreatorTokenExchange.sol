@@ -95,29 +95,27 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	// Calculate area under sale price function
 	function _saleFunction(uint _startingSupply, uint _amount, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256) {
 		// Calculate breakpoint and endSupply
-		uint a;
-		uint b;
-		uint endSupply;
-		(a, b, endSupply) = _breakpoint(_startingSupply, _amount, _m, _maxSupply, _profitMargin);
+		(uint a, uint b, uint endSupply) = _breakpoint(_startingSupply, _amount, _m, _maxSupply, _profitMargin);
 		// Initialize area under curve
 		uint area = 0;
 		// Check where _startingSupply is relative to the breakpoint
 		if (_startingSupply < a) {
 			// Just need trapezoidal area of partial entirely left of the breakpoint
-			_leftArea(a, b, _startingSupply, endSupply);
+			area = _leftArea(a, b, _startingSupply, endSupply);
 		} else if (endSupply < a) {
 			// Scenario in which _startingSupply >= a, and endSupply < a
 			// There, need trapezoidal area of components both to right and left of breakpoint
-			_bothArea(a, b, _startingSupply, endSupply, _m, _maxSupply);
+			area = _bothArea(a, b, _startingSupply, endSupply, _m, _maxSupply);
 		} else {
 			// Scenario in which entire sale occurs to right of breakpoint
 			// Just need trapezoidal area of partial entirely right of the breakpoint
-			_rightArea(a, b, _startingSupply, endSupply, _m, _maxSupply);
+			area = _rightArea(a, b, _startingSupply, endSupply, _m, _maxSupply);
 		}
+		return area;
 	}
 
 	// Calculate breakpoint and other key inputs into _saleFunction
-	function _breakpoint(uint _startingSupply, uint _amount, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256[] memory) {
+	function _breakpoint(uint _startingSupply, uint _amount, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint, uint, uint) {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
 		uint a = _maxSupply/2;
 		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
