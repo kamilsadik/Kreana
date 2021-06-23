@@ -113,7 +113,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			uint sharedBase = b;
 			uint leftHeight = a-endSupply;
 			uint leftArea = (leftBase1 + sharedBase) * leftHeight / 2;
-			uint rightBase2 = (((_m*_maxSupply-b)/(_maxSupply-a))*(_startingSupply-a)+b);
+			uint rightBase2 = (_m*_maxSupply-b)/(_maxSupply-a))*(_startingSupply-a)+b;
 			uint rightHeight = _startingSupply-a;
 			uint rightArea = (sharedBase + rightBase2) * rightHeight / 2;
 			area = leftArea + rightArea;
@@ -127,6 +127,18 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		}
 		return area;
 	}
+
+	// Calculate breakpoint and other key inputs into _saleFunction
+
+
+	// _saleFunction scenario in which entire transaction occurs left of breakpoint
+
+
+	// _saleFunction scenario in which transaction crosses breakpoint
+
+
+	// _saleFunction scneario in which entire transaction occurs right of breakpoint
+
 
 	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
 	function _payCreator(uint _tokenId, address payable _creatorAddress) internal {
