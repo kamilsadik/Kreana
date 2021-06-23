@@ -94,51 +94,61 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 
 	// Calculate area under sale price function
 	function _saleFunction(uint _startingSupply, uint _amount, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256) {
-		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
-		uint a = _maxSupply/2;
-		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
-		uint endSupply = _startingSupply - _amount;
+		// Calculate breakpoint and endSupply
+		(a, b, endSupply) = _breakpoint(_startingSupply, _amount, _m, _maxSupply, _profitMargin);
+		// Initialize area under curve
 		uint area = 0;
 		// Check where _startingSupply is relative to the breakpoint
 		if (_startingSupply < a) {
 			// Just need trapezoidal area of partial entirely left of the breakpoint
-			uint base1 = ((b/a)*(a-endSupply)+b);
-			uint base2 = ((b/a)*(a-_startingSupply)+b);
-			uint height = _startingSupply-endSupply;
-			area = (base1 + base2) * height / 2;
+			_leftArea(a, b, _startingSupply, endSupply);
 		} else if (endSupply < a) {
 			// Scenario in which _startingSupply >= a, and endSupply < a
 			// There, need trapezoidal area of components both to right and left of breakpoint
-			uint leftBase1 = ((b/a)*(a-endSupply)+b);
-			uint sharedBase = b;
-			uint leftHeight = a-endSupply;
-			uint leftArea = (leftBase1 + sharedBase) * leftHeight / 2;
-			uint rightBase2 = (_m*_maxSupply-b)/(_maxSupply-a))*(_startingSupply-a)+b;
-			uint rightHeight = _startingSupply-a;
-			uint rightArea = (sharedBase + rightBase2) * rightHeight / 2;
-			area = leftArea + rightArea;
+			_bothArea(a, b, _startingSupply, endSupply, _m, _maxSupply);
 		} else {
 			// Scenario in which entire sale occurs to right of breakpoint
 			// Just need trapezoidal area of partial entirely right of the breakpoint
-			uint base1 = (((_m*_maxSupply-b)/(_maxSupply-a))*(endSupply-a)+b);
-			uint base2 = (((_m*_maxSupply-b)/(_maxSupply-a))*(_startingSupply-a)+b);
-			uint height = _startingSupply-endSupply;
-			area = (base1 + base2) * height / 2;
+			_rightArea(a, b, _startingSupply, endSupply, _m, _maxSupply);
 		}
-		return area;
 	}
 
 	// Calculate breakpoint and other key inputs into _saleFunction
-
+	function _breakpoint(uint _startingSupply, uint _amount, uint _m, uint _maxSupply, uint _profitMargin) private pure returns (uint256[]) {
+		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
+		uint a = _maxSupply/2;
+		uint b = ((2-2*_profitMargin/100)*_maxSupply*_m - _maxSupply*_m)/2;
+		uint endSupply = _startingSupply - _amount;
+		return (a, b, endSupply);
+	}
 
 	// _saleFunction scenario in which entire transaction occurs left of breakpoint
-
+	function _leftArea(uint _a, uint _b, uint _startingSupply, uint _endSupply) private pure returns (uint256) {
+			uint base1 = ((_b/_a)*(_a-_endSupply)+_b);
+			uint base2 = ((_b/_a)*(_a-_startingSupply)+_b);
+			uint height = _startingSupply-_endSupply;
+			return (base1 + base2) * height / 2;
+	}
 
 	// _saleFunction scenario in which transaction crosses breakpoint
-
+	function _bothArea(uint _a, uint _b, uint _startingSupply, uint _endSupply, uint _m, uint _maxSupply) private pure returns (uint256) {
+		uint leftBase1 = ((_b/_a)*(_a-_endSupply)+_b);
+		uint sharedBase = _b;
+		uint leftHeight = _a-_endSupply;
+		uint leftArea = (leftBase1 + sharedBase) * leftHeight / 2;
+		uint rightBase2 = (_m*_maxSupply-_b)/(_maxSupply-_a))*(_startingSupply-_a)+_b;
+		uint rightHeight = _startingSupply-_a;
+		uint rightArea = (sharedBase + rightBase2) * rightHeight / 2;
+		return leftArea + rightArea;
+	}
 
 	// _saleFunction scneario in which entire transaction occurs right of breakpoint
-
+	function _rightArea(uint _a, uint _b, uint _startingSupply, uint _endSupply, uint _m, uint _maxSupply) private pure returns (uint256) {
+		uint base1 = (((_m*_maxSupply-_b)/(_maxSupply-_a))*(_endSupply-_a)+_b);
+		uint base2 = (((_m*_maxSupply-_b)/(_maxSupply-_a))*(_startingSupply-_a)+_b);
+		uint height = _startingSupply-_endSupply;
+		return (base1 + base2) * height / 2;
+	}
 
 	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
 	function _payCreator(uint _tokenId, address payable _creatorAddress) internal {
