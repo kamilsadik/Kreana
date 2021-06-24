@@ -13,12 +13,11 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
 		// Initialize proceeds required;
-		uint proceedsRequired = 0 ether;
+		uint proceedsRequired = 0;
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute post-transaction supply
 		uint endSupply = startingSupply + _amount;
-
 		// Compute buy proceeds
 		// Check if endSupply <= maxSupply
 		if (endSupply < creatorTokens[_tokenId].maxSupply) {
@@ -37,7 +36,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			proceedsRequired = _buyFunction(startingSupply, _amount, m);
 		}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
-		require(msg.value == 20000000000000000000);//(proceedsRequired + proceedsRequired*platformFee/100));
+		require(msg.value == 20000000000000000000); //(proceedsRequired + proceedsRequired*platformFee/100));
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
@@ -73,7 +72,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Require that user calling function is selling own tokens
 		require(_seller == msg.sender);
 		// Initialize proceeds required
-		uint proceedsRequired = 0 ether;
+		uint proceedsRequired = 0;
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute sale proceeds required
@@ -160,7 +159,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Calculate totalProfit (area between b(x) and s(x) from 0 to maxSupply)
 		totalProfit = _buyFunction(0, creatorTokens[_tokenId].maxSupply, m) - _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply, m, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Calculate creator's new profit created from new excess liquidity created
-		uint newProfit = 10000000000000000000;//totalProfit - alreadyTransferred;
+		uint newProfit = totalProfit - alreadyTransferred; //10000000000000000000
 		// Transfer newProfit ether to creator
 		_creatorAddress.transfer(newProfit);
 		// Update amount of value transferred to creator

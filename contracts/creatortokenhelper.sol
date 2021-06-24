@@ -20,7 +20,7 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 	function payoutPlatformFees(address payable _owner) external onlyOwner {
 		_owner.transfer(platformFeesOwed);
 		// Reset platformFeesOwed to zero after payout
-		platformFeesOwed = 0 ether;
+		platformFeesOwed = 0;
 	}
 
 	// Allow owner to change platformFee
