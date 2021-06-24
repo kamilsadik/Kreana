@@ -50162,12 +50162,12 @@
         }
       },
       "links": {},
-      "address": "0x17df2F1984506d48cF42720b9B5241Aa16e72EC6",
-      "transactionHash": "0xcf1bb63d76dddd93962b99566efbb3d8e779b9f43a4b4a5c64ad3d73f377650d"
+      "address": "0x23f2c8a2fC6b591c318cD74526f0F284b13E2607",
+      "transactionHash": "0x5582b405f247408750094a2572503ba7852e09d2f5f2b57bd68f732d07a455ad"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-06-23T01:06:03.280Z",
+  "updatedAt": "2021-06-24T00:12:14.485Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
