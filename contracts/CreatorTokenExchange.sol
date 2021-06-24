@@ -23,17 +23,17 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		if (endSupply < creatorTokens[_tokenId].maxSupply) {
 			// Scenario in which entire transaction takes place below maxSupply
 			// Just call s(x)
-			proceedsRequired = _saleFunction(startingSupply, _amount, m, creatorTokens[_tokenId].maxSupply, profitMargin);
+			proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		} else if (startingSupply < creatorTokens[_tokenId].maxSupply){
 			// Scenario in which supply begins below maxSupply and ends above pre-transaction maxSupply
 			// Use s(x) from startingSupply to maxSupply
-			proceedsRequired = _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply - startingSupply, m, creatorTokens[_tokenId].maxSupply, profitMargin);
+			proceedsRequired = _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply - startingSupply, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 			// Use b(x) from maxSupply to endSupply
-			proceedsRequired += _buyFunction(creatorTokens[_tokenId].maxSupply, _amount - (creatorTokens[_tokenId].maxSupply - startingSupply), m);
+			proceedsRequired += _buyFunction(creatorTokens[_tokenId].maxSupply, _amount - (creatorTokens[_tokenId].maxSupply - startingSupply), mNumerator, mDenominator);
 		} else {
 			// Scenario in which transaction begins at maxSupply
 			// Just call b(x)
-			proceedsRequired = _buyFunction(startingSupply, _amount, m);
+			proceedsRequired = _buyFunction(startingSupply, _amount, mNumerator, mDenominator);
 		}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
 		require(msg.value == 20000000000000000000); //(proceedsRequired + proceedsRequired*platformFee/100));
@@ -76,7 +76,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute sale proceeds required
-		proceedsRequired = _saleFunction(startingSupply, _amount, m, creatorTokens[_tokenId].maxSupply, profitMargin);
+		proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
