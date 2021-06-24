@@ -50210,12 +50210,12 @@
         }
       },
       "links": {},
-      "address": "0x055B86110Ef5377393a70B9620c086f933A17eC5",
-      "transactionHash": "0x649442b7857cc542f00d932000efca68d4f08cc4ed272b159475abeecc8f3830"
+      "address": "0xA3aeF2ab91c5AD50E2c4300931b2DEA1998E3e94",
+      "transactionHash": "0x155ad998830c6fed40f008fcb3fcab4aab65e31709961cd91efc225906450bfe"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-06-24T00:25:30.140Z",
+  "updatedAt": "2021-06-24T00:37:22.227Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

@@ -82,9 +82,9 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
 		_seller.transfer(proceedsRequired - proceedsRequired*platformFee/100);
 		// Update tokenHoldership mapping
-		tokenHoldership[_tokenId][msg.sender] = _amount;
+		tokenHoldership[_tokenId][msg.sender] -= _amount;
 		// Update userToHoldings mapping
-		userToHoldings[msg.sender][_tokenId] = _amount;
+		userToHoldings[msg.sender][_tokenId] -= _amount;
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Emit new transaction event
