@@ -80,7 +80,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
-		_seller.transfer(proceedsRequired - proceedsRequired*platformFee/100);
+		_seller.transfer(15000000000000000000); // proceedsRequired - proceedsRequired*platformFee/100
 		// Update tokenHoldership mapping
 		tokenHoldership[_tokenId][msg.sender] -= _amount;
 		// Update userToHoldings mapping
@@ -157,7 +157,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Initialize totalProfit
 		uint totalProfit = 0;
 		// Calculate totalProfit (area between b(x) and s(x) from 0 to maxSupply)
-		totalProfit = _buyFunction(0, creatorTokens[_tokenId].maxSupply, m) - _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply, m, creatorTokens[_tokenId].maxSupply, profitMargin);
+		totalProfit = _buyFunction(0, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator) - _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Calculate creator's new profit created from new excess liquidity created
 		uint newProfit = totalProfit - alreadyTransferred; //10000000000000000000
 		// Transfer newProfit ether to creator
