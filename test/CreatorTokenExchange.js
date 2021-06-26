@@ -1,11 +1,12 @@
 const CreatorTokenExchange = artifacts.require("CreatorTokenExchange");
+const utils = require("./helpers/utils");
 
 contract("CreatorTokenExchange", (accounts) => {
 
-    let [owner, creator, user] = accounts;
+    let [owner, creator, newCreator, user] = accounts;
     let contractInstance;
     beforeEach(async () => {
-        contractInstance = await CreatorTokenExchange.new("CreatorTokenExchange", {from: owner});
+        contractInstance = await CreatorTokenExchange.new("CreatorTokenExchange");
     });
 
     it("should be able to create a new Creator Token", async () => {
@@ -20,6 +21,91 @@ contract("CreatorTokenExchange", (accounts) => {
         assert.equal(result.logs[0].args.maxSupply, 0);
     })
 
+    context("as owner", async () => {
+        it("should allow withdrawal", async () => {
+            const result = await contractInstance.withdraw(owner, {from: owner});
+        	assert.equal(result.receipt.status, true);
+        })
+        it("should allow payout of platform fees", async () => {
+        	const result = await contractInstance.payoutPlatformFees(owner, {from: owner});
+        	assert.equal(result.receipt.status, true);
+         })
+        it("should allow change to platform fee", async () => {
+        	const result = await contractInstance.changePlatformFee(2, {from: owner});
+        	assert.equal(result.receipt.status, true);
+         })
+        it("should allow change to profit margin", async () => {
+        	const result = await contractInstance.changeProfitMargin(22, {from: owner});
+        	assert.equal(result.receipt.status, true);
+         })
+        it("should allow change to token verification status", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	const result = await contractInstance.changeVerification(0, true, {from: owner});
+        	assert.equal(result.receipt.status, true);
+         })
+    })
+
+    context("as non-owner", async () => {
+        it("should not allow withdrawal", async () => {
+            await utils.shouldThrow(contractInstance.withdraw(user, {from: user}));
+        })
+        it("should not allow payout of platform fees", async () => {
+        	await utils.shouldThrow(contractInstance.payoutPlatformFees(user, {from: user}));
+         })
+        it("should not allow change to platform fee", async () => {
+        	await utils.shouldThrow(contractInstance.changePlatformFee(2, {from: user}));
+         })
+        it("should not allow change to profit margin", async () => {
+        	await utils.shouldThrow(contractInstance.changeProfitMargin(22, {from: user}));
+         })
+        it("should not allow change to token verification status", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	await utils.shouldThrow(contractInstance.changeVerification(0, true, {from: user}));
+         })
+    })
+
+    context("as creator", async () => {
+        it("should allow change of address", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	const result = await contractInstance.changeAddress(0, newCreator, {from: creator});
+        	assert.equal(result.receipt.status, true);
+        })
+        it("should allow change of name", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	const result = await contractInstance.changeName(0, "Protest The Hero New Name", {from: creator});
+        	assert.equal(result.receipt.status, true);
+         })
+        it("should allow change of symbol", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	const result = await contractInstance.changeSymbol(0, "PTH5NEW", {from: creator});
+        	assert.equal(result.receipt.status, true);
+         })
+        it("should allow change of description", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	const result = await contractInstance.changeDescription(0, "This token will help us fund our next tour.", {from: creator});
+        	assert.equal(result.receipt.status, true);
+         })
+    })
+
+    context("as non-creator", async () => {
+        it("should not allow change of address", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	await utils.shouldThrow(contractInstance.changeAddress(0, newCreator, {from: newCreator}));
+        })
+        it("should not allow change of name", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	await utils.shouldThrow(contractInstance.changeName(0, "Protest The Hero New Name", {from: newCreator}));
+         })
+        it("should not allow change of symbol", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	await utils.shouldThrow(contractInstance.changeSymbol(0, "PTH5NEW", {from: newCreator}));
+         })
+        it("should not allow change of description", async () => {
+        	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        	await utils.shouldThrow(contractInstance.changeDescription(0, "This token will help us fund our next tour.", {from: newCreator}));
+         })
+    })
+
     xit("should be able to buy Creator Token", async () => {
         const result = await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 20000000000000000000});
         assert.equal(result.receipt.status, true);
@@ -30,8 +116,10 @@ contract("CreatorTokenExchange", (accounts) => {
         //assert.equal(result.logs[0].args.name, "Protest The Hero");
         //assert.equal(result.logs[0].args.symbol, "PTH5");
     })
+
 /*
-    it("should not allow two zombies", async () => {
+
+    it("should not allow non-owner to execute onlyOwner functions", async () => {
         await contractInstance.createRandomZombie(zombieNames[0], {from: alice});
         await utils.shouldThrow(contractInstance.createRandomZombie(zombieNames[1], {from: alice}));
     })
@@ -47,26 +135,6 @@ contract("CreatorTokenExchange", (accounts) => {
         })
     })
 
-    context("with the two-step transfer scenario", async () => {
-        it("should approve and then transfer a zombie when the approved address calls transferFrom", async () => {
-            const result = await contractInstance.createRandomZombie(zombieNames[0], {from: alice});
-            const zombieId = result.logs[0].args.zombieId.toNumber();
-            await contractInstance.approve(bob, zombieId, {from: alice});
-            await contractInstance.transferFrom(alice, bob, zombieId, {from: bob});
-            const newOwner = await contractInstance.ownerOf(zombieId);
-            //TODO: replace with expect
-            assert.equal(newOwner,bob);
-        })
-        it("should approve and then transfer a zombie when the owner calls transferFrom", async () => {
-            const result = await contractInstance.createRandomZombie(zombieNames[0], {from: alice});
-            const zombieId = result.logs[0].args.zombieId.toNumber();
-            await contractInstance.approve(bob, zombieId, {from: alice});
-            await contractInstance.transferFrom(alice, bob, zombieId, {from: alice});
-            const newOwner = await contractInstance.ownerOf(zombieId);
-            //TODO: replace with expect
-            assert.equal(newOwner,bob);
-         })
-    })
 
     it("zombies should be able to attack another zombie", async () => {
         let result;
