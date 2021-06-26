@@ -21,6 +21,18 @@ contract("CreatorTokenExchange", (accounts) => {
         assert.equal(result.logs[0].args.maxSupply, 0);
     })
 
+    it("should be able to buy Creator Token", async () => {
+    	contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        const result = await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 20000000000000000000});
+        assert.equal(result.receipt.status, true);
+        //assert.equal(result.logs[0].args.account, user);
+        //assert.equal(result.logs[0].args.amount, 1000000);
+        //assert.equal(result.logs[0].args.transactionType, "buy");
+        //assert.equal(result.logs[0].args.tokenId, 0);
+        //assert.equal(result.logs[0].args.name, "Protest The Hero");
+        //assert.equal(result.logs[0].args.symbol, "PTH5");
+    })
+
     context("as owner", async () => {
         it("should allow withdrawal", async () => {
             const result = await contractInstance.withdraw(owner, {from: owner});
@@ -104,17 +116,6 @@ contract("CreatorTokenExchange", (accounts) => {
         	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
         	await utils.shouldThrow(contractInstance.changeDescription(0, "This token will help us fund our next tour.", {from: newCreator}));
          })
-    })
-
-    xit("should be able to buy Creator Token", async () => {
-        const result = await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 20000000000000000000});
-        assert.equal(result.receipt.status, true);
-        //assert.equal(result.logs[0].args.account, user);
-        //assert.equal(result.logs[0].args.amount, 1000000);
-        //assert.equal(result.logs[0].args.transactionType, "buy");
-        //assert.equal(result.logs[0].args.tokenId, 0);
-        //assert.equal(result.logs[0].args.name, "Protest The Hero");
-        //assert.equal(result.logs[0].args.symbol, "PTH5");
     })
 
 /*
