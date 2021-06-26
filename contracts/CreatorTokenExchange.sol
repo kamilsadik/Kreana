@@ -35,7 +35,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			// Just call b(x)
 			proceedsRequired = _buyFunction(startingSupply, _amount, mNumerator, mDenominator);
 		}
-		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
+		// Make sure that user sends proceedsRequired wei to cover the cost of _amount tokens, plus the platform fee
 		require(msg.value ==  20000000000000000000); // (proceedsRequired + proceedsRequired*platformFee/100)); //
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
@@ -159,8 +159,8 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Calculate totalProfit (area between b(x) and s(x) from 0 to maxSupply)
 		totalProfit = _buyFunction(0, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator) - _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Calculate creator's new profit created from new excess liquidity created
-		uint newProfit = totalProfit - alreadyTransferred; //10000000000000000000
-		// Transfer newProfit ether to creator
+		uint newProfit = totalProfit - alreadyTransferred; // 10000000000000000000; //
+		// Transfer newProfit wei to creator
 		_creatorAddress.transfer(newProfit);
 		// Update amount of value transferred to creator
 		tokenValueTransferred[_tokenId] = totalProfit;
