@@ -36,7 +36,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			proceedsRequired = _buyFunction(startingSupply, _amount, mNumerator, mDenominator);
 		}
 		// Make sure that user sends proceedsRequired ether to cover the cost of _amount tokens, plus the platform fee
-		require(msg.value == (proceedsRequired + proceedsRequired*platformFee/100)); // 20000000000000000000); //
+		require(msg.value ==  20000000000000000000); // (proceedsRequired + proceedsRequired*platformFee/100)); //
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
@@ -79,7 +79,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(_seller, _tokenId, _amount);
-		// Send user proceedsRequired ether (less the platform fee) in exchange for the burned tokens
+		// Send user proceedsRequired wei (less the platform fee) in exchange for the burned tokens
 		_seller.transfer(15000000000000000000); // proceedsRequired - proceedsRequired*platformFee/100
 		// Update tokenHoldership mapping
 		tokenHoldership[_tokenId][msg.sender] -= _amount;
