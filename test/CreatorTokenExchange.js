@@ -22,15 +22,34 @@ contract("CreatorTokenExchange", (accounts) => {
     })
 
     it("should be able to buy Creator Token", async () => {
-    	contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
         const result = await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 20000000000000000000});
         assert.equal(result.receipt.status, true);
-        //assert.equal(result.logs[0].args.account, user);
-        //assert.equal(result.logs[0].args.amount, 1000000);
-        //assert.equal(result.logs[0].args.transactionType, "buy");
-        //assert.equal(result.logs[0].args.tokenId, 0);
-        //assert.equal(result.logs[0].args.name, "Protest The Hero");
-        //assert.equal(result.logs[0].args.symbol, "PTH5");
+        assert.equal(result.logs[1].args.account, user);
+        assert.equal(result.logs[1].args.amount, 1000000);
+        assert.equal(result.logs[1].args.transactionType, "buy");
+        assert.equal(result.logs[1].args.tokenId, 0);
+        assert.equal(result.logs[1].args.name, "Protest The Hero");
+        assert.equal(result.logs[1].args.symbol, "PTH5");
+    })
+
+    it("should be able to sell Creator Token", async () => {
+    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 20000000000000000000});
+        const result = await contractInstance.sellCreatorToken(0, 1000000, user, {from: user});
+        assert.equal(result.receipt.status, true);
+        //assert.equal(result.logs[1].args.account, user);
+        //assert.equal(result.logs[1].args.amount, 1000000);
+        //assert.equal(result.logs[1].args.transactionType, "buy");
+        //assert.equal(result.logs[1].args.tokenId, 0);
+        //assert.equal(result.logs[1].args.name, "Protest The Hero");
+        //assert.equal(result.logs[1].args.symbol, "PTH5");
+    })
+
+    it("should not be able to sell more than outstanding amount of Creator Token", async () => {
+    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+        await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 20000000000000000000});
+        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 2000000, user, {from: user}));
     })
 
     context("as owner", async () => {
@@ -119,11 +138,6 @@ contract("CreatorTokenExchange", (accounts) => {
     })
 
 /*
-
-    it("should not allow non-owner to execute onlyOwner functions", async () => {
-        await contractInstance.createRandomZombie(zombieNames[0], {from: alice});
-        await utils.shouldThrow(contractInstance.createRandomZombie(zombieNames[1], {from: alice}));
-    })
 
     context("with the single-step transfer scenario", async () => {
         it("should transfer a zombie", async () => {
