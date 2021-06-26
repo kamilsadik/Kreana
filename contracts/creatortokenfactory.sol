@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract CreatorTokenFactory is Ownable {
 
 	// Event that fires whenever a new CreatorToken is created
-	event NewCreatorToken(uint tokenId, string name, string symbol);
+	event NewCreatorToken(uint tokenId, address payable creatorAddress, string name, string symbol, string description, bool verified, uint outstanding, uint maxSupply);
 
 	// Pay-on-top style platform fee on each transaction
 	uint platformFee = 1; // e.g., if platformFee == 1/, the platform earns 1% of each transaction's value
@@ -58,7 +58,7 @@ contract CreatorTokenFactory is Ownable {
 		// Map from token id to amount of value transferred (0 at inception)
 		tokenValueTransferred[id] = 0;
 		// Emit token creation event
-		emit NewCreatorToken(id, _name, _symbol);
+		emit NewCreatorToken(id, _creatorAddress, _name, _symbol, _description, false, 0, 0);
 	}
 
 
