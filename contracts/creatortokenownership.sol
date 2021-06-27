@@ -26,7 +26,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
 			tokenHoldership[_ids[i]][_to] += _amounts[i];
-			userToHoldings[_to][_ids[i]] += _amount;
+			userToHoldings[_to][_ids[i]] += _amounts[i];
 			// Increase token amount outstanding
 			creatorTokens[_ids[i]].outstanding += _amounts[i];
 		}
@@ -53,7 +53,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
 			tokenHoldership[_ids[i]][_account] -= _amounts[i];
-			userToHoldings[_account][_ids[i]] -= _amount;
+			userToHoldings[_account][_ids[i]] -= _amounts[i];
 			// Decrease token amount outstanding
 			creatorTokens[_ids[i]].outstanding -= _amounts[i];
 		}
