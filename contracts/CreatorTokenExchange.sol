@@ -41,10 +41,6 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
-		// Update tokenHoldership mapping
-		//tokenHoldership[_tokenId][msg.sender] += _amount;
-		// Update userToHoldings mapping
-		//userToHoldings[msg.sender][_tokenId] += _amount;
 		// Emit new transaction event
 		emit NewTransaction(msg.sender, _amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// Check if new outstanding amount of token is greater than maxSupply
@@ -81,10 +77,6 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired wei (less the platform fee) in exchange for the burned tokens
 		_seller.transfer(1500000000000000000); // proceedsRequired - proceedsRequired*platformFee/100
-		// Update tokenHoldership mapping
-		//tokenHoldership[_tokenId][msg.sender] -= _amount;
-		// Update userToHoldings mapping
-		//userToHoldings[msg.sender][_tokenId] -= _amount;
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Emit new transaction event
