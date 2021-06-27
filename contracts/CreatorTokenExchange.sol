@@ -117,7 +117,8 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	function _breakpoint(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator, uint _maxSupply, uint _profitMargin) private pure returns (uint, uint, uint) {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
 		uint a = _maxSupply/2;
-		uint b = ((2-2*_profitMargin/100)*_maxSupply*_mNumerator/_mDenominator - _maxSupply*_mNumerator/_mDenominator)/2;
+		//uint b = ((2-2*_profitMargin/100)*_maxSupply*_mNumerator/_mDenominator - _maxSupply*_mNumerator/_mDenominator)/2; <= old formula
+		uint b = _startingSupply*(50-_profitMargin)/100*_mNumerator/_mDenominator;
 		uint endSupply = _startingSupply - _amount;
 		return (a, b, endSupply);
 	}
