@@ -118,22 +118,25 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
 		uint a = _maxSupply/2;
 		//uint b = ((2-2*_profitMargin/100)*_maxSupply*_mNumerator/_mDenominator - _maxSupply*_mNumerator/_mDenominator)/2; <= old formula
-		uint b = _startingSupply*(50-_profitMargin)/100*_mNumerator/_mDenominator;
+		uint b = _maxSupply*(50-_profitMargin)/100*_mNumerator/_mDenominator;
 		uint endSupply = _startingSupply - _amount;
 		return (a, b, endSupply);
 	}
 
 	// _saleFunction scenario in which entire transaction occurs left of breakpoint
 	function _leftArea(uint _a, uint _b, uint _startingSupply, uint _endSupply) private pure returns (uint256) {
-			uint base1 = ((_b/_a)*(_a-_endSupply)+_b);
-			uint base2 = ((_b/_a)*(_a-_startingSupply)+_b);
+			//uint base1 = ((_b/_a)*(_a-_endSupply)+_b);
+			uint base1 = ((_b/_a)*(_endSupply-_a)+_b);
+			//uint base2 = ((_b/_a)*(_a-_startingSupply)+_b);
+			uint base2 = ((_b/_a)*(_startingSupply-_a)+_b);
 			uint height = _startingSupply-_endSupply;
 			return (base1 + base2) * height / 2;
 	}
 
 	// _saleFunction scenario in which transaction crosses breakpoint
 	function _bothArea(uint _a, uint _b, uint _startingSupply, uint _endSupply, uint _mNumerator, uint _mDenominator, uint _maxSupply) private pure returns (uint256) {
-		uint leftBase1 = ((_b/_a)*(_a-_endSupply)+_b);
+		//uint leftBase1 = ((_b/_a)*(_a-_endSupply)+_b);
+		uint leftBase1 = ((_b/_a)*(_endSupply-_a)+_b);
 		uint sharedBase = _b;
 		uint leftHeight = _a-_endSupply;
 		uint leftArea = (leftBase1 + sharedBase) * leftHeight / 2;
