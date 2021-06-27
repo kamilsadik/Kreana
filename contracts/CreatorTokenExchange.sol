@@ -42,9 +42,9 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Update tokenHoldership mapping
-		tokenHoldership[_tokenId][msg.sender] += _amount;
+		//tokenHoldership[_tokenId][msg.sender] += _amount;
 		// Update userToHoldings mapping
-		userToHoldings[msg.sender][_tokenId] += _amount;
+		//userToHoldings[msg.sender][_tokenId] += _amount;
 		// Emit new transaction event
 		emit NewTransaction(msg.sender, _amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// Check if new outstanding amount of token is greater than maxSupply
@@ -82,9 +82,9 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Send user proceedsRequired wei (less the platform fee) in exchange for the burned tokens
 		_seller.transfer(1500000000000000000); // proceedsRequired - proceedsRequired*platformFee/100
 		// Update tokenHoldership mapping
-		tokenHoldership[_tokenId][msg.sender] -= _amount;
+		//tokenHoldership[_tokenId][msg.sender] -= _amount;
 		// Update userToHoldings mapping
-		userToHoldings[msg.sender][_tokenId] -= _amount;
+		//userToHoldings[msg.sender][_tokenId] -= _amount;
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Emit new transaction event
@@ -117,7 +117,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	function _breakpoint(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator, uint _maxSupply, uint _profitMargin) private pure returns (uint, uint, uint) {
 		// Define breakpoint (a,b) chosen s.t. area under sale price function is (1-profitMargin) times area under buy price function
 		uint a = _maxSupply/2;
-		//uint b = ((2-2*_profitMargin/100)*_maxSupply*_mNumerator/_mDenominator - _maxSupply*_mNumerator/_mDenominator)/2; <= old formula
+		//uint b = ((2-2*_profitMargin/100)*_maxSupply*_mNumerator/_mDenominator - _maxSupply*_mNumerator/_mDenominator)/2; // old formula
 		uint b = _maxSupply*(50-_profitMargin)/100*_mNumerator/_mDenominator;
 		uint endSupply = _startingSupply - _amount;
 		return (a, b, endSupply);

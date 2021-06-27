@@ -21,6 +21,8 @@ contract CreatorTokenFactory is Ownable {
 	// Slope of buy price function
 	uint mNumerator = 90000000000000;
 	uint mDenominator = 1850;
+	//uint mNumerator = 9;
+	//uint mDenominator = 10000;
 	//uint m = mNumerator/mDenominator;
 
 	struct CreatorToken {

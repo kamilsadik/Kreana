@@ -12,6 +12,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
 		// Update tokenHoldership mapping
 		tokenHoldership[_id][_to] += _amount;
+		userToHoldings[_to][_id] += _amount;
 		// Increase token amount outstanding
 		creatorTokens[_id].outstanding += _amount;
 		// Do I also need to transfer the actual tokens to the user?
@@ -37,6 +38,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	function burn(address _account, uint256 _id, uint256 _amount) public override {
 		// Update tokenHoldership mapping
 		tokenHoldership[_id][_account] -= _amount;
+		userToHoldings[_account][_id] -= _amount;
 		// Decrease token amount outstanding
 		creatorTokens[_id].outstanding -= _amount;
 		// Do I also need to transfer the actual tokens to from user to address(0)?
