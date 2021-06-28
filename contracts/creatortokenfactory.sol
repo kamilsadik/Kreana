@@ -19,8 +19,8 @@ contract CreatorTokenFactory is Ownable {
 	uint profitMargin = 20;
 
 	// Slope of buy price function
-	uint mNumerator = 90000000000000;
-	uint mDenominator = 1850;
+	uint mNumerator = 9000000000000;
+	uint mDenominator = 185;
 	//uint mNumerator = 9;
 	//uint mDenominator = 10000;
 	//uint m = mNumerator/mDenominator;
