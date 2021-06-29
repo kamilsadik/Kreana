@@ -36,7 +36,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			proceedsRequired = _buyFunction(startingSupply, _amount, mNumerator, mDenominator);
 		}
 		// Make sure that user sends proceedsRequired wei to cover the cost of _amount tokens, plus the platform fee
-		require(msg.value == (proceedsRequired + proceedsRequired*platformFee/100)); // 2000000000000000000); //
+		require(msg.value == (2000000000000000000); //proceedsRequired + proceedsRequired*platformFee/100)); //
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
@@ -76,7 +76,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired wei (less the platform fee) in exchange for the burned tokens
-		_seller.transfer(proceedsRequired - proceedsRequired*platformFee/100); // 1500000000000000000); //
+		_seller.transfer(1500000000000000000); //proceedsRequired - proceedsRequired*platformFee/100); //
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Emit new transaction event
@@ -157,7 +157,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Calculate totalProfit (area between b(x) and s(x) from 0 to maxSupply)
 		totalProfit = _buyFunction(0, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator) - _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Calculate creator's new profit created from new excess liquidity created
-		uint newProfit = totalProfit - alreadyTransferred; // 400000000000000000; //
+		uint newProfit = 400000000000000000; // totalProfit - alreadyTransferred; //
 		// Transfer newProfit wei to creator
 		_creatorAddress.transfer(newProfit);
 		// Update amount of value transferred to creator
