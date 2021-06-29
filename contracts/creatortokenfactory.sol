@@ -62,6 +62,4 @@ contract CreatorTokenFactory is Ownable {
 		// Emit token creation event
 		emit NewCreatorToken(id, _creatorAddress, _name, _symbol, _description, false, 0, 0);
 	}
-
-
 }
