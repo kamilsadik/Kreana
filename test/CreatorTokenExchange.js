@@ -21,6 +21,13 @@ contract("CreatorTokenExchange", (accounts) => {
         assert.equal(result.logs[0].args.maxSupply, 0);
     })
 
+    context("in order for transaction computations to work", async () => {
+        it("_buyFunction should give expected output", async () => {
+            const result = await contractInstance._buyFunction(0, 1000000, 9000000000000, 185, {from: owner});
+        	assert.equal(result.receipt.status, true);
+        })
+    })
+
     it("should be able to buy Creator Token", async () => {
     	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
         const result = await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 2000000000000000000});

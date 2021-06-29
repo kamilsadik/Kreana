@@ -53,7 +53,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Calculate area under buy price function
-	function _buyFunction(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator) private pure returns (uint256) {
+	function _buyFunction(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator) public pure returns (uint256) {
 		// b(x) = m*x
 		uint endSupply = _startingSupply + _amount;
 		uint base1 = _mNumerator*_startingSupply/_mDenominator;
@@ -155,7 +155,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Initialize totalProfit
 		uint totalProfit = 0;
 		// Calculate totalProfit (area between b(x) and s(x) from 0 to maxSupply)
-		totalProfit = _buyFunction(0, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator) - _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
+		//totalProfit = _buyFunction(0, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator) - _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Calculate creator's new profit created from new excess liquidity created
 		uint newProfit = totalProfit - alreadyTransferred; // 1000000000000000000; //
 		// Transfer newProfit wei to creator
