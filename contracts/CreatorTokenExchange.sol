@@ -36,7 +36,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			proceedsRequired = _buyFunction(startingSupply, _amount, mNumerator, mDenominator);
 		}
 		// Make sure that user sends proceedsRequired wei to cover the cost of _amount tokens, plus the platform fee
-		require(msg.value == (2000000000000000000)); //proceedsRequired + proceedsRequired*platformFee/100)); //
+		require(msg.value == proceedsRequired + proceedsRequired*platformFee/100)); //(2000000000000000000)); //
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
