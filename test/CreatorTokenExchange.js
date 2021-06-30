@@ -23,10 +23,10 @@ contract("CreatorTokenExchange", (accounts) => {
 
     it("should be able to buy Creator Token", async () => {
     	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
-        const result = await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 2000000000000000000});
+        const result = await contractInstance.buyCreatorToken(0, 500, {from: user, value: 2000000000000000000});
         assert.equal(result.receipt.status, true);
         assert.equal(result.logs[1].args.account, user);
-        assert.equal(result.logs[1].args.amount, 1000000);
+        assert.equal(result.logs[1].args.amount, 500);
         assert.equal(result.logs[1].args.transactionType, "buy");
         assert.equal(result.logs[1].args.tokenId, 0);
         assert.equal(result.logs[1].args.name, "Protest The Hero");
@@ -35,11 +35,11 @@ contract("CreatorTokenExchange", (accounts) => {
 
     it("should be able to sell Creator Token", async () => {
     	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
-        await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 2000000000000000000});
-        const result = await contractInstance.sellCreatorToken(0, 1000000, user, {from: user});
+        await contractInstance.buyCreatorToken(0, 500, {from: user, value: 2000000000000000000});
+        const result = await contractInstance.sellCreatorToken(0, 500, user, {from: user});
         assert.equal(result.receipt.status, true);
         assert.equal(result.logs[1].args.account, user);
-        assert.equal(result.logs[1].args.amount, 1000000);
+        assert.equal(result.logs[1].args.amount, 500);
         assert.equal(result.logs[1].args.transactionType, "sell");
         assert.equal(result.logs[1].args.tokenId, 0);
         assert.equal(result.logs[1].args.name, "Protest The Hero");
@@ -48,13 +48,13 @@ contract("CreatorTokenExchange", (accounts) => {
 
     it("should not be able to sell more than outstanding amount of Creator Token", async () => {
     	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
-        await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 2000000000000000000});
+        await contractInstance.buyCreatorToken(0, 500, {from: user, value: 2000000000000000000});
         await utils.shouldThrow(contractInstance.sellCreatorToken(0, 2000000, user, {from: user}));
     })
 
     it("should not be able to sell another user's Creator Tokens", async () => {
     	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
-        await contractInstance.buyCreatorToken(0, 1000000, {from: user, value: 2000000000000000000});
+        await contractInstance.buyCreatorToken(0, 500, {from: user, value: 2000000000000000000});
         await utils.shouldThrow(contractInstance.sellCreatorToken(0, 2000000, owner, {from: user}));
     })
 

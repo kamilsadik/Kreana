@@ -76,7 +76,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired wei (less the platform fee) in exchange for the burned tokens
-		_seller.transfer(1500000000000000000); //proceedsRequired - proceedsRequired*platformFee/100); //
+		_seller.transfer(proceedsRequired - proceedsRequired*platformFee/100); //1500000000000000000); //
 		// Update platform fee total
 		_platformFeeUpdater(proceedsRequired);
 		// Emit new transaction event
