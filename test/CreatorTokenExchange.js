@@ -105,6 +105,18 @@ contract("CreatorTokenExchange", (accounts) => {
 	    })
 	})
 
+	xcontext("post-transaction fee accounting", async () => {
+		it("should transfer the correct amount to the creator", async () => {
+
+	    })
+	    it("should transfer the correct amount to the platform", async () => {
+
+	    })
+	    it("should correctly update totalPlatformFees and platformFeesOwed after a transaction", async () => {
+	    	
+	    })
+	})
+
     context("as owner", async () => {
         it("should allow withdrawal", async () => {
             const result = await contractInstance.withdraw(owner, {from: owner});

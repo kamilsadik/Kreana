@@ -18,8 +18,6 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		proceedsRequired = _buyProceeds(_tokenId, _amount);
 		// Make sure that user sends proceedsRequired wei to cover the cost of _amount tokens, plus the platform fee
 		require(msg.value == proceedsRequired);//== 2000000000000000000);//
-		// Update platform fee total
-		_platformFeeUpdater(proceedsRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Emit new transaction event
@@ -58,8 +56,12 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			// Just call b(x)
 			proceedsRequired = _buyFunction(startingSupply, _amount, mNumerator, mDenominator);
 		}
+		// Compute fee
+		uint fee = proceedsRequired*platformFee/100;
+		// Update platform fee total
+		_platformFeeUpdater(fee);
 		// Add platform fee to obtain total transaction proceeds required
-		proceedsRequired += (platformFee/100);
+		proceedsRequired += fee;
 		// Return total proceeds required
 		return proceedsRequired;
 	}
@@ -85,12 +87,16 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute sale proceeds required
 		proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
+		// Compute fee
+		uint fee = proceedsRequired*platformFee/100;
+		// Add platform fee to obtain real proceedsRequired value
+		proceedsRequired -= fee
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired wei (less the platform fee) in exchange for the burned tokens
-		_seller.transfer(proceedsRequired - proceedsRequired*platformFee/100); //1500000000000000000); //
+		_seller.transfer(proceedsRequired); //1500000000000000000); //
 		// Update platform fee total
-		_platformFeeUpdater(proceedsRequired);
+		_platformFeeUpdater(fee);
 		// Emit new transaction event
 		emit NewTransaction(msg.sender, _amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
@@ -177,8 +183,8 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Update platform fees tracker
-	function _platformFeeUpdater(uint _proceedsRequired) internal {
-		totalPlatformFees += _proceedsRequired*platformFee/100;
-		platformFeesOwed += _proceedsRequired*platformFee/100;
+	function _platformFeeUpdater(uint _fee) internal {
+		totalPlatformFees += _fee;
+		platformFeesOwed += _fee;
 	}
 }
