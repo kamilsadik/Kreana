@@ -57,7 +57,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			proceedsRequired = _buyFunction(startingSupply, _amount, mNumerator, mDenominator);
 		}
 		// Add platform fee to obtain total transaction proceeds required
-		proceedsRequired = proceedsRequired + platformFee/100; //proceedsRequired*
+		//proceedsRequired = proceedsRequired + proceedsRequired*platformFee/100; //proceedsRequired*
 		// Return total proceeds required
 		return proceedsRequired;
 	}
