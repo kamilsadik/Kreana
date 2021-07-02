@@ -34,7 +34,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Calculate proceedsRequired to for a given buy transaction
-	function _buyProceeds(uint _tokenId, uint _amount) private view returns (uint256) {
+	function _buyProceeds(uint _tokenId, uint _amount) public view returns (uint256) {
 		// Initialize proceeds required;
 		uint proceedsRequired = 0;
 		// Initialize pre-transaction supply
