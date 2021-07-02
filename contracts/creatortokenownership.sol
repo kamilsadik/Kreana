@@ -9,7 +9,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	constructor(string memory uri) ERC1155PresetMinterPauser(uri) { }
 
 	// Mint a token
-	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) internal override {
+	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
 		// Update tokenHoldership mapping
 		tokenHoldership[_id][_to] += _amount;
 		userToHoldings[_to][_id] += _amount;
@@ -21,7 +21,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Mint a batch of tokens
-	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) internal override {
+	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
@@ -36,7 +36,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Burn a token
-	function burn(address _account, uint256 _id, uint256 _amount) internal override {
+	function burn(address _account, uint256 _id, uint256 _amount) public override {
 		// Update tokenHoldership mapping
 		tokenHoldership[_id][_account] -= _amount;
 		userToHoldings[_account][_id] -= _amount;
@@ -48,7 +48,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Burn a batch of tokens
-	function burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) internal override {
+	function burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) public override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
