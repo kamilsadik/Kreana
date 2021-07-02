@@ -22,7 +22,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Check if endSupply <= maxSupply
 		if (endSupply < creatorTokens[_tokenId].maxSupply) {
 			// Scenario in which entire transaction takes place below maxSupply
-			// Just call s(x)
+			// Just call s(x
 			proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		} else if (startingSupply < creatorTokens[_tokenId].maxSupply){
 			// Scenario in which supply begins below maxSupply and ends above pre-transaction maxSupply
