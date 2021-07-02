@@ -9,7 +9,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	constructor(string memory uri) ERC1155PresetMinterPauser(uri) { }
 
 	// Mint a token
-	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
+	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) internal override {
 		// Update tokenHoldership mapping
 		tokenHoldership[_id][_to] += _amount;
 		userToHoldings[_to][_id] += _amount;
@@ -21,7 +21,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Mint a batch of tokens
-	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public override {
+	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) internal override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
@@ -36,19 +36,19 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Burn a token
-	function burn(address _account, uint256 _id, uint256 _amount) public override {
+	function burn(address _account, uint256 _id, uint256 _amount) internal override {
 		// Update tokenHoldership mapping
 		tokenHoldership[_id][_account] -= _amount;
 		userToHoldings[_account][_id] -= _amount;
 		// Decrease token amount outstanding
 		creatorTokens[_id].outstanding -= _amount;
-		// Do I also need to transfer the actual tokens to from user to address(0)?
+		// Do I also need to transfer the actual tokens from user to address(0)?
 		// Emit single transfer event
 		emit TransferSingle(msg.sender, _account, address(0), _id, _amount);
 	}
 
 	// Burn a batch of tokens
-	function burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) public override {
+	function burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) internal override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
@@ -57,7 +57,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 			// Decrease token amount outstanding
 			creatorTokens[_ids[i]].outstanding -= _amounts[i];
 		}
-		// Do I also need to transfer the actual tokens to from user to address(0)?
+		// Do I also need to transfer the actual tokens from user to address(0)?
 		// Emit batch transfer event
 		emit TransferBatch(msg.sender, _account, address(0), _ids, _amounts);
 	}
