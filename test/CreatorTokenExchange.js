@@ -21,50 +21,81 @@ contract("CreatorTokenExchange", (accounts) => {
         assert.equal(result.logs[0].args.maxSupply, 0);
     })
 
-    it("should be able to buy Creator Token", async () => {
-    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
-        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
-		proceedsRequired = Number(proceedsRequired);
-        const result = await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
-        assert.equal(result.receipt.status, true);
-        assert.equal(result.logs[1].args.account, user);
-        assert.equal(result.logs[1].args.amount, 5000);
-        assert.equal(result.logs[1].args.transactionType, "buy");
-        assert.equal(result.logs[1].args.tokenId, 0);
-        assert.equal(result.logs[1].args.name, "Protest The Hero");
-        assert.equal(result.logs[1].args.symbol, "PTH5");
-    })
-
-    it("should be able to sell Creator Token", async () => {
-    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
-        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
-		proceedsRequired = Number(proceedsRequired);
-        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
-        const result = await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
-        assert.equal(result.receipt.status, true);
-        assert.equal(result.logs[1].args.account, user);
-        assert.equal(result.logs[1].args.amount, 5000);
-        assert.equal(result.logs[1].args.transactionType, "sell");
-        assert.equal(result.logs[1].args.tokenId, 0);
-        assert.equal(result.logs[1].args.name, "Protest The Hero");
-        assert.equal(result.logs[1].args.symbol, "PTH5");
-    })
-
-    it("should not be able to sell more than outstanding amount of Creator Token", async () => {
-    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
-        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
-		proceedsRequired = Number(proceedsRequired);
-        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
-        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 2000000, user, {from: user}));
-    })
-
-    it("should not be able to sell another user's Creator Tokens", async () => {
-    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
-        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
-		proceedsRequired = Number(proceedsRequired);
-        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
-        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 5000, owner, {from: user}));
-    })
+    context("in the normal course of transacting", async () => {
+	    it("should be able to buy Creator Token", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
+			proceedsRequired = Number(proceedsRequired);
+	        const result = await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
+	        assert.equal(result.receipt.status, true);
+	        assert.equal(result.logs[1].args.account, user);
+	        assert.equal(result.logs[1].args.amount, 5000);
+	        assert.equal(result.logs[1].args.transactionType, "buy");
+	        assert.equal(result.logs[1].args.tokenId, 0);
+	        assert.equal(result.logs[1].args.name, "Protest The Hero");
+	        assert.equal(result.logs[1].args.symbol, "PTH5");
+	    })
+	    it("should be able to sell Creator Token", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
+			proceedsRequired = Number(proceedsRequired);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
+	        const result = await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	        assert.equal(result.receipt.status, true);
+	        assert.equal(result.logs[1].args.account, user);
+	        assert.equal(result.logs[1].args.amount, 5000);
+	        assert.equal(result.logs[1].args.transactionType, "sell");
+	        assert.equal(result.logs[1].args.tokenId, 0);
+	        assert.equal(result.logs[1].args.name, "Protest The Hero");
+	        assert.equal(result.logs[1].args.symbol, "PTH5");
+	    })
+	    it("should not be able to sell more than outstanding amount of Creator Token", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
+			proceedsRequired = Number(proceedsRequired);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
+	        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 2000000, user, {from: user}));
+	    })
+	    it("should not be able to sell another user's Creator Tokens", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
+			proceedsRequired = Number(proceedsRequired);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
+	        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 5000, owner, {from: user}));
+	    })
+	})
+	context("holdership mappings", async () => {
+		it("should correctly update userToHoldings after a buy", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
+			proceedsRequired = Number(proceedsRequired);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
+	        assert.equal(contractInstance.userToHoldings(user, 0), 5000);
+	    })
+	    it("should correctly update tokenHoldership after a buy", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
+			proceedsRequired = Number(proceedsRequired);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
+	        assert.equal(contractInstance.tokenHoldership(0, user), 5000);
+	    })
+	    it("should correctly update userToHoldings after a sale", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
+			proceedsRequired = Number(proceedsRequired);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
+	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	        assert.equal(contractInstance.userToHoldings(user, 0), 0);
+	    })
+	    it("should correctly update tokenHoldership after a sale", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
+			proceedsRequired = Number(proceedsRequired);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
+	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	        assert.equal(contractInstance.tokenHoldership(0, user), 0);
+	    })
+	})
 
     context("as owner", async () => {
         it("should allow withdrawal", async () => {
