@@ -12,12 +12,12 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 
 	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
-		// Initialize proceeds required;
-		uint proceedsRequired = 0;
-		// Calculate proceeds required
-		proceedsRequired = _buyProceeds(_tokenId, _amount);
+		// Calculate proceedsRequired (inclusive of fee) and fee in isolation
+		(uint proceedsRequired, uint fee) = _buyProceeds(_tokenId, _amount);
 		// Make sure that user sends proceedsRequired wei to cover the cost of _amount tokens, plus the platform fee
 		require(msg.value == proceedsRequired);//== 2000000000000000000);//
+		// Update platform fee total
+		_platformFeeUpdater(fee);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Emit new transaction event
@@ -32,7 +32,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Calculate proceedsRequired to for a given buy transaction
-	function _buyProceeds(uint _tokenId, uint _amount) public view returns (uint256) {
+	function _buyProceeds(uint _tokenId, uint _amount) public returns (uint256, uint256) {
 		// Initialize proceeds required;
 		uint proceedsRequired = 0;
 		// Initialize pre-transaction supply
@@ -58,12 +58,10 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		}
 		// Compute fee
 		uint fee = proceedsRequired*platformFee/100;
-		// Update platform fee total
-		_platformFeeUpdater(fee);
 		// Add platform fee to obtain total transaction proceeds required
 		proceedsRequired += fee;
 		// Return total proceeds required
-		return proceedsRequired;
+		return (proceedsRequired, fee);
 	}
 	
 	// Calculate area under buy price function
@@ -90,7 +88,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Compute fee
 		uint fee = proceedsRequired*platformFee/100;
 		// Add platform fee to obtain real proceedsRequired value
-		proceedsRequired -= fee
+		proceedsRequired -= fee;
 		// Burn _amount tokens from user's address (note this decreases token amount outstanding)
 		burn(_seller, _tokenId, _amount);
 		// Send user proceedsRequired wei (less the platform fee) in exchange for the burned tokens
