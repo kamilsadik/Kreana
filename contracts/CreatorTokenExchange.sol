@@ -14,6 +14,29 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
 		// Initialize proceeds required;
 		uint proceedsRequired = 0;
+		// Calculate proceeds required
+		proceedsRequired = _buyProceeds(_tokenId, _amount);
+		// Make sure that user sends proceedsRequired wei to cover the cost of _amount tokens, plus the platform fee
+		require(msg.value == (2000000000000000000)); //proceedsRequired);
+		// Update platform fee total
+		_platformFeeUpdater(proceedsRequired);
+		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
+		mint(msg.sender, _tokenId, _amount, "");
+		// Emit new transaction event
+		emit NewTransaction(msg.sender, _amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
+		// Check if new outstanding amount of token is greater than maxSupply
+		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
+			// Update maxSupply
+			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
+			// Call _payout to transfer excess liquidity
+			_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
+		}
+	}
+
+	// Calculate proceedsRequired to for a given buy transaction
+	function _buyProceeds(uint _tokenId, uint _amount) private view returns (uint256) {
+		// Initialize proceeds required;
+		uint proceedsRequired = 0;
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute post-transaction supply
@@ -35,22 +58,12 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			// Just call b(x)
 			proceedsRequired = _buyFunction(startingSupply, _amount, mNumerator, mDenominator);
 		}
-		// Make sure that user sends proceedsRequired wei to cover the cost of _amount tokens, plus the platform fee
-		require(msg.value == (2000000000000000000)); //(proceedsRequired + proceedsRequired*platformFee/100)); //
-		// Update platform fee total
-		_platformFeeUpdater(proceedsRequired);
-		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
-		mint(msg.sender, _tokenId, _amount, "");
-		// Emit new transaction event
-		emit NewTransaction(msg.sender, _amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
-		// Check if new outstanding amount of token is greater than maxSupply
-		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
-			// Update maxSupply
-			creatorTokens[_tokenId].maxSupply = creatorTokens[_tokenId].outstanding;
-			// Call _payout to transfer excess liquidity
-			_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
-		}
+		// Add platform fee to obtain total transaction proceeds required
+		proceedsRequired += (platformFee/100);
+		// Return total proceeds required
+		return proceedsRequired;
 	}
+	
 
 	// Calculate area under buy price function
 	function _buyFunction(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator) private pure returns (uint256) {
@@ -82,6 +95,10 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		// Emit new transaction event
 		emit NewTransaction(msg.sender, _amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
+
+	// Calculate proceedsRequired for a given sell transaction
+
+
 
 	// Calculate area under sale price function
 	function _saleFunction(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator, uint _maxSupply, uint _profitMargin) private pure returns (uint256) {
