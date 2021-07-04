@@ -12,12 +12,16 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 
 	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
-		// Calculate proceedsRequired (inclusive of fee) and fee in isolation
+		// Calculate proceedsRequired (not including fee)
 		uint proceedsRequired = _buyProceeds(_tokenId, _amount);
+		// Calculate fee
+		uint feeRequired = _feeProceeds(proceedsRequired);
+		// Update proceedsRequired
+		proceedsRequired += feeRequired;
 		// Make sure that user sends proceedsRequired wei to cover the cost of _amount tokens, plus the platform fee
 		require(msg.value == proceedsRequired);//== 2000000000000000000);//
 		// Update platform fee total
-		_platformFeeUpdater(proceedsRequired*platformFee/(100+platformFee));
+		_platformFeeUpdater(feeRequired);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Emit new transaction event
@@ -56,14 +60,14 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			// Just call b(x)
 			proceedsRequired = _buyFunction(startingSupply, _amount, mNumerator, mDenominator);
 		}
-		// Add platform fee to obtain total transaction proceeds required
-		proceedsRequired = proceedsRequired + proceedsRequired*platformFee/uint(100);//  /100; //
-		// Return total proceeds required
+		// Return proceeds required
 		return proceedsRequired;
 	}
 
 	// Calculate fee associated with buy transaction
-	function _feePro
+	function _feeProceeds(uint _proceedsRequired) public view returns (uint256) {
+		return _proceedsRequired*platformFee/100;
+	}
 	
 	// Calculate area under buy price function
 	function _buyFunction(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator) private pure returns (uint256) {
