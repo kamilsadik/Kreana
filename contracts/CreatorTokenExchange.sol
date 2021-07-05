@@ -65,7 +65,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Calculate fee associated with buy transaction
-	function _feeProceeds(uint _proceedsRequired) public view returns (string) {
+	function _feeProceeds(uint _proceedsRequired) public view returns (uint256) {
 		return _proceedsRequired*platformFee/100;
 	}
 	

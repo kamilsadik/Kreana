@@ -26,8 +26,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
 	        let feeRequired = await contractInstance._feeProceeds(proceedsRequired);
-	        proceedsRequired += feeRequired;
 			proceedsRequired = Number(proceedsRequired);
+			feeRequired = Number(feeRequired);
+	        proceedsRequired += feeRequired;
 	        const result = await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
 	        assert.equal(result.receipt.status, true);
 	        assert.equal(result.logs[1].args.account, user);
@@ -41,8 +42,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
 	        //let feeRequired = await contractInstance._feeProceeds(proceedsRequired);
-	        //proceedsRequired += feeRequired;
 			proceedsRequired = Number(proceedsRequired);
+			//feeRequired = Number(feeRequired);
+	        //proceedsRequired += feeRequired;
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
 	        const result = await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
 	        assert.equal(result.receipt.status, true);
@@ -57,8 +59,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
 	        //let feeRequired = await contractInstance._feeProceeds(proceedsRequired);
-	        //proceedsRequired += feeRequired;
 			proceedsRequired = Number(proceedsRequired);
+			//feeRequired = Number(feeRequired);
+	        //proceedsRequired += feeRequired;
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
 	        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 2000000, user, {from: user}));
 	    })
@@ -66,8 +69,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
 	        //let feeRequired = await contractInstance._feeProceeds(proceedsRequired);
-	        //proceedsRequired += feeRequired;
 			proceedsRequired = Number(proceedsRequired);
+			//feeRequired = Number(feeRequired);
+	        //proceedsRequired += feeRequired;
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
 	        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 5000, owner, {from: user}));
 	    })
@@ -77,8 +81,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
 	        //let feeRequired = await contractInstance._feeProceeds(proceedsRequired);
-	        //proceedsRequired += feeRequired;
 			proceedsRequired = Number(proceedsRequired);
+			//feeRequired = Number(feeRequired);
+	        //proceedsRequired += feeRequired;
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
 	        let holdings = await contractInstance.userToHoldings(user, 0);
 	        holdings = Number(holdings);
@@ -88,8 +93,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
 	        //let feeRequired = await contractInstance._feeProceeds(proceedsRequired);
-	        //proceedsRequired += feeRequired;
 			proceedsRequired = Number(proceedsRequired);
+			//feeRequired = Number(feeRequired);
+	        //proceedsRequired += feeRequired;
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
 	        let holdings = await contractInstance.tokenHoldership(0, user);
 	        holdings = Number(holdings);
@@ -99,8 +105,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
 	        //let feeRequired = await contractInstance._feeProceeds(proceedsRequired);
-	        //proceedsRequired += feeRequired;
 			proceedsRequired = Number(proceedsRequired);
+			//feeRequired = Number(feeRequired);
+	        //proceedsRequired += feeRequired;
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
 	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
 	        let holdings = await contractInstance.userToHoldings(user, 0);
@@ -111,8 +118,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let proceedsRequired = await contractInstance._buyProceeds(0, 5000);
 	        //let feeRequired = await contractInstance._feeProceeds(proceedsRequired);
-	        //proceedsRequired += feeRequired;
 			proceedsRequired = Number(proceedsRequired);
+			//feeRequired = Number(feeRequired);
+	        //proceedsRequired += feeRequired;
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: proceedsRequired});
 	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
 	        let holdings = await contractInstance.tokenHoldership(0, user)
