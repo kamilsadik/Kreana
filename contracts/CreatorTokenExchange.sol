@@ -13,13 +13,17 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
 		// Calculate proceedsRequired (not including fee)
-		uint proceedsRequired = _buyProceeds(_tokenId, _amount);
+		//uint proceedsRequired = _buyProceeds(_tokenId, _amount);
 		// Calculate fee
-		uint feeRequired = _feeProceeds(proceedsRequired);
+		//uint feeRequired = _feeProceeds(proceedsRequired);
 		// Make sure that user sends proceedsRequired wei to cover the cost of _amount tokens, plus the platform fee
-		require(msg.value == _totalProceeds(proceedsRequired, feeRequired));//== 2000000000000000000);//
-		// Update platform fee total
-		_platformFeeUpdater(feeRequired);
+		//require(msg.value == _totalProceeds(proceedsRequired, feeRequired));//== 2000000000000000000);//
+
+		// Compute total transactin proceeds required (inclusive of fee)
+		totalProceeds = _totalProceeds(_tokenId, _amount);
+		// Require that user sends totalProceeds in order to transact
+		require(msg.value == totalProceeds);
+
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Emit new transaction event
@@ -31,6 +35,19 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 			// Call _payout to transfer excess liquidity
 			_payCreator(_tokenId, creatorTokens[_tokenId].creatorAddress);
 		}
+	}
+
+	// Calculate total transaction proceeds
+	function _totalProceeds(uint _tokenId, uint _amount) public view returns (uint256) {
+		// Compute proceedsRequired (ex-fees)
+		uint proceedsRequired = _buyProceeds(_tokenId, _amount);
+		// Compute feeRequired
+		uint feeRequired = _feeProceeds(proceedsRequired);
+		// Update platform fee total
+		_platformFeeUpdater(feeRequired);
+		// Compute total proceeds required
+		uint totalProceeds = proceedsRequired + feeRequired;
+		return totalProceeds;
 	}
 
 	// Calculate proceedsRequired to for a given buy transaction (not including fees)
@@ -65,11 +82,6 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	// Calculate fee associated with buy transaction
 	function _feeProceeds(uint _proceedsRequired) public view returns (uint256) {
 		return _proceedsRequired*platformFee/100;
-	}
-
-	// Calculate total transaction proceeds
-	function _totalProceeds(uint _proceedsRequired, uint _feeProceeds) public view returns (uint256) {
-		return _proceedsRequired + _feeProceeds;
 	}
 	
 	// Calculate area under buy price function
