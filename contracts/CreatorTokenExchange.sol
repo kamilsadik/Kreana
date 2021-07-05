@@ -20,7 +20,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 		//require(msg.value == _totalProceeds(proceedsRequired, feeRequired));//== 2000000000000000000);//
 
 		// Compute total transactin proceeds required (inclusive of fee)
-		totalProceeds = _totalProceeds(_tokenId, _amount);
+		uint totalProceeds = _totalProceeds(_tokenId, _amount);
 		// Require that user sends totalProceeds in order to transact
 		require(msg.value == totalProceeds);
 
@@ -38,7 +38,7 @@ contract CreatorTokenExchange is CreatorTokenOwnership {
 	}
 
 	// Calculate total transaction proceeds
-	function _totalProceeds(uint _tokenId, uint _amount) public view returns (uint256) {
+	function _totalProceeds(uint _tokenId, uint _amount) public returns (uint256) {
 		// Compute proceedsRequired (ex-fees)
 		uint proceedsRequired = _buyProceeds(_tokenId, _amount);
 		// Compute feeRequired
