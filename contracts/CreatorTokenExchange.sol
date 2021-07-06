@@ -35,12 +35,10 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 	function sellCreatorToken(uint _tokenId, uint _amount, address payable _seller) external payable {
 		// Require that user calling function is selling own tokens
 		require(_seller == msg.sender);
-		// Initialize proceeds required
-		uint proceedsRequired = 0;
 		// Initialize pre-transaction supply
 		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute sale proceeds required
-		proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
+		uint proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Compute fee
 		uint fee = proceedsRequired*platformFee/100;
 		// Add platform fee to obtain real proceedsRequired value
@@ -53,21 +51,5 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 		_platformFeeUpdater(fee);
 		// Emit new transaction event
 		emit NewTransaction(msg.sender, _amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
-	}
-
-	// Transfer excess liquidity (triggered only when a CreatorToken hits a new maxSupply)
-	function _payCreator(uint _tokenId, address payable _creatorAddress) internal {
-		// Create a variable showing excess liquidity that has already been transferred out of this token's liquidity pool
-		uint alreadyTransferred = tokenValueTransferred[_tokenId];
-		// Initialize totalProfit
-		uint totalProfit = 0;
-		// Calculate totalProfit (area between b(x) and s(x) from 0 to maxSupply)
-		totalProfit = _buyFunction(0, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator) - _saleFunction(creatorTokens[_tokenId].maxSupply, creatorTokens[_tokenId].maxSupply, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
-		// Calculate creator's new profit created from new excess liquidity created
-		uint newProfit = totalProfit - alreadyTransferred; //400000000000000000; // 
-		// Transfer newProfit wei to creator
-		_creatorAddress.transfer(newProfit);
-		// Update amount of value transferred to creator
-		tokenValueTransferred[_tokenId] = totalProfit;
 	}
 }
