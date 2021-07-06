@@ -55,7 +55,7 @@ contract CreatorTokenComputation is CreatorTokenOwnership {
 	}
 	
 	// Calculate area under buy price function
-	function _buyFunction(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator) private pure returns (uint256) {
+	function _buyFunction(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator) internal pure returns (uint256) {
 		// b(x) = m*x
 		uint endSupply = _startingSupply + _amount;
 		uint base1 = _mNumerator*_startingSupply/_mDenominator;
@@ -128,5 +128,11 @@ contract CreatorTokenComputation is CreatorTokenOwnership {
 		uint base2 = (((_mNumerator*_maxSupply/_mDenominator-_b)/(_maxSupply-_a))*(_startingSupply-_a)+_b);
 		uint height = _startingSupply-_endSupply;
 		return (base1 + base2) * height / 2;
+	}
+
+	// Update platform fees tracker
+	function _platformFeeUpdater(uint _fee) internal {
+		totalPlatformFees += _fee;
+		platformFeesOwed += _fee;
 	}
 }
