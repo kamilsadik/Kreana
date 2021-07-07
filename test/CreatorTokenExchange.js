@@ -63,6 +63,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 5000, owner, {from: user}));
 	    })
+	   	xit("should not pay creator in a transaction in which a new level of maxSupply is not hit", async () => {
+
+	    })
 	    xit("should be able to handle transactions with odd numbers of tokens", async () => {
 
 	    })
@@ -73,6 +76,7 @@ contract("CreatorTokenExchange", (accounts) => {
 
 	    })
 	})
+
 	context("post-transaction holdership mappings", async () => {
 		it("should correctly update userToHoldings after a buy", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
@@ -137,6 +141,12 @@ contract("CreatorTokenExchange", (accounts) => {
 
 		})
 		it("should correctly update userToHoldings mappings upon a batch token transfer", async () => {
+
+		})
+		it("should be able to set approval", async () => {
+
+		})
+		it("should correctly show approval status", async () => {
 
 		})
 	})
