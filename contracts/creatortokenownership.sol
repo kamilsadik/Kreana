@@ -120,10 +120,3 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		return approvals[_account][_operator];
 	}
 }
-
-
-
-
-
-
-

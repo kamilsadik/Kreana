@@ -13,11 +13,11 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 	// Allow user to buy a given CreatorToken from the platform
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
 		// Compute total transaction proceeds required (inclusive of fee)
-		uint totalProceeds = _totalProceeds(_tokenId, _amount)[2];
+		//uint totalProceeds = _totalProceeds(_tokenId, _amount)[2];
 		// Require that user sends totalProceeds in order to transact
-		require(msg.value == totalProceeds);
+		//require(msg.value == totalProceeds);
 		// Update platform fee total
-		_platformFeeUpdater(_totalProceeds(_tokenId, _amount)[1]);
+		//_platformFeeUpdater(_totalProceeds(_tokenId, _amount)[1]);
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		mint(msg.sender, _tokenId, _amount, "");
 		// Emit new transaction event

@@ -8,14 +8,14 @@ contract CreatorTokenComputation is CreatorTokenFees {
 	constructor(string memory uri) CreatorTokenFees(uri) { }
 
 	// Calculate total transaction proceeds
-	function _totalProceeds(uint _tokenId, uint _amount) public returns (uint256[3] memory) {
+	function _totalProceeds(uint _tokenId, uint _amount) public returns (uint256, uint256, uint256) {//[3] memory) {
 		// Compute proceedsRequired (ex-fees)
 		uint proceedsRequired = _buyProceeds(_tokenId, _amount);
 		// Compute feeRequired
 		uint feeRequired = _feeProceeds(proceedsRequired);
 		// Compute total proceeds required
 		uint totalProceeds = proceedsRequired + feeRequired;
-		return [proceedsRequired, feeRequired, totalProceeds];
+		return (proceedsRequired, feeRequired, totalProceeds);
 	}
 
 	// Calculate proceedsRequired to for a given buy transaction (not including fees)
