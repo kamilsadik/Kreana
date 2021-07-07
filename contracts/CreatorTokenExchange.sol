@@ -35,10 +35,8 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 	function sellCreatorToken(uint _tokenId, uint _amount, address payable _seller) external payable {
 		// Require that user calling function is selling own tokens
 		require(_seller == msg.sender);
-		// Initialize pre-transaction supply
-		uint startingSupply = creatorTokens[_tokenId].outstanding;
 		// Compute sale proceeds required
-		uint proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
+		uint proceedsRequired = _saleFunction(creatorTokens[_tokenId].outstanding, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Compute fee
 		uint fee = proceedsRequired*platformFee/100;
 		// Add platform fee to obtain real proceedsRequired value
