@@ -66,8 +66,10 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
 		// Reduce tokenHoldership holdings of _from
 		tokenHoldership[_id][_from] -= _amount;
+		userToHoldings[_from][_id] -= _amount;
 		// Increase tokenHoldership holdings of _to
 		tokenHoldership[_id][_to] += _amount;
+		userToHoldings[_to][_id] += _amount;
 		// Do I also need to transfer the actual tokens from _from to _to?
 		// Emit single transfer event
 		emit TransferSingle(msg.sender, _from, _to, _id, _amount);
@@ -79,8 +81,10 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Reduce tokenHoldership holdings of _from
 			tokenHoldership[_ids[i]][_from] -= _amounts[i];
+			userToHoldings[_from][_ids[i]] -= _amounts[i];
 			// Increase tokenHoldership holdings of _to
 			tokenHoldership[_ids[i]][_to] += _amounts[i];
+			userToHoldings[_to][_ids[i]] += _amounts[i];
 		}
 		// Do I also need to transfer the actual tokens from _from to _to?
 		// Emit batch transfer event

@@ -73,7 +73,7 @@ contract("CreatorTokenExchange", (accounts) => {
 
 	    })
 	})
-	context("holdership mappings", async () => {
+	context("post-transaction holdership mappings", async () => {
 		it("should correctly update userToHoldings after a buy", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
@@ -124,6 +124,21 @@ contract("CreatorTokenExchange", (accounts) => {
 		it("should not allow a user to mint tokens", async () => {
 			
 		})
+		it("should allow user to transfer their tokens to another user", async () => {
+
+		})
+		it("should correctly update tokenHoldership mapping upon a token transfer", async () => {
+
+		})
+		it("should correctly update userToHoldings mapping upon a token transfer", async () => {
+
+		})
+		it("should correctly update tokenHoldership mappings upon a batch token transfer", async () => {
+
+		})
+		it("should correctly update userToHoldings mappings upon a batch token transfer", async () => {
+
+		})
 	})
 
 	xcontext("post-transaction fee accounting", async () => {
@@ -133,7 +148,10 @@ contract("CreatorTokenExchange", (accounts) => {
 	    it("should transfer the correct amount to the platform", async () => {
 
 	    })
-	    it("should correctly update totalPlatformFees and platformFeesOwed after a transaction", async () => {
+	    it("should correctly update totalPlatformFees after a transaction", async () => {
+	    	
+	    })
+	    it("should correctly update platformFeesOwed after a transaction", async () => {
 	    	
 	    })
 	    it("should have a CTE wallet balance >0 after a buy/sell of the same number of tokens", async () => {
