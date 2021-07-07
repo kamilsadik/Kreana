@@ -39,7 +39,7 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
 	        //totalProceeds = Number(totalProceeds);
-	        const result = await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        const result = await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
 	        assert.equal(result.receipt.status, true);
 	        assert.equal(result.logs[1].args.account, user);
@@ -62,6 +62,15 @@ contract("CreatorTokenExchange", (accounts) => {
 	        //totalProceeds = Number(totalProceeds);
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 5000, owner, {from: user}));
+	    })
+	    xit("should be able to handle transactions with odd numbers of tokens", async () => {
+
+	    })
+	    xit("should be able to handle transactions with very large numbers of tokens", async () => {
+
+	    })
+	    xit("should correctly update quantity of tokens outstanding after each transaction", async () => {
+
 	    })
 	})
 	context("holdership mappings", async () => {
@@ -105,6 +114,18 @@ contract("CreatorTokenExchange", (accounts) => {
 	    })
 	})
 
+	xcontext("as a token-holder", async () => {
+		it("should allow user to burn their own tokens", async () => {
+
+		})
+		it("should not allow user to burn another user's tokens", async () => {
+			
+		})
+		it("should not allow a user to mint tokens", async () => {
+			
+		})
+	})
+
 	xcontext("post-transaction fee accounting", async () => {
 		it("should transfer the correct amount to the creator", async () => {
 
@@ -114,6 +135,12 @@ contract("CreatorTokenExchange", (accounts) => {
 	    })
 	    it("should correctly update totalPlatformFees and platformFeesOwed after a transaction", async () => {
 	    	
+	    })
+	    it("should have a CTE wallet balance >0 after a buy/sell of the same number of tokens", async () => {
+
+	    })
+	    it("should have a CTE wallet balance == platformFeeUpdater's expectation", async () => {
+
 	    })
 	})
 
