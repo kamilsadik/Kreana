@@ -21,12 +21,9 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	// Mint a token
 	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
 		// Update tokenHoldership mapping
-		//tokenHoldership[_id][_to] += _amount;
-		//userToHoldings[_to][_id] += _amount;
 		mappingIncrease(_to, _id, _amount);
 		// Increase token amount outstanding
 		creatorTokens[_id].outstanding += _amount;
-		// Do I also need to transfer the actual tokens to the user?
 		// Emit single transfer event
 		emit TransferSingle(msg.sender, address(0), _to, _id, _amount);
 	}
@@ -36,13 +33,10 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
-			//tokenHoldership[_ids[i]][_to] += _amounts[i];
-			//userToHoldings[_to][_ids[i]] += _amounts[i];
 			mappingIncrease(_to, _ids[i], _amounts[i]);
 			// Increase token amount outstanding
 			creatorTokens[_ids[i]].outstanding += _amounts[i];
 		}
-		// Do I also need to transfer the actual tokens to the user?
 		// Emit batch transfer event
 		emit TransferBatch(msg.sender, address(0), _to, _ids, _amounts);
 	}
@@ -50,12 +44,9 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	// Burn a token
 	function burn(address _account, uint256 _id, uint256 _amount) public override {
 		// Update tokenHoldership mapping
-		//tokenHoldership[_id][_account] -= _amount;
-		//userToHoldings[_account][_id] -= _amount;
 		mappingDecrease(_account, _id, _amount);
 		// Decrease token amount outstanding
 		creatorTokens[_id].outstanding -= _amount;
-		// Do I also need to transfer the actual tokens from user to address(0)?
 		// Emit single transfer event
 		emit TransferSingle(msg.sender, _account, address(0), _id, _amount);
 	}
@@ -65,13 +56,10 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
-			//tokenHoldership[_ids[i]][_account] -= _amounts[i];
-			//userToHoldings[_account][_ids[i]] -= _amounts[i];
 			mappingDecrease(_account, _ids[i], _amounts[i]);
 			// Decrease token amount outstanding
 			creatorTokens[_ids[i]].outstanding -= _amounts[i];
 		}
-		// Do I also need to transfer the actual tokens from user to address(0)?
 		// Emit batch transfer event
 		emit TransferBatch(msg.sender, _account, address(0), _ids, _amounts);
 	}
@@ -79,12 +67,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	// Transfer a token
 	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
 		// Reduce tokenHoldership holdings of _from
-		//tokenHoldership[_id][_from] -= _amount;
-		//userToHoldings[_from][_id] -= _amount;
 		mappingDecrease(_from, _id, _amount);
 		// Increase tokenHoldership holdings of _to
-		//tokenHoldership[_id][_to] += _amount;
-		//userToHoldings[_to][_id] += _amount;
 		mappingIncrease(_to, _id, _amount);
 		// Emit single transfer event
 		emit TransferSingle(msg.sender, _from, _to, _id, _amount);
@@ -95,12 +79,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Reduce tokenHoldership holdings of _from
-			//tokenHoldership[_ids[i]][_from] -= _amounts[i];
-			//userToHoldings[_from][_ids[i]] -= _amounts[i];
 			mappingDecrease(_from, _ids[i], _amounts[i]);
 			// Increase tokenHoldership holdings of _to
-			//tokenHoldership[_ids[i]][_to] += _amounts[i];
-			//userToHoldings[_to][_ids[i]] += _amounts[i];
 			mappingIncrease(_to, _ids[i], _amounts[i]);
 		}
 		// Emit batch transfer event
