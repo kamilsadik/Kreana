@@ -164,10 +164,25 @@ contract("CreatorTokenExchange", (accounts) => {
 			const result = await contractInstance.burn(user, 0, 5000, {from: user});
 			assert.equal(result.receipt.status, true);
 		})
+		it("should allow user to burnBatch their own tokens", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH6", "This token will help us fund our next tour.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
+			const result = await contractInstance.burnBatch(user, [0,1], [5000,5000], {from: user});
+			assert.equal(result.receipt.status, true);
+		})
 		xit("should not allow user to burn another user's tokens", async () => {
 			
 		})
+		xit("should not allow user to burnBatch another user's tokens", async () => {
+			
+		})
 		xit("should not allow a user to mint tokens", async () => {
+			
+		})
+		xit("should not allow a user to mintBatch tokens", async () => {
 			
 		})
 		xit("should allow user to transfer their tokens to another user", async () => {
