@@ -43,6 +43,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 
 	// Burn a token
 	function burn(address _account, uint256 _id, uint256 _amount) public override {
+		require(msg.sender == _account);
 		// Update tokenHoldership mapping
 		mappingDecrease(_account, _id, _amount);
 		// Decrease token amount outstanding
@@ -53,6 +54,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 
 	// Burn a batch of tokens
 	function burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) public override {
+		require(msg.sender == _account);
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
