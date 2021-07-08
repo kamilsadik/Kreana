@@ -38,7 +38,6 @@ contract("CreatorTokenExchange", (accounts) => {
 	    it("should be able to sell Creator Token", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
-	        //totalProceeds = Number(totalProceeds);
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        const result = await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
 	        assert.equal(result.receipt.status, true);
@@ -63,8 +62,22 @@ contract("CreatorTokenExchange", (accounts) => {
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 5000, owner, {from: user}));
 	    })
-	   	xit("should not pay creator in a transaction in which a new level of maxSupply is not hit", async () => {
-
+	   	it("should not pay creator in a transaction in which a new level of maxSupply is not hit", async () => {
+	   		await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	        // Check creator address balance before additional transaction
+	        let creatorBalancePre = await web3.eth.getBalance(creator);
+	        creatorBalancePre = Number(creatorBalancePre);
+	        // User now buys 2500 tokens (leaving maxSupply unchanged) <= these two lines causing test to fail
+	        let totalProceedsNew = await contractInstance._totalProceeds(0, 2500);
+	        await contractInstance.buyCreatorToken(0, 2500, {from: user, value: totalProceedsNew});
+	        // Check creator address balance after additional transaction
+	        let creatorBalancePost = await web3.eth.getBalance(creator);
+	        creatorBalancePost = Number(creatorBalancePost);
+	        // Make sure creator address balanced is unchanged after the second buy transaction
+	        assert.equal(creatorBalancePre, creatorBalancePost);
 	    })
 	    it("should be able to handle transactions with odd numbers of tokens", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
@@ -72,8 +85,10 @@ contract("CreatorTokenExchange", (accounts) => {
 	        const result = await contractInstance.buyCreatorToken(0, 5069, {from: user, value: totalProceeds});
 	        assert.equal(result.receipt.status, true);
 	    })
-	    xit("should be able to handle transactions with very large numbers of tokens", async () => {
-
+	    it("should not be able to buy more tokens than can afford", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 100000);
+	        await utils.shouldThrow(contractInstance.buyCreatorToken(0, 100000, {from: user, value: totalProceeds}));
 	    })
 	    xit("should correctly update quantity of tokens outstanding after each transaction", async () => {
 
@@ -154,23 +169,29 @@ contract("CreatorTokenExchange", (accounts) => {
 		})
 	})
 
-	xcontext("post-transaction fee accounting", async () => {
-		it("should transfer the correct amount to the creator", async () => {
+	context("post-transaction fee accounting", async () => {
+		xit("should transfer the correct amount to the creator", async () => {
 
 	    })
-	    it("should transfer the correct amount to the platform", async () => {
+	    xit("should transfer the correct amount to the platform", async () => {
 
 	    })
-	    it("should correctly update totalPlatformFees after a transaction", async () => {
+	    xit("should correctly update totalPlatformFees after a transaction", async () => {
 	    	
 	    })
-	    it("should correctly update platformFeesOwed after a transaction", async () => {
+	    xit("should correctly update platformFeesOwed after a transaction", async () => {
 	    	
 	    })
 	    it("should have a CTE wallet balance >0 after a buy/sell of the same number of tokens", async () => {
-
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	        let contractBalance = await web3.eth.getBalance(contractInstance.address);
+	        contractBalance = Number(contractBalance);
+	        assert.isAbove(contractBalance, 0);
 	    })
-	    it("should have a CTE wallet balance == platformFeeUpdater's expectation", async () => {
+	    xit("should have a CTE wallet balance == platformFeeUpdater's expectation", async () => {
 
 	    })
 	})
