@@ -66,8 +66,11 @@ contract("CreatorTokenExchange", (accounts) => {
 	   	xit("should not pay creator in a transaction in which a new level of maxSupply is not hit", async () => {
 
 	    })
-	    xit("should be able to handle transactions with odd numbers of tokens", async () => {
-
+	    it("should be able to handle transactions with odd numbers of tokens", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5069);
+	        const result = await contractInstance.buyCreatorToken(0, 5069, {from: user, value: totalProceeds});
+	        assert.equal(result.receipt.status, true);
 	    })
 	    xit("should be able to handle transactions with very large numbers of tokens", async () => {
 
