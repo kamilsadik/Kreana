@@ -31,7 +31,8 @@ contract CreatorTokenComputation is CreatorTokenFees {
 		if (endSupply < creatorTokens[_tokenId].maxSupply) {
 			// Scenario in which entire transaction takes place below maxSupply
 			// Just call s(x)
-			proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
+			//proceedsRequired = _saleFunction(startingSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
+			proceedsRequired = _saleFunction(endSupply, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		} else if (startingSupply < creatorTokens[_tokenId].maxSupply){
 			// Scenario in which supply begins below maxSupply and ends above pre-transaction maxSupply
 			// Use s(x) from startingSupply to maxSupply

@@ -99,7 +99,6 @@ contract("CreatorTokenExchange", (accounts) => {
 		it("should correctly update userToHoldings after a buy", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
-	        //totalProceeds = Number(totalProceeds);
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        let holdings = await contractInstance.userToHoldings(user, 0);
 	        holdings = Number(holdings);
@@ -108,7 +107,6 @@ contract("CreatorTokenExchange", (accounts) => {
 	    it("should correctly update tokenHoldership after a buy", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
-	        //totalProceeds = Number(totalProceeds);
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        let holdings = await contractInstance.tokenHoldership(0, user);
 	        holdings = Number(holdings);
@@ -117,7 +115,6 @@ contract("CreatorTokenExchange", (accounts) => {
 	    it("should correctly update userToHoldings after a sale", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
-	        //totalProceeds = Number(totalProceeds);
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
 	        let holdings = await contractInstance.userToHoldings(user, 0);
@@ -127,12 +124,35 @@ contract("CreatorTokenExchange", (accounts) => {
 	    it("should correctly update tokenHoldership after a sale", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
-	        //totalProceeds = Number(totalProceeds);
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
 	        let holdings = await contractInstance.tokenHoldership(0, user)
 	        holdings = Number(holdings);
 	        assert.equal(holdings, 0);
+	    })
+	    it("should correctly update userToHoldings after a combination of buys and sales", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	        // User now buys 2500 tokens (leaving maxSupply unchanged) <= these two lines causing test to fail
+	        let totalProceedsNew = await contractInstance._totalProceeds(0, 2500);
+	        await contractInstance.buyCreatorToken(0, 2500, {from: user, value: totalProceedsNew});
+	        let holdings = await contractInstance.userToHoldings(user, 0);
+	        holdings = Number(holdings);
+	        assert.equal(holdings, 2500);
+	    })
+	    it("should correctly update tokenHoldership after a combination of buys and sales", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	        // User now buys 2500 tokens (leaving maxSupply unchanged) <= these two lines causing test to fail
+	        let totalProceedsNew = await contractInstance._totalProceeds(0, 2500);
+	        await contractInstance.buyCreatorToken(0, 2500, {from: user, value: totalProceedsNew});
+	        let holdings = await contractInstance.tokenHoldership(0, user);
+	        holdings = Number(holdings);
+	        assert.equal(holdings, 2500);
 	    })
 	})
 
