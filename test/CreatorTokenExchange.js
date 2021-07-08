@@ -194,7 +194,7 @@ contract("CreatorTokenExchange", (accounts) => {
 			
 		})
 		xit("should allow user to transfer their tokens to another user", async () => {
-
+			
 		})
 		xit("should correctly update tokenHoldership mapping upon a token transfer", async () => {
 
