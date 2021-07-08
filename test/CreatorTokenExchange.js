@@ -156,35 +156,39 @@ contract("CreatorTokenExchange", (accounts) => {
 	    })
 	})
 
-	xcontext("as a token-holder", async () => {
+	context("as a token-holder", async () => {
 		it("should allow user to burn their own tokens", async () => {
-
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			const result = await contractInstance.burn(user, 0, 5000, {from: user});
+			assert.equal(result.receipt.status, true);
 		})
-		it("should not allow user to burn another user's tokens", async () => {
+		xit("should not allow user to burn another user's tokens", async () => {
 			
 		})
-		it("should not allow a user to mint tokens", async () => {
+		xit("should not allow a user to mint tokens", async () => {
 			
 		})
-		it("should allow user to transfer their tokens to another user", async () => {
+		xit("should allow user to transfer their tokens to another user", async () => {
 
 		})
-		it("should correctly update tokenHoldership mapping upon a token transfer", async () => {
+		xit("should correctly update tokenHoldership mapping upon a token transfer", async () => {
 
 		})
-		it("should correctly update userToHoldings mapping upon a token transfer", async () => {
+		xit("should correctly update userToHoldings mapping upon a token transfer", async () => {
 
 		})
-		it("should correctly update tokenHoldership mappings upon a batch token transfer", async () => {
+		xit("should correctly update tokenHoldership mappings upon a batch token transfer", async () => {
 
 		})
-		it("should correctly update userToHoldings mappings upon a batch token transfer", async () => {
+		xit("should correctly update userToHoldings mappings upon a batch token transfer", async () => {
 
 		})
-		it("should be able to set approval", async () => {
+		xit("should be able to set approval", async () => {
 
 		})
-		it("should correctly show approval status", async () => {
+		xit("should correctly show approval status", async () => {
 
 		})
 	})
