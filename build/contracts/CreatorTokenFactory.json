@@ -7464,13 +7464,13 @@
     "absolutePath": "/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/damm_solidity/contracts/creatortokenfactory.sol",
     "exportedSymbols": {
       "Context": [
-        4298
+        4312
       ],
       "CreatorTokenFactory": [
         490
       ],
       "Ownable": [
-        2361
+        2375
       ]
     },
     "id": 491,
@@ -7495,7 +7495,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 491,
-        "sourceUnit": 2362,
+        "sourceUnit": 2376,
         "src": "57:52:2",
         "symbolAliases": [],
         "unitAlias": ""
@@ -7508,7 +7508,7 @@
               "id": 351,
               "name": "Ownable",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 2361,
+              "referencedDeclaration": 2375,
               "src": "143:7:2"
             },
             "id": 352,
@@ -7522,8 +7522,8 @@
         "id": 490,
         "linearizedBaseContracts": [
           490,
-          2361,
-          4298
+          2375,
+          4312
         ],
         "name": "CreatorTokenFactory",
         "nameLocation": "120:19:2",
@@ -9345,13 +9345,13 @@
     "absolutePath": "/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/damm_solidity/contracts/creatortokenfactory.sol",
     "exportedSymbols": {
       "Context": [
-        4298
+        4312
       ],
       "CreatorTokenFactory": [
         490
       ],
       "Ownable": [
-        2361
+        2375
       ]
     },
     "id": 491,
@@ -9376,7 +9376,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 491,
-        "sourceUnit": 2362,
+        "sourceUnit": 2376,
         "src": "57:52:2",
         "symbolAliases": [],
         "unitAlias": ""
@@ -9389,7 +9389,7 @@
               "id": 351,
               "name": "Ownable",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 2361,
+              "referencedDeclaration": 2375,
               "src": "143:7:2"
             },
             "id": 352,
@@ -9403,8 +9403,8 @@
         "id": 490,
         "linearizedBaseContracts": [
           490,
-          2361,
-          4298
+          2375,
+          4312
         ],
         "name": "CreatorTokenFactory",
         "nameLocation": "120:19:2",
@@ -11228,7 +11228,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-08T16:49:54.121Z",
+  "updatedAt": "2021-07-09T14:33:05.472Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
