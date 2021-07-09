@@ -3,7 +3,7 @@ const utils = require("./helpers/utils");
 
 contract("CreatorTokenExchange", (accounts) => {
 
-    let [owner, creator, newCreator, user] = accounts;
+    let [owner, creator, newCreator, user, newUser] = accounts;
     let contractInstance;
     beforeEach(async () => {
         contractInstance = await CreatorTokenExchange.new("CreatorTokenExchange");
@@ -193,20 +193,113 @@ contract("CreatorTokenExchange", (accounts) => {
 		xit("should not allow a user to mintBatch tokens", async () => {
 			
 		})
-		xit("should allow user to transfer their tokens to another user", async () => {
-			
+		it("should allow user to transfer their tokens to another user", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1);
+			let holdings = await contractInstance.tokenHoldership(0, user);
+			holdings = Number(holdings);
+			assert.equal(holdings, 0);
+			let newHoldings = await contractInstance.tokenHoldership(0, newUser);
+			newHoldings = Number(newHoldings);
+			assert.equal(newHoldings, 5000);
 		})
-		xit("should correctly update tokenHoldership mapping upon a token transfer", async () => {
+		it("should allow user to batch transfer their tokens to another user", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH6", "This token will help us fund our next tour.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
+			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1);
+			let holdings0 = await contractInstance.tokenHoldership(0, user);
+			holdings0 = Number(holdings0);
+			assert.equal(holdings0, 0);
+			let holdings1 = await contractInstance.tokenHoldership(1, user);
+			holdings1 = Number(holdings1);
+			assert.equal(holdings1, 0);
+			let newHoldings0 = await contractInstance.tokenHoldership(0, newUser);
+			newHoldings0 = Number(newHoldings0);
+			assert.equal(newHoldings0, 5000);
+			let newHoldings1 = await contractInstance.tokenHoldership(1, newUser);
+			newHoldings1 = Number(newHoldings1);
+			assert.equal(newHoldings1, 5000);
+		})
+		xit("should not allow a user to transfer another user's tokens if they have not been approved", async () => {
 
 		})
-		xit("should correctly update userToHoldings mapping upon a token transfer", async () => {
+		xit("should not allow a user to batch transfer another user's tokens if they have not been approved", async () => {
 
 		})
-		xit("should correctly update tokenHoldership mappings upon a batch token transfer", async () => {
+		xit("should allow a user to transfer another user's tokens if they have been approved", async () => {
 
 		})
-		xit("should correctly update userToHoldings mappings upon a batch token transfer", async () => {
+		xit("should allow a user to batch transfer another user's tokens if they have been approved", async () => {
 
+		})
+		it("should correctly update tokenHoldership mapping upon a token transfer", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1);
+			let holdings = await contractInstance.tokenHoldership(0, user);
+			holdings = Number(holdings);
+			assert.equal(holdings, 0);
+			let newHoldings = await contractInstance.tokenHoldership(0, newUser);
+			newHoldings = Number(newHoldings);
+			assert.equal(newHoldings, 5000);
+		})
+		it("should correctly update userToHoldings mapping upon a token transfer", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1);
+			let holdings = await contractInstance.userToHoldings(user, 0);
+			holdings = Number(holdings);
+			assert.equal(holdings, 0);
+			let newHoldings = await contractInstance.userToHoldings(newUser, 0);
+			newHoldings = Number(newHoldings);
+			assert.equal(newHoldings, 5000);
+		})
+		it("should correctly update tokenHoldership mappings upon a batch token transfer", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH6", "This token will help us fund our next tour.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
+			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1);
+			let holdings0 = await contractInstance.tokenHoldership(0, user);
+			holdings0 = Number(holdings0);
+			assert.equal(holdings0, 0);
+			let holdings1 = await contractInstance.tokenHoldership(1, user);
+			holdings1 = Number(holdings1);
+			assert.equal(holdings1, 0);
+			let newHoldings0 = await contractInstance.tokenHoldership(0, newUser);
+			newHoldings0 = Number(newHoldings0);
+			assert.equal(newHoldings0, 5000);
+			let newHoldings1 = await contractInstance.tokenHoldership(1, newUser);
+			newHoldings1 = Number(newHoldings1);
+			assert.equal(newHoldings1, 5000);
+		})
+		it("should correctly update userToHoldings mappings upon a batch token transfer", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH6", "This token will help us fund our next tour.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
+			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1);
+			let holdings0 = await contractInstance.userToHoldings(user, 0);
+			holdings0 = Number(holdings0);
+			assert.equal(holdings0, 0);
+			let holdings1 = await contractInstance.userToHoldings(user, 1);
+			holdings1 = Number(holdings1);
+			assert.equal(holdings1, 0);
+			let newHoldings0 = await contractInstance.userToHoldings(newUser, 1);
+			newHoldings0 = Number(newHoldings0);
+			assert.equal(newHoldings0, 5000);
+			let newHoldings1 = await contractInstance.userToHoldings(newUser, 1);
+			newHoldings1 = Number(newHoldings1);
+			assert.equal(newHoldings1, 5000);
 		})
 		xit("should be able to set approval", async () => {
 
@@ -214,6 +307,24 @@ contract("CreatorTokenExchange", (accounts) => {
 		xit("should correctly show approval status", async () => {
 
 		})
+		/*
+		it("should correctly show user's balance of a given token", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			let holdings = contractInstance.balanceOf(user, 0);
+			assert.equal(holdings, 5000);
+		})
+		it("should correctly show user's balance of a batch of tokens", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH6", "This token will help us fund our next tour.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
+			let holdings = contractInstance.balanceOfBatch([user, user], [0,1]);
+			assert.equal(holdings, [5000,5000]);
+		})
+		*/
 	})
 
 	context("post-transaction fee accounting", async () => {
@@ -327,31 +438,4 @@ contract("CreatorTokenExchange", (accounts) => {
         	await utils.shouldThrow(contractInstance.changeDescription(0, "This token will help us fund our next tour.", {from: newCreator}));
          })
     })
-
-/*
-
-    context("with the single-step transfer scenario", async () => {
-        it("should transfer a zombie", async () => {
-            const result = await contractInstance.createRandomZombie(zombieNames[0], {from: alice});
-            const zombieId = result.logs[0].args.zombieId.toNumber();
-            await contractInstance.transferFrom(alice, bob, zombieId, {from: alice});
-            const newOwner = await contractInstance.ownerOf(zombieId);
-            //TODO: replace with expect
-            assert.equal(newOwner, bob);
-        })
-    })
-
-
-    it("zombies should be able to attack another zombie", async () => {
-        let result;
-        result = await contractInstance.createRandomZombie(zombieNames[0], {from: alice});
-        const firstZombieId = result.logs[0].args.zombieId.toNumber();
-        result = await contractInstance.createRandomZombie(zombieNames[1], {from: bob});
-        const secondZombieId = result.logs[0].args.zombieId.toNumber();
-        await time.increase(time.duration.days(1));
-        await contractInstance.attack(firstZombieId, secondZombieId, {from: alice});
-        //TODO: replace with expect
-        assert.equal(result.receipt.status, true);
-    })
-*/
 })
