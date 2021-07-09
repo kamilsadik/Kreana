@@ -9263,7 +9263,7 @@
     "absolutePath": "/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/damm_solidity/contracts/creatortokenhelper.sol",
     "exportedSymbols": {
       "Context": [
-        4240
+        4264
       ],
       "CreatorTokenFactory": [
         490
@@ -9272,7 +9272,7 @@
         1220
       ],
       "Ownable": [
-        2303
+        2327
       ]
     },
     "id": 1221,
@@ -9325,8 +9325,8 @@
         "linearizedBaseContracts": [
           1220,
           490,
-          2303,
-          4240
+          2327,
+          4264
         ],
         "name": "CreatorTokenHelper",
         "nameLocation": "103:18:5",
@@ -9657,7 +9657,7 @@
                   "id": 1074,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "405:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -9848,7 +9848,7 @@
                   "id": 1092,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "596:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -9968,7 +9968,7 @@
                   "id": 1110,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "819:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -10087,7 +10087,7 @@
                   "id": 1122,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "969:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -10246,7 +10246,7 @@
                   "id": 1136,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "1156:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -11142,7 +11142,7 @@
     "absolutePath": "/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/damm_solidity/contracts/creatortokenhelper.sol",
     "exportedSymbols": {
       "Context": [
-        4240
+        4264
       ],
       "CreatorTokenFactory": [
         490
@@ -11151,7 +11151,7 @@
         1220
       ],
       "Ownable": [
-        2303
+        2327
       ]
     },
     "id": 1221,
@@ -11204,8 +11204,8 @@
         "linearizedBaseContracts": [
           1220,
           490,
-          2303,
-          4240
+          2327,
+          4264
         ],
         "name": "CreatorTokenHelper",
         "nameLocation": "103:18:5",
@@ -11536,7 +11536,7 @@
                   "id": 1074,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "405:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -11727,7 +11727,7 @@
                   "id": 1092,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "596:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -11847,7 +11847,7 @@
                   "id": 1110,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "819:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -11966,7 +11966,7 @@
                   "id": 1122,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "969:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -12125,7 +12125,7 @@
                   "id": 1136,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 2252,
+                  "referencedDeclaration": 2276,
                   "src": "1156:9:5"
                 },
                 "nodeType": "ModifierInvocation",
@@ -13023,7 +13023,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-09T16:47:10.267Z",
+  "updatedAt": "2021-07-09T17:51:16.302Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
