@@ -225,18 +225,6 @@ contract("CreatorTokenExchange", (accounts) => {
 			newHoldings1 = Number(newHoldings1);
 			assert.equal(newHoldings1, 5000);
 		})
-		xit("should not allow a user to transfer another user's tokens if they have not been approved", async () => {
-
-		})
-		xit("should not allow a user to batch transfer another user's tokens if they have not been approved", async () => {
-
-		})
-		xit("should allow a user to transfer another user's tokens if they have been approved", async () => {
-
-		})
-		xit("should allow a user to batch transfer another user's tokens if they have been approved", async () => {
-
-		})
 		it("should correctly update tokenHoldership mapping upon a token transfer", async () => {
 			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
@@ -301,10 +289,31 @@ contract("CreatorTokenExchange", (accounts) => {
 			newHoldings1 = Number(newHoldings1);
 			assert.equal(newHoldings1, 5000);
 		})
-		xit("should be able to set approval", async () => {
+		it("should be able to set approval", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			const result = await contractInstance.setApprovalForAll(newUser, true, {from: user});
+			assert.equal(result.receipt.status, true);
+		})
+		it("should correctly show approval status", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.setApprovalForAll(newUser, true, {from: user});
+			let approval = await contractInstance.isApprovedForAll(user, newUser);
+			assert.equal(approval, true);
+		})
+		xit("should not allow a user to transfer another user's tokens if they have not been approved", async () => {
+			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1, {from: newUser});
+		})
+		xit("should not allow a user to batch transfer another user's tokens if they have not been approved", async () => {
 
 		})
-		xit("should correctly show approval status", async () => {
+		xit("should allow a user to transfer another user's tokens if they have been approved", async () => {
+
+		})
+		xit("should allow a user to batch transfer another user's tokens if they have been approved", async () => {
 
 		})
 		/*
