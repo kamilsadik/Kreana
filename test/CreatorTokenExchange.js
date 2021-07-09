@@ -197,7 +197,7 @@ contract("CreatorTokenExchange", (accounts) => {
 			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
 			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
-			await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1);
+			await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1, {from: user});
 			let holdings = await contractInstance.tokenHoldership(0, user);
 			holdings = Number(holdings);
 			assert.equal(holdings, 0);
@@ -211,7 +211,7 @@ contract("CreatorTokenExchange", (accounts) => {
 			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
 			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
-			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1);
+			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1, {from: user});
 			let holdings0 = await contractInstance.tokenHoldership(0, user);
 			holdings0 = Number(holdings0);
 			assert.equal(holdings0, 0);
@@ -241,7 +241,7 @@ contract("CreatorTokenExchange", (accounts) => {
 			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
 			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
-			await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1);
+			await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1, {from: user});
 			let holdings = await contractInstance.tokenHoldership(0, user);
 			holdings = Number(holdings);
 			assert.equal(holdings, 0);
@@ -253,7 +253,7 @@ contract("CreatorTokenExchange", (accounts) => {
 			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
 			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
-			await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1);
+			await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1, {from: user});
 			let holdings = await contractInstance.userToHoldings(user, 0);
 			holdings = Number(holdings);
 			assert.equal(holdings, 0);
@@ -267,7 +267,7 @@ contract("CreatorTokenExchange", (accounts) => {
 			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
 			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
-			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1);
+			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1, {from: user});
 			let holdings0 = await contractInstance.tokenHoldership(0, user);
 			holdings0 = Number(holdings0);
 			assert.equal(holdings0, 0);
@@ -287,7 +287,7 @@ contract("CreatorTokenExchange", (accounts) => {
 			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
 			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
-			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1);
+			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1, {from: user});
 			let holdings0 = await contractInstance.userToHoldings(user, 0);
 			holdings0 = Number(holdings0);
 			assert.equal(holdings0, 0);

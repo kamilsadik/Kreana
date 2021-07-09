@@ -68,7 +68,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 
 	// Transfer a token
 	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
-		// Require that msg.sender == _from, or that approvals[_from][_to] == True
+		// Require that msg.sender == _from, or that approvals[_from][_to] == true
+		require(msg.sender == _from || isApprovedForAll(_from, _to));
 		// Reduce tokenHoldership holdings of _from
 		mappingDecrease(_from, _id, _amount);
 		// Increase tokenHoldership holdings of _to
@@ -81,7 +82,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
-			// Require that msg.sender == _from, or that approvals[_from][_to] == True
+			// Require that msg.sender == _from, or that approvals[_from][_to] == true
+			require(msg.sender == _from || isApprovedForAll(_from, _to));
 			// Reduce tokenHoldership holdings of _from
 			mappingDecrease(_from, _ids[i], _amounts[i]);
 			// Increase tokenHoldership holdings of _to
