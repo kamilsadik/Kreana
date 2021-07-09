@@ -304,17 +304,37 @@ contract("CreatorTokenExchange", (accounts) => {
 			let approval = await contractInstance.isApprovedForAll(user, newUser);
 			assert.equal(approval, true);
 		})
-		xit("should not allow a user to transfer another user's tokens if they have not been approved", async () => {
-			await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1, {from: newUser});
+		it("should allow a user to transfer another user's tokens if they have been approved", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.setApprovalForAll(newUser, true, {from: user});
+			const result = await contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1, {from: newUser});
+			assert.equal(result.receipt.status, true);
 		})
-		xit("should not allow a user to batch transfer another user's tokens if they have not been approved", async () => {
-
+		it("should allow a user to batch transfer another user's tokens if they have been approved", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH6", "This token will help us fund our next tour.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
+			await contractInstance.setApprovalForAll(newUser, true, {from: user});
+			const result = await contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1, {from: newUser});
+			assert.equal(result.receipt.status, true);
 		})
-		xit("should allow a user to transfer another user's tokens if they have been approved", async () => {
-
+		it("should not allow a user to transfer another user's tokens if they have not been approved", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await utils.shouldThrow(contractInstance.safeTransferFrom(user, newUser, 0, 5000, 1, {from: newUser}));
 		})
-		xit("should allow a user to batch transfer another user's tokens if they have been approved", async () => {
-
+		it("should not allow a user to batch transfer another user's tokens if they have not been approved", async () => {
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+			await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH6", "This token will help us fund our next tour.", {from: creator});
+			let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+			await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+			await contractInstance.buyCreatorToken(1, 5000, {from: user, value: totalProceeds});
+			await utils.shouldThrow(contractInstance.safeBatchTransferFrom(user, newUser, [0,1], [5000,5000], 1, {from: newUser}));
 		})
 		/*
 		it("should correctly show user's balance of a given token", async () => {
