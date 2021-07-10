@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 //contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
 contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 
-	constructor(string memory uri) ERC1155PresetMinterPauser(uri) { }
+	constructor(string memory uri) ERC1155(uri) { }
 
 	function mappingIncrease(address _account, uint256 _id, uint256 _amount) public {
 		tokenHoldership[_id][_account] += _amount;
