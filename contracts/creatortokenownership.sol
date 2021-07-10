@@ -2,9 +2,11 @@
 pragma solidity ^0.8.0;
 
 import "./creatortokenhelper.sol";
-import "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol";
+//import "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
-contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
+//contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
+contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 
 	constructor(string memory uri) ERC1155PresetMinterPauser(uri) { }
 
@@ -19,7 +21,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Mint a token
-	function mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
+	function _mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) internal override {
+		//require(hasRole(MINTER_ROLE, msg.sender));
 		// Update tokenHoldership mapping
 		mappingIncrease(_to, _id, _amount);
 		// Increase token amount outstanding
@@ -29,7 +32,8 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Mint a batch of tokens
-	function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public override {
+	function _mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) internal override {
+		//require(hasRole(MINTER_ROLE, msg.sender));
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Update tokenHoldership mapping
@@ -42,7 +46,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Burn a token
-	function burn(address _account, uint256 _id, uint256 _amount) public override {
+	function _burn(address _account, uint256 _id, uint256 _amount) internal override {
 		require(msg.sender == _account);
 		// Update tokenHoldership mapping
 		mappingDecrease(_account, _id, _amount);
@@ -53,7 +57,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser 
 	}
 
 	// Burn a batch of tokens
-	function burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) public override {
+	function _burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) internal override {
 		require(msg.sender == _account);
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
