@@ -403,11 +403,45 @@ contract("CreatorTokenExchange", (accounts) => {
 	        //AssertionError: expected 492567567567567100 to equal 492567567567816060
 	        // Note that this difference is small enough that it is likely a function of gas costs
 	    })
-	    xit("should correctly update totalPlatformFees after a transaction", async () => {
-	    	
+	    it("should correctly update totalPlatformFees after a buy", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let netProceeds = await contractInstance._buyProceeds(0, 5000);
+	        let feeProceeds = await contractInstance._feeProceeds(netProceeds);
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        let totalPlatformFees = await contractInstance.totalPlatformFees();
+	        assert.equal(Number(totalPlatformFees), Number(feeProceeds));
 	    })
-	    xit("should correctly update platformFeesOwed after a transaction", async () => {
-	    	
+	    it("should correctly update platformFeesOwed after a buy", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let netProceeds = await contractInstance._buyProceeds(0, 5000);
+	        let feeProceeds = await contractInstance._feeProceeds(netProceeds);
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        let platformFeesOwed = await contractInstance.platformFeesOwed();
+	        assert.equal(Number(platformFeesOwed), Number(feeProceeds));
+	    })
+	    it("should leave totalPlatformFees unchanged after a payout to owner", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let netProceeds = await contractInstance._buyProceeds(0, 5000);
+	        let feeProceeds = await contractInstance._feeProceeds(netProceeds);
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        let totalPlatformFeesPre = await contractInstance.totalPlatformFees();
+	        await contractInstance.payoutPlatformFees(owner, {from: owner});
+	        let totalPlatformFeesPost = await contractInstance.totalPlatformFees();
+	        assert.equal(Number(totalPlatformFeesPre), Number(totalPlatformFeesPost));
+	    })
+	    it("should correctly update platformFeesOwed after a payout to owner", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let netProceeds = await contractInstance._buyProceeds(0, 5000);
+	        let feeProceeds = await contractInstance._feeProceeds(netProceeds);
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        let platformFeesOwedPre = await contractInstance.platformFeesOwed();
+	        await contractInstance.payoutPlatformFees(owner, {from: owner});
+	        let platformFeesOwedPost = await contractInstance.platformFeesOwed();
+	        assert.equal(Number(platformFeesOwedPost), 0);
 	    })
 	    it("should have a CTE wallet balance >0 after a buy/sell of the same number of tokens", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
@@ -418,11 +452,51 @@ contract("CreatorTokenExchange", (accounts) => {
 	        contractBalance = Number(contractBalance);
 	        assert.isAbove(contractBalance, 0);
 	    })
-	    xit("should have a CTE wallet balance equal to expected totalPlatformFees after buys/sales", async () => {
-
+	    it("should have a CTE wallet balance equal to expected totalPlatformFees after a buy and a sale", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	        let contractBalance = await web3.eth.getBalance(contractInstance.address);
+	        let totalPlatformFees = await contractInstance.totalPlatformFees();
+	        assert.equal(Number(contractBalance), Number(totalPlatformFees));
 	    })
-	    xit("should have a CTE wallet balance equal to expected totalPlatformFees after a large number (1000+) of buys/sales", async () => {
-	    	
+	    it("should have a CTE wallet balance equal to expected totalPlatformFees after a moderate number (~10) of buys/sales", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	    	for (let i = 0; i < 10; i++) {
+	    		let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        	await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        	await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	    	}
+	    	let contractBalance = await web3.eth.getBalance(contractInstance.address);
+	    	let totalPlatformFees = await contractInstance.totalPlatformFees();
+	    	assert.equal(Number(contractBalance), Number(totalPlatformFees));
+	    })
+	    it("should have a CTE wallet balance equal to expected totalPlatformFees after a moderate number (10) of buys, followed by a moderate number (10) of sales", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	    	for (let i = 0; i < 10; i++) {
+	    		let totalProceeds = await contractInstance._totalProceeds(0, 500);
+	        	await contractInstance.buyCreatorToken(0, 500, {from: user, value: totalProceeds});
+	    	}
+	    	for (let i = 0; i < 10; i++) {
+	    		await contractInstance.sellCreatorToken(0, 500, user, {from: user});
+	    	}
+	    	let contractBalance = await web3.eth.getBalance(contractInstance.address);
+	    	let totalPlatformFees = await contractInstance.totalPlatformFees();
+	    	assert.equal(Number(contractBalance), Number(totalPlatformFees));
+	    	//AssertionError: expected 10945945945946152 to equal 10945945945948400
+	    	// Note that this difference is small enough that it is likely a function of gas costs, but it's interesting the prior test doesn't have any slippage. Look into why that is.
+	    })
+	    xit("should have a CTE wallet balance equal to expected totalPlatformFees after a very large number (~1000) of buys/sales", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	    	for (let i = 0; i < 1000; i++) {
+	    		let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        	await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        	await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
+	    	}
+	    	let contractBalance = await web3.eth.getBalance(contractInstance.address);
+	    	let totalPlatformFees = await contractInstance.totalPlatformFees();
+	    	assert.equal(Number(contractBalance), Number(totalPlatformFees));
 	    })
 	})
 
