@@ -13,7 +13,7 @@ contract CreatorTokenHelper is CreatorTokenFactory {
 
 	// Ownable function allowing for withdrawal
 	function withdraw(address payable _owner) external onlyOwner {
-	  _owner.transfer(address(this).balance);
+		_owner.transfer(address(this).balance);
 	}
 
 	// Payout platform fees owed to owner (might opt to call this daily)
