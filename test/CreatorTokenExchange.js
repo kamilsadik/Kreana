@@ -90,8 +90,15 @@ contract("CreatorTokenExchange", (accounts) => {
 	        let totalProceeds = await contractInstance._totalProceeds(0, 100000);
 	        await utils.shouldThrow(contractInstance.buyCreatorToken(0, 100000, {from: user, value: totalProceeds}));
 	    })
-	    xit("should correctly update quantity of tokens outstanding after each transaction", async () => {
-
+	    it("should correctly update quantity of tokens outstanding after each transaction", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        let newProceeds = await contractInstance._totalProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: newUser, value: newProceeds});
+	        await contractInstance.sellCreatorToken(0, 499, user, {from: user});
+	        const result = await contractInstance.creatorTokens(0);
+	        assert.equal(result.outstanding, 9501);
 	    })
 	})
 

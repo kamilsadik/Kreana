@@ -10,12 +10,12 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 
 	constructor(string memory uri) ERC1155(uri) { }
 
-	function mappingIncrease(address _account, uint256 _id, uint256 _amount) public {
+	function mappingIncrease(address _account, uint256 _id, uint256 _amount) internal {
 		tokenHoldership[_id][_account] += _amount;
 		userToHoldings[_account][_id] += _amount;
 	}
 
-	function mappingDecrease(address _account, uint256 _id, uint256 _amount) public {
+	function mappingDecrease(address _account, uint256 _id, uint256 _amount) internal {
 		tokenHoldership[_id][_account] -= _amount;
 		userToHoldings[_account][_id] -= _amount;
 	}

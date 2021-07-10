@@ -59,4 +59,11 @@ contract CreatorTokenFactory is Ownable {
 		// Emit token creation event
 		emit NewCreatorToken(id, _creatorAddress, _name, _symbol, _description, false, 0, 0);
 	}
+
+	// Getter function for creator token, to be used in front-end
+	function getOutstanding(uint _id) public view returns (uint){
+		//CreatorToken memory creatorToken = creatorTokens[_id];
+		return creatorTokens[_id].outstanding;
+	}
+
 }
