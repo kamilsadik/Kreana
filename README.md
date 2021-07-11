@@ -7,6 +7,8 @@ Creator Token Exchange allows a creator to mint an original token to sell to the
 ## Dynamic Automated Market Maker
 
 Traditional Bonding Curve
+
 BitClout and its drawbacks (additional currency)
+
 Continuous Organizations (wide and visible bid/offer, liquidity provider of last resort)
 
