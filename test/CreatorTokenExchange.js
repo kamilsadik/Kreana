@@ -461,6 +461,9 @@ contract("CreatorTokenExchange", (accounts) => {
 	        let totalPlatformFees = await contractInstance.totalPlatformFees();
 	        assert.equal(Number(contractBalance), Number(totalPlatformFees));
 	    })
+	    xit("should adjust owner wallet balance as expected after executing payoutPlatformFees", async () => {
+
+	    })
 	    it("should have a CTE wallet balance equal to expected totalPlatformFees after a moderate number (~10) of buys/sales", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	    	for (let i = 0; i < 10; i++) {
