@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIThi
 pragma solidity ^0.8.0;
 
 import "./creatortokencomputation.sol";
