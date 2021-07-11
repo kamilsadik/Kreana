@@ -491,6 +491,7 @@ contract("CreatorTokenExchange", (accounts) => {
 	    	// Note that this difference is small enough that it is likely a function of gas costs, but it's interesting the prior test doesn't have any slippage. Look into why that is.
 	    })
 	    xit("should have a CTE wallet balance equal to expected totalPlatformFees after a very large number (~1000) of buys/sales", async () => {
+	    	// Create additional users for this test
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	    	for (let i = 0; i < 1000; i++) {
 	    		let totalProceeds = await contractInstance._totalProceeds(0, 5000);
