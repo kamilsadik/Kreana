@@ -3,6 +3,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/// @title A contract generating Creator Tokens, as well as relevant attributes and mappings
+/// @author Kamil Alizai Sadik
 contract CreatorTokenFactory is Ownable {
 
 	// Event that fires whenever a new CreatorToken is created
@@ -22,6 +24,7 @@ contract CreatorTokenFactory is Ownable {
 	uint mNumerator = 9000000000000;
 	uint mDenominator = 185;
 
+	// Struct containing CreatorToken attributes
 	struct CreatorToken {
 		address payable creatorAddress;
 		string name;
@@ -46,7 +49,11 @@ contract CreatorTokenFactory is Ownable {
 	// Mapping from account to operator approvals
 	mapping(address => mapping(address => bool)) internal approvals;
 
-	// Create a new CreatorToken
+	/// @dev Creates a new creator token
+	/// @param _creatorAddress Address of the creator of the token
+	/// @param _name Name chosen by the creator of the token
+	/// @param _symbol Ticker symbol chosen by the creator of the token
+	/// @param _description chosen by the creator of the tokens
 	function createCreatorToken(address payable _creatorAddress, string memory _name, string memory _symbol, string memory _description) public {
 		// Add token to creatorTokens array
 		creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, false, 0, 0));

@@ -3,11 +3,16 @@ pragma solidity ^0.8.0;
 
 import "./creatortokenfees.sol";
 
+/// @title Computes buy proceeds and total proceeds associated with a buy transaction
+/// @author Kamil Alizai Sadik
 contract CreatorTokenComputation is CreatorTokenFees {
 
 	constructor(string memory uri) CreatorTokenFees(uri) { }
 
-	// Calculate total transaction proceeds
+	/// @dev Calculates total transaction proceeds
+	/// @param _tokenId ID of the token being transacted
+	/// @param _amount Quantity of the token being transacted
+	/// @return Total proceeds required in transaction
 	function _totalProceeds(uint _tokenId, uint _amount) public view returns (uint256) {//, uint256, uint256) {//[3] memory) {
 		// Compute proceedsRequired (ex-fees)
 		uint proceedsRequired = _buyProceeds(_tokenId, _amount);
@@ -18,7 +23,10 @@ contract CreatorTokenComputation is CreatorTokenFees {
 		return totalProceeds;
 	}
 
-	// Calculate proceedsRequired to for a given buy transaction (not including fees)
+	/// @dev Calculates proceeds required for a given buy transaction (not including fees)
+	/// @param _tokenId ID of the token being transacted
+	/// @param _amount Quantity of the token being transacted
+	/// @return Proceeds required in the transaction (before fees)
 	function _buyProceeds(uint _tokenId, uint _amount) public view returns (uint256) {
 		// Initialize proceeds required;
 		uint proceedsRequired = 0;

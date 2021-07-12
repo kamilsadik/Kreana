@@ -2,25 +2,37 @@
 pragma solidity ^0.8.0;
 
 import "./creatortokenhelper.sol";
-//import "@openzeppelin/contracts/token/ERC1155/presets/ERC1155PresetMinterPauser.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
-//contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155PresetMinterPauser {
+/// @title Contract inheriting from the ERC1155 standard
+/// @author Kamil Alizai Sadik
 contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 
 	constructor(string memory uri) ERC1155(uri) { }
 
+	/// @dev Increases holdership stats of a given token
+	/// @param _account Wallet address whose holdership is being updated
+	/// @param _id ID of the token whose holdership is being updated
+	/// @param _amount Amount of the change in token holdership
 	function mappingIncrease(address _account, uint256 _id, uint256 _amount) internal {
 		tokenHoldership[_id][_account] += _amount;
 		userToHoldings[_account][_id] += _amount;
 	}
 
+	/// @dev Decreases holdership stats of a given token
+	/// @param _account Wallet address whose holdership is being updated
+	/// @param _id ID of the token whose holdership is being updated
+	/// @param _amount Amount of the change in token holdership
 	function mappingDecrease(address _account, uint256 _id, uint256 _amount) internal {
 		tokenHoldership[_id][_account] -= _amount;
 		userToHoldings[_account][_id] -= _amount;
 	}
 
-	// Mint a token
+	/// @dev Mints a token
+	/// @param _to Wallet address the newly minted token is assigned to
+	/// @param _id ID of the newly minted token
+	/// @param _amount Quantity of token to be minted
+	/// @param _data Data
 	function _mint(address _to, uint256 _id, uint256 _amount, bytes memory _data) internal override {
 		//require(hasRole(MINTER_ROLE, msg.sender));
 		// Update tokenHoldership mapping
@@ -31,7 +43,11 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 		emit TransferSingle(msg.sender, address(0), _to, _id, _amount);
 	}
 
-	// Mint a batch of tokens
+	/// @dev Mints a batch of tokens
+	/// @param _to Wallet address the newly minted token is assigned to
+	/// @param _ids Array of IDs of tokens to be minted
+	/// @param _amounts Array of quantities of tokens to be minted
+	/// @param _data Data
 	function _mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) internal override {
 		//require(hasRole(MINTER_ROLE, msg.sender));
 		// Iterate through _ids
@@ -45,7 +61,10 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 		emit TransferBatch(msg.sender, address(0), _to, _ids, _amounts);
 	}
 
-	// Burn a token
+	/// @dev Burns a token
+	/// @param _account Account whose tokens are being burned
+	/// @param _id ID of the token being burned
+	/// @param _amount Quantity of the token to be burned
 	function _burn(address _account, uint256 _id, uint256 _amount) internal override {
 		require(msg.sender == _account);
 		// Update tokenHoldership mapping
@@ -56,7 +75,10 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 		emit TransferSingle(msg.sender, _account, address(0), _id, _amount);
 	}
 
-	// Burn a batch of tokens
+	/// @dev Burns a batch of tokens
+	/// @param _account Account whose tokens are being burned
+	/// @param _ids Array of IDs of the tokens being burned
+	/// @param _amounts Array of quantities of the tokens to be burned
 	function _burnBatch(address _account, uint256[] memory _ids, uint256[] memory _amounts) internal override {
 		require(msg.sender == _account);
 		// Iterate through _ids
@@ -70,7 +92,12 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 		emit TransferBatch(msg.sender, _account, address(0), _ids, _amounts);
 	}
 
-	// Transfer a token
+	/// @dev Transfers a token
+	/// @param _from Address token is being transferred from
+	/// @param _to Address token is being transferred to
+	/// @param _id ID of token being transferred
+	/// @param _amount Quantity of token to be transferred
+	/// @param _data Data
 	function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) public override {
 		// Require that msg.sender == _from, or that approvals[_from][_to] == true
 		require(msg.sender == _from || isApprovedForAll(_from, _to));
@@ -82,7 +109,12 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 		emit TransferSingle(msg.sender, _from, _to, _id, _amount);
 	}
 
-	// Transfer a batch of tokens
+	/// @dev Transfers a batch of tokens
+	/// @param _from Address token is being transferred from
+	/// @param _to Address token is being transferred to
+	/// @param _ids Array of IDs of tokens being transferred
+	/// @param _amount Array of quantities of token to be transferred
+	/// @param _data Data
 	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
@@ -97,13 +129,38 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 		emit TransferBatch(msg.sender, _from, _to, _ids, _amounts);
 	}
 
-	// Return balance of a given token at a given address
+	/// @dev Gives operator permission to transfer caller's tokens
+	/// @param _operator Wallet address being granted permission
+	/// @param _approved Boolean value indicating whether operator is approved
+	function setApprovalForAll(address _operator, bool _approved) public override {
+		// Update approvals mapping
+		approvals[msg.sender][_operator] = _approved;
+		// Emit Approval event
+		emit ApprovalForAll(msg.sender, _operator, _approved);
+	}
+
+	/// @dev Denotes whether operator is approved to transfer account's tokens
+	/// @param _account Wallet address holding tokens
+	/// @param _operator Wallet address which is/isn't approved to transfer _account's tokens
+	/// @return Boolean value indicating approval status
+	function isApprovedForAll(address _account, address _operator) public view override returns (bool) {
+		// Look up approvals mapping
+		return approvals[_account][_operator];
+	}
+
+	/// @dev Returns balance of a given token at a given address. Commented this out since this info is visible in tokenHoldership and userToHoldings mappings.
+	/// @param _account Account in question
+	/// @param _id ID of token whose balance we wish to find
+	/// @return Quantity of token _id in _account
 	//function balanceOf(address _account, uint256 _id) public view override returns (uint256) {
 		// Look up _account's holdings of _id in tokenHoldership
 	//	return tokenHoldership[_id][_account];
 	//}
 
-	// Return balance of a batch of tokens
+	/// @dev Returns balance of a batch of tokens. Commented this out since this info is visible in tokenHoldership and userToHoldings mappings.
+	/// @param _accounts Array of accounts in question
+	/// @param _ids Array of IDs of token whose balances we wish to find
+	/// @return Array of quantities of tokens _ids in _accounts
 	//function balanceOfBatch(address[] calldata _accounts, uint256[] calldata _ids) public view override returns (uint256[] memory) {
 	//	// Initialize output array
 	//	uint256[] memory batchBalances = new uint256[](_accounts.length);
@@ -115,18 +172,4 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 	//	// Return output array
 	//	return batchBalances;
 	//}
-
-	// Give operator permission to transfer caller's tokens
-	function setApprovalForAll(address _operator, bool _approved) public override {
-		// Update approvals mapping
-		approvals[msg.sender][_operator] = _approved;
-		// Emit Approval event
-		emit ApprovalForAll(msg.sender, _operator, _approved);
-	}
-
-	// Denotes whether operator is approved to transfer accounts' tokens
-	function isApprovedForAll(address _account, address _operator) public view override returns (bool) {
-		// Look up approvals mapping
-		return approvals[_account][_operator];
-	}
 }

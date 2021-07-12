@@ -3,6 +3,8 @@ pragma solidity ^0.8.0;
 
 import "./creatortokencomputation.sol";
 
+/// @title Implements high-level buy and sell functions (which users invoke when transacting)
+/// @author Kamil Alizai Sadik
 contract CreatorTokenExchange is CreatorTokenComputation {
 
 	constructor(string memory uri) CreatorTokenComputation(uri) { }
@@ -10,7 +12,9 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 	// Event that fires when a new transaction occurs
 	event NewTransaction(address indexed account, uint amount, string transactionType, uint tokenId, string name, string symbol);
 
-	// Allow user to buy a given CreatorToken from the platform
+	/// @dev Allows user to buy a given CreatorToken from the platform
+	/// @param _tokenId ID of the token being transacted
+	/// @param _amount Quantity of the token being transacted
 	function buyCreatorToken(uint _tokenId, uint _amount) external payable {
 		// Compute total transaction proceeds required (inclusive of fee)
 		uint totalProceeds = _totalProceeds(_tokenId, _amount);
@@ -31,7 +35,10 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 		}
 	}
 
-	// Allow user to sell a given CreatorToken back to the platform
+	/// @dev Allows user to sell a given CreatorToken back to the platform
+	/// @param _tokenId ID of the token being transacted
+	/// @param _amount Quantity of the token being transacted
+	/// @param _seller Wallet address of user selling the token
 	function sellCreatorToken(uint _tokenId, uint _amount, address payable _seller) external payable {
 		// Require that user calling function is selling own tokens
 		require(_seller == msg.sender);
