@@ -25,7 +25,6 @@ contract("CreatorTokenExchange", (accounts) => {
 	    it("should be able to buy Creator Token", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
-	        //totalProceeds = Number(totalProceeds);
 	        const result = await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        assert.equal(result.receipt.status, true);
 	        assert.equal(result.logs[1].args.account, user);
@@ -51,14 +50,12 @@ contract("CreatorTokenExchange", (accounts) => {
 	    it("should not be able to sell more than outstanding amount of Creator Token", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
-	        //totalProceeds = Number(totalProceeds);
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 2000000, user, {from: user}));
 	    })
 	    it("should not be able to sell another user's Creator Tokens", async () => {
 	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
 	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
-	        //totalProceeds = Number(totalProceeds);
 	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
 	        await utils.shouldThrow(contractInstance.sellCreatorToken(0, 5000, owner, {from: user}));
 	    })

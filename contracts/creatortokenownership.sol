@@ -48,7 +48,7 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 	/// @param _ids Array of IDs of tokens to be minted
 	/// @param _amounts Array of quantities of tokens to be minted
 	/// @param _data Data
-	function _mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) internal override {
+	function _mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory _data) internal override {
 		//require(hasRole(MINTER_ROLE, msg.sender));
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
@@ -113,9 +113,9 @@ contract CreatorTokenOwnership is CreatorTokenHelper, ERC1155 {
 	/// @param _from Address token is being transferred from
 	/// @param _to Address token is being transferred to
 	/// @param _ids Array of IDs of tokens being transferred
-	/// @param _amount Array of quantities of token to be transferred
+	/// @param _amounts Array of quantities of token to be transferred
 	/// @param _data Data
-	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory data) public override {
+	function safeBatchTransferFrom(address _from, address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory _data) public override {
 		// Iterate through _ids
 		for (uint256 i=0; i<_ids.length; i++) {
 			// Require that msg.sender == _from, or that approvals[_from][_to] == true

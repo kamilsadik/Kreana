@@ -11,7 +11,7 @@ contract CreatorTokenFactory is Ownable {
 	event NewCreatorToken(uint tokenId, address payable creatorAddress, string name, string symbol, string description, bool verified, uint outstanding, uint maxSupply);
 
 	// Pay-on-top style platform fee on each transaction
-	uint platformFee = 1; // e.g., if platformFee == 1/, the platform earns 1% of each transaction's value
+	uint platformFee = 1; // e.g., if platformFee == 1, the platform earns 1% of each transaction's value
 	// Variable to track total platform fees generated
 	uint public totalPlatformFees = 0;
 	// Variable to track platform fees owed, but not yet paid to owner
