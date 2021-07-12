@@ -70,9 +70,15 @@ There are infinitely many sale price functions (one for each level of maxSupply)
 
 ![Infinitely many sale price functions](many_sale_fncs.png)
 
+As a result, we must come up with a way to derive the sale price function required at each level of maxSupply. The sale price function itself is a function of the buy price function, and is constructed so as to allow the token issuer to extract a pre-determined percentage of the overall liquidity pool as profit.
+
 ### Computation
 
-Derivation of breakpoint, demonstrating how we can construct a sale price funtion for any buy price function (s.t certain constraints)
+For a complete specification of the constraints on buy price function *b(x)* and sale price function *s(x)*, and for a generalized derivation, see [Kamil Alizai Sadik's Dynamic Automated Market Maker (DAMM) Whitepaper Working Draft](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf).
+
+In this application, we use a linear buy price function *b(x)*, and construct a piecewise-defined sale price function *s(x)* starting at (0,0) and ending at (*maxSupply*,*b(maxSupply)*). We define breakpint *(a,b)* to be the non-differentiable point along *s(x)*, chosen such that the desired percentage of the liquidity pool is harvested as profit.
+
+![Linear case of the DAMM](linear_damm.png)
 
 ## Use Cases
 
