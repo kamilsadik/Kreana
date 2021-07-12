@@ -2,7 +2,7 @@
 
 ## Overview
 
-Creator Token Exchange allows a creator to mint an original token to sell to their fans. The Creator Token Exchange relies on a Dynamic Automated Market Maker to generate revenue for the creator as more tokens are minted, while providing continuous and perpetual liquidity for buyers of the token.
+Creator Token Exchange allows a creator to mint their own token to sell to their fans. The Creator Token Exchange relies on a Dynamic Automated Market Maker to generate revenue to fund the creator's projects as more tokens are minted, while providing continuous and perpetual liquidity for buyers of the token.
 
 ## Background
 
@@ -16,7 +16,7 @@ A bonding curve is a function which determines the incremental price of a token 
 
 Source: [Yos Riady, *Bonding Curves Explained*](https://yos.io/2018/11/10/bonding-curves/)
 
-By taking the area under this curve, we are able to compute the proceeds required in any given transaction. In the example below, there are tokenSupply tokens in circulation before the transaction, and a user wishes to buy 10 tokens. 
+By taking the area under this curve, we are able to compute the proceeds required in any given transaction. In the example below, there are tokenSupply tokens in circulation before the transaction, and a user wishes to buy 10 tokens. The user pays proceeds equal to the area under the curve from tokenSupply to tokenSupply+10 in order to buy those tokens
 
 ![Bonding Curve Transaction](bonding_curve_transaction.jpeg)
 
@@ -28,7 +28,7 @@ Bonding curves offer the advantage of guaranteed liquidity for any number of tok
 
 #### BitClout
 
-BitClout.com is a social media platform which allows users to create and sell their own token (called Creator Coins). The transaction flow requires users to buy the BitClout currency using bitcoin, and then to buy and sell Creator Coins for BitClout. This enables the BitClout.com organization to generate by revenue by minting BitClout, since the structure of the bonding curve prevents them from earning revenue on transactions along the bonding curve.
+[BitClout.com](https://bitclout.com/) is a social media platform which allows users to create and sell their own token (called Creator Coins). The transaction flow requires users to buy the BitClout currency using bitcoin, and then to buy and sell Creator Coins for BitClout. This enables the BitClout.com organization to generate by revenue by minting BitClout, since the structure of the bonding curve prevents them from earning revenue on Creator Coin transactions.
 
 It is worth noting that the price of BitClout is also determined by a bonding curve-like function -- BitClout.com simply does not provide liquidity on the BitClout currency, allowing them to crystallize all proceeds from the sale of BitClout currency as profit.
 
@@ -40,7 +40,7 @@ Source: [*BitClout White Paper*](https://bitcloutwhitepaper.com/)
 
 #### Continuous Organizations
 
-The Continuous Organizations approach, described in the [*Continuous Organizations Whitepaper*](https://github.com/C-ORG/whitepaper/) uses bonding curves as a fundraising mechanism forn organization. The key innovation is to have two separate bonding curves: one along which a user can buy tokens, and one along which a user can sell tokens:
+The Continuous Organizations approach, described in the [*Continuous Organizations Whitepaper*](https://github.com/C-ORG/whitepaper/) uses bonding curves as a fundraising mechanism for an organization. The key innovation is to have two separate bonding curves: one along which a user can buy tokens, and one along which a user can sell tokens:
 
 ![Continuous Organizations Bonding Curve](continuous_organizations_bonding_curve.png | width = 100)
 
@@ -58,13 +58,13 @@ The drawbacks of the BitClout.com and Continuous Organizations use of bonding cu
 
 ### Mechanism
 
-We achieve this using the Dynamic Automated Market Maker, which uses a continuous bonding curve to guarantee continuous liquidity provision, but relies on separate buy and sale price functions so that a portion of the liquidity pool can be harvested as profit.
+We achieve this using the Dynamic Automated Market Maker, which uses a continuous bonding curve to guarantee smooth liquidity provision, but relies on separate buy and sale price functions so that a portion of the liquidity pool can be harvested as profit.
 
 ![DAMM](damm.png)
 
 Mechanically, users buy tokens along the buy price function *b(x)* as long as the number of tokens outstanding is equal to the peak number of tokens in circulation to date (what we call maxSupply). When the outstanding supply of tokens is less than maxSupply, transactions (both buys and sales) occur along the sale price function *s(x)* intersecting the buy price function at *x*=*maxSupply*. 
 
-The result is that the area under *s(x)* intersecting *b(x)* at *x*=*maxSupply* acts as the liquidity pool standing ready to buy back tokens, while the area between *b(x)* and *s(x)* is revenue that can be extracted from the pool.
+The result is that the area under *s(x)* acts as the liquidity pool standing ready to buy back tokens, while the area between *b(x)* and *s(x)* is revenue that can be extracted from the pool.
 
 There are infinitely many sale price functions (one for each level of maxSupply). At any given point in time, we only use the sale price function intersecting the buy price function at *x*=*maxSupply*.
 
@@ -84,8 +84,8 @@ In this application, we use a linear buy price function *b(x)*, and construct a 
 
 ### Creator Tokens
 
-The DAMM application we implement in this set of smart contracts involves creators minting a token of their own, and selling it to fans. In this case, the platform generates revenue by taking a 1% transaction fee, while the region between *b(x)* and *s(x)* serves as a fundraising mechanism for the creator. This can be used to fund a new album, tour, or other artistic project. In addition to benefitting from potential price appreciation (and the liquidity required to monetize that price appreciation), fans may receive additional perks for being tokenholders. For example, the creator might encourage token holdership by rewarding the 50 largest holders with a private livestream concert. The creator might also incentivize holding tokens for the long haul by rewarding the top 50 longest-holding holders with a similar perk.
+The DAMM application we implement in this set of smart contracts involves creators minting a token of their own, and selling that token to fans. In this case, the platform generates revenue by taking a 1% transaction fee, while the region between *b(x)* and *s(x)* serves as a fundraising mechanism for the creator. This can be used to fund a new album, tour, or other artistic project. In addition to benefitting from potential price appreciation (and the liquidity required to monetize that price appreciation), fans may receive additional perks for being tokenholders. For example, the creator might encourage token holdership by rewarding the 50 largest holders with a private livestream concert. The creator might also incentivize holding tokens for the long haul by rewarding the top 50 longest-holding holders with a similar perk.
 
 ### Platform-Created Tokens
 
-Alternatively, the platform itself can issue tokens. In that case, the DAMM could be a source of revenue which is not tied to transaction volume, and so may be conducive to applications in which users are likely to buy and hold the token. It is unclear that this is a compelling use case, since the DAMM necessarily reduces liquidity in order to crystallize revenue, and fans are more likely to approve of such a construct when that revenue is going towards producing an artist they care about, and art they will then enjoy.
+Alternatively, the platform itself can issue tokens. In that case, the DAMM could be a source of revenue which is not tied to transaction volume, and so may be conducive to applications in which users are likely to buy and hold the token. It is unclear that this is a compelling use case, however, since the DAMM necessarily reduces liquidity in order to crystallize revenue. Fans are more likely to approve of such a construct when that revenue is going towards producing an artist they care about, and art they will then enjoy.
