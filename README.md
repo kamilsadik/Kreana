@@ -6,13 +6,11 @@ Creator Token Exchange allows a creator to mint an original token to sell to the
 
 ## Background
 
-The Dynamic Automated Market Maker (DAMM) is a novel variation of traditional bonding curve-based automated market makers, allowing for both revenue generation and liquidity provision.
+The Dynamic Automated Market Maker (DAMM) is a novel variation of traditional bonding curve-based [automated market makers](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers), allowing for both revenue generation and liquidity provision.
 
 ### Bonding Curves
 
-A bonding curve is a function which determines the incremental price of a token as as function of the current supply of that token. Drawing from [Yos Riady's primer](https://yos.io/2018/11/10/bonding-curves/#bonding-curves) on the subject:
-
-> A bonding curve is a mathematical curve that defines a relationship between price and token supply.
+A bonding curve is a function which determines the incremental price of a token as as function of the current supply of that token.
 
 ![Bonding Curve](bonding_curve.jpeg)
 
@@ -58,11 +56,16 @@ The drawbacks of the BitClout.com and Continuous Organizations use of bonding cu
 1. Provides constant liquidity for a token, and
 2. Generates extractable revenue for the issuer of the token
 
-Why we need a dynamic automated market maker (with sale price function that is both distinct from buy price function, and dynamic)
-
 ### Mechanism
 
-Depiction of buy/sale price functions
+We achieve this using the Dynamic Automated Market Maker, which uses a continuous bonding curve to guarantee continuous liquidity provision, but relies on separate buy and sale price functions so that a portion of the liquidity pool can be harvested as profit.
+
+![DAMM](damm.png)
+
+Mechanically, users buy tokens along the buy price function *b(x)* as long as the number of tokens outstanding is equal to the peak number of tokens in circulation to date (what we call maxSupply). When the outstanding supply of tokens is less than maxSupply, transactions (both buys and sales) occur along the sale price function *s(x)* intersecting the buy price function at *x*=*maxSupply*. There are infinitely many sale price functions. At any given point in time, we only use the sale price function intersecting the buy price function at *x*=*maxSupply*.
+
+The result is that the area under *s(x)* intersecting *b(x)* at *x*=*maxSupply* acts as the liquidity pool standing ready to buy back tokens, while the area between *b(x)* and *s(x)* is revenue that can be extracted from the pool.
+
 
 ### Computation
 
