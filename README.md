@@ -16,13 +16,17 @@ A bonding curve is a function which determines the incremental price of a token 
 
 ![Bonding Curve](bonding_curve.jpeg)
 
+Source: [Yos Riady, *Bonding Curves Explained*](https://yos.io/2018/11/10/bonding-curves/)
+
 By taking the area under this curve, we are able to compute the proceeds required in any given transaction. In the example below, there are tokenSupply tokens in circulation before the transaction, and a user wishes to buy 10 tokens. 
 
 ![Bonding Curve Transaction](bonding_curve_transaction.jpeg)
 
+Source: [Yos Riady, *Bonding Curves Explained*](https://yos.io/2018/11/10/bonding-curves/)
+
 Bonding curves offer the advantage of guaranteed liquidity for any number of tokens at any point in time. They have the drawback of greater price slippage than liquid order book-based markets. Crucially, the entire area under the bonding curve acts as a liquidity pool (i.e., none of the area under the curve can be harvested as revenue).
 
-### Existing Applications
+### Existing Applications of Bonding Curves
 
 #### BitClout
 
@@ -33,17 +37,26 @@ It is worth noting that the price of BitClout is also determined by a bonding cu
 The chief drawback is the use of BitClout as an intermediary currency, and the illusion of liquidity in Creator Coins. When a user wishes to sell Creator Coins at a profit, he receives BitClout in exchange. He then needs to sell his BitClout off-platform (often on Discord) at as much as a 40% discount.
 
 ![Creator Coin Bonding Curve](creator_coin_bonding_curve.png)
-Source: [BitClout White Paper](https://bitcloutwhitepaper.com/)
 
-BitClout relies on an intermediary currency to monetize (since all revenue acts as liquidity pool)
-Depiction of BitClout bonding curve
+Source: [*BitClout White Paper*](https://bitcloutwhitepaper.com/)
 
-Continuous Organizations results in wide and visible bid/offer, and the platform serving as the liquidity provider of last resort
-Depiction of continuous organizations bonding curve
+#### Continuous Organizations
+
+The Continuous Organizations approach, described in the [*Continuous Organizations Whitepaper*](https://github.com/C-ORG/whitepaper/) uses bonding curves as a fundraising mechanism forn organization. The key innovation is to have two separate bonding curves: one along which a user can buy tokens, and one along which a user can sell tokens:
+
+![Continuous Organizations Bonding Curve](continuous_organizations_bonding_curve.png)
+
+Source: [*Continuous Organizations Whitepaper*](https://github.com/C-ORG/whitepaper/)
+
+While this provides a way for the organization to raise money, the mechanism loses the continuous liquidity for both buys and sales provided by the traditional bonding curve. This is fine for the Continuous Organizations use case, where the objective is fundraising, and liqudity provision can be left to other secondary market exchanges.
 
 ## Dynamic Automated Market Maker
 
 ### Motivation
+
+The drawbacks of the BitClout.com and Continuous Organizations use of bonding curves motivates a new mechanism which both:
+1. Provides constant liquidity for a token, and
+2. Generates extractable revenue for the issuer of the token
 
 Why we need a dynamic automated market maker (with sale price function that is both distinct from buy price function, and dynamic)
 
