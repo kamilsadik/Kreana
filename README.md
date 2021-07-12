@@ -11,12 +11,14 @@ Creator Token Exchange allows a creator to mint an original token to sell to the
 #### Bonding Curves and Automated Market Makers
 
 How bonding curves work
+
 how automated market makers work
 
 #### Existing Applications
 
 BitClout relies on an intermediary currency to monetize (since all revenue acts as liquidity pool)
 Depiction of BitClout bonding curve
+
 Continuous Organizations results in wide and visible bid/offer, and the platform serving as the liquidity provider of last resort
 Depiction of continuous organizations bonding curve
 
