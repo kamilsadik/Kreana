@@ -2,17 +2,19 @@
 
 ## Overview
 
-Creator Token Exchange allows a creator to mint an original token to sell to their fans. The Creator Token Exchange relies on a Dynamic Automated Market Maker (explained below) to generate revenue for the creator as more tokens are minted, while providing continuous and perpetual liquidity for buyers of the token.
+Creator Token Exchange allows a creator to mint an original token to sell to their fans. The Creator Token Exchange relies on a Dynamic Automated Market Maker to generate revenue for the creator as more tokens are minted, while providing continuous and perpetual liquidity for buyers of the token.
 
 ## Dynamic Automated Market Maker
 
 ### Background
 
-#### Bonding Curves and Automated Market Makers
+The Dynamic Automated Market Maker (DAMM) is a novel variation of traditional bonding curve-based automated market makers, allowing for both revenue generation and liquidity provision.
 
-How bonding curves work
+#### Bonding Curves
 
-how automated market makers work
+> A [bonding curve](https://yos.io/2018/11/10/bonding-curves/#bonding-curves) is a mathematical curve that defines a relationship between price and token supply.
+
+![Bonding Curve](bonding_curve.jpeg)
 
 #### Existing Applications
 
