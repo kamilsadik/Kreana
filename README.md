@@ -16,5 +16,11 @@ Creator Token Exchange allows a creator to mint an original token to sell to the
 
 ## Dynamic Automated Market Maker
 
+### Motivation
+
+### Mechanism
+
+### Computation
+
 ## Application
 
