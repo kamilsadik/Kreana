@@ -84,6 +84,8 @@ In this application, we use a linear buy price function *b(x)*, and construct a 
 
 ### Creator Tokens
 
-### Alternative Uses
+The DAMM application we implement in this set of smart contracts involves creators minting a token of their own, and selling it to fans. In this case, the platform generates revenue by taking a 1% transaction fee, while the region between *b(x)* and *s(x)* serves as a fundraising mechanism for the creator. This can be used to fund a new album, tour, or other artistic project. In addition to benefitting from potential price appreciation (and the liquidity required to monetize that price appreciation), fans may receive additional perks for being tokenholders. For example, the creator might encourage token holdership by rewarding the 50 largest holders with a private livestream concert. The creator might also incentivize holding tokens for the long haul by rewarding the top 50 longest-holding holders with a similar perk.
 
-#### Proprietary platform (e.g., fantasy football, other platform where the platform itself would keep crystallized revenue)
+### Platform-Created Tokens
+
+Alternatively, the platform itself can issue tokens. In that case, the DAMM could be a source of revenue which is not tied to transaction volume, and so may be conducive to applications in which users are likely to buy and hold the token. It is unclear that this is a compelling use case, since the DAMM necessarily reduces liquidity in order to crystallize revenue, and fans are more likely to approve of such a construct when that revenue is going towards producing an artist they care about, and art they will then enjoy.
