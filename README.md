@@ -14,7 +14,7 @@ A bonding curve is a function which determines the incremental price of a token 
 
 Source: [Yos Riady, *Bonding Curves Explained*](https://yos.io/2018/11/10/bonding-curves/)
 
-By taking the area under this curve, we are able to compute the proceeds required in any given transaction. In the example below, there are tokenSupply tokens in circulation before the transaction, and a user wishes to buy 10 tokens. The user pays proceeds equal to the area under the curve from tokenSupply to tokenSupply+10 in order to buy those tokens
+By taking the area under this curve, we are able to compute the proceeds required in any given transaction. In the example below, there are *tokenSupply* tokens in circulation before the transaction, and a user wishes to buy 10 tokens. The user pays proceeds equal to the area under the bonding curve from *tokenSupply* to *tokenSupply*+10 in order to buy those tokens.
 
 ![Bonding Curve Transaction](bonding_curve_transaction.jpeg)
 
