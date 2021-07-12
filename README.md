@@ -2,7 +2,7 @@
 
 ## Overview
 
-Creator Token Exchange allows a creator to mint their own token to sell to their fans. The Creator Token Exchange relies on a Dynamic Automated Market Maker to generate revenue to fund the creator's projects as more tokens are minted, while providing continuous and perpetual liquidity for buyers of the token.
+Creator Token Exchange allows a creator to mint their own token to sell to their fans. In doing so, the exchange lets the token creator generate revenue in order to fund artistic projects, while also providing continuous an perpetual liquidity for buyers of the token. It achieves this dual objective using a [Dynamic Automated Market Maker](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf).
 
 ## Background
 
