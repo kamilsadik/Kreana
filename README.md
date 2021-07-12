@@ -12,9 +12,16 @@ The Dynamic Automated Market Maker (DAMM) is a novel variation of traditional bo
 
 #### Bonding Curves
 
-> A [bonding curve](https://yos.io/2018/11/10/bonding-curves/#bonding-curves) is a mathematical curve that defines a relationship between price and token supply.
+
+A bonding curve is a function which determines the incremental price of a token as as function of the current supply of that token. Drawing from [Yos Riady's primer](https://yos.io/2018/11/10/bonding-curves/#bonding-curves) on the subject:
+
+> A bonding curve is a mathematical curve that defines a relationship between price and token supply.
 
 ![Bonding Curve](bonding_curve.jpeg)
+
+By taking the area under this curve, we are able to compute the proceeds required in any given transaction. In the example below, there are tokenSupply tokens in circulation before the transaction, and a user wishes to buy 10 tokens. 
+
+![Bonding Curve Transaction](bonding_curve_transaction.jpeg)
 
 #### Existing Applications
 
