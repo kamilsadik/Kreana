@@ -2,7 +2,7 @@
 
 ## Overview
 
-Creator Token Exchange allows a creator to mint their own token to sell to their fans. In doing so, the exchange lets the token creator generate revenue in order to fund artistic projects, while also providing continuous and perpetual liquidity for buyers of the token. It achieves this dual objective using a [Dynamic Automated Market Maker (DAMM)](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf): a novel variation of traditional bonding curve-based [automated market makers](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers), allowing for both revenue generation and liquidity provision.
+Creator Token Exchange is a platform that allows creators to mint their own tokens to sell to their fans. The exchange lets the token creator generate revenue in order to fund artistic projects, while also providing continuous and perpetual liquidity for buyers of the token. It achieves this dual objective using a [Dynamic Automated Market Maker (DAMM)](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf): a novel variation of traditional bonding curve-based [automated market makers](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers).
 
 ## Background
 
@@ -14,7 +14,7 @@ A bonding curve is a function which determines the incremental price of a token 
 
 Source: [Yos Riady, *Bonding Curves Explained*](https://yos.io/2018/11/10/bonding-curves/)
 
-By taking the area under this curve, we are able to compute the proceeds required in any given transaction. In the example below, there are *tokenSupply* tokens in circulation before the transaction, and a user wishes to buy 10 tokens. The user pays proceeds equal to the area under the bonding curve from *tokenSupply* to *tokenSupply*+10 in order to buy those tokens.
+By taking the area under this curve, we are able to compute the proceeds required to effectuate a given transaction. In the example below, there are *tokenSupply* tokens in circulation before the transaction, and a user wishes to buy 10 tokens. The user pays proceeds equal to the area under the bonding curve from *tokenSupply* to *tokenSupply*+10 in order to buy those tokens.
 
 ![Bonding Curve Transaction](bonding_curve_transaction.jpeg)
 
@@ -26,7 +26,7 @@ Bonding curves offer the advantage of guaranteed liquidity for any number of tok
 
 #### BitClout
 
-[BitClout.com](https://bitclout.com/) is a social media platform which allows users to create and sell their own token (called Creator Coins). The transaction flow requires users to buy the BitClout currency using bitcoin, and then to buy and sell Creator Coins for BitClout. The BitClout.com organization generates revenue only by minting BitClout, since the structure of the bonding curve prevents them from earning revenue on Creator Coin transactions.
+[BitClout.com](https://bitclout.com/) is a social media platform which allows users to create and sell their own token (called Creator Coins). The transaction flow requires customers to buy the BitClout currency using bitcoin, and then to buy and sell Creator Coins for BitClout. The BitClout.com organization generates revenue only by minting BitClout, since the structure of the bonding curve prevents them from earning revenue on Creator Coin transactions.
 
 It is worth noting that the price of BitClout is also determined by a bonding curve-like function -- BitClout.com simply does not provide liquidity on the BitClout currency, allowing them to crystallize all proceeds from the sale of BitClout currency as profit.
 
@@ -44,13 +44,13 @@ The Continuous Organizations approach, described in the [*Continuous Organizatio
 
 Source: [*Continuous Organizations Whitepaper*](https://github.com/C-ORG/whitepaper/)
 
-While this provides a way for the organization to raise money, the mechanism loses the continuous liquidity for both buys and sales provided by the traditional bonding curve. This is fine for the Continuous Organizations use case (where the objective is fundraising, and liqudity provision can be left to other secondary market exchanges), but is undesirable for a revenue-generating and liquidity-providing use case.
+While this provides a way for the organization to raise money, the mechanism loses the continuous liquidity for both buys and sales provided by the traditional bonding curve. This is fine for the Continuous Organizations use case (where the objective is fundraising, and liqudity provision can be left to other secondary market exchanges), but is undesirable for a use case requiring revenue-generation and liquidity-provision.
 
 ## Dynamic Automated Market Maker
 
 ### Motivation
 
-The drawbacks of the BitClout.com and Continuous Organizations use of bonding curves motivate a new mechanism which both:
+The drawbacks of the BitClout.com and Continuous Organizations approaches to bonding curves motivate a new mechanism which both:
 1. Provides constant liquidity for a token, and
 2. Generates extractable revenue for the issuer of the token
 
@@ -60,13 +60,13 @@ We achieve this using the [Dynamic Automated Market Maker (DAMM)](https://github
 
 ![DAMM](damm.png)
 
-Mechanically, users buy tokens along the buy price function *b(x)* as long as the number of tokens outstanding is equal to the peak number of tokens in circulation to date (what we call *maxSupply*). When the outstanding supply of tokens is less than *maxSupply*, transactions (both buys and sales) occur along the sale price function *s(x)* intersecting the buy price function at *x*=*maxSupply*. The result is that the area under *s(x)* acts as the liquidity pool standing ready to buy back tokens, while the area between *b(x)* and *s(x)* is revenue that can be extracted from the pool.
+Mechanically, users buy tokens along the buy price function *b(x)* as long as the number of tokens outstanding is equal to the peak number of tokens in circulation to date (which we refer to as *maxSupply*). When the outstanding supply of tokens is less than *maxSupply*, transactions (both buys and sales) occur along the sale price function *s(x)* intersecting the buy price function at *x*=*maxSupply*. The result is that the area under *s(x)* acts as the liquidity pool standing ready to buy back tokens, while the area between *b(x)* and *s(x)* is revenue that can be extracted from the pool.
 
 There are infinitely many sale price functions (one for each level of *maxSupply*). At any given point in time, we only use the sale price function intersecting the buy price function at *x*=*maxSupply*.
 
 ![Infinitely many sale price functions](many_sale_fncs.png)
 
-As a result, we must come up with a way to derive the sale price function required at each level of maxSupply. The sale price function itself is a function of the buy price function, and is constructed so as to allow the token issuer to extract a pre-determined percentage of the overall liquidity pool as profit.
+The sale price function itself is a function of the buy price function, and is constructed so as to allow the token issuer to extract a pre-determined percentage of the overall liquidity pool as profit.
 
 ### Computation
 
@@ -80,8 +80,8 @@ In this application, we use a linear buy price function *b(x)*, and construct a 
 
 ### Creator Tokens
 
-The DAMM application we implement in this set of smart contracts involves creators minting a token of their own, and selling that token to fans. The platform generates revenue by taking a 1% transaction fee, while the region between *b(x)* and *s(x)* serves as a fundraising mechanism for the creator. This revenue can be used to fund a new album, tour, or other artistic project. In addition to benefitting from potential price appreciation (and the liquidity required to monetize that price appreciation), fans may receive additional perks for being tokenholders. For example, the creator might encourage token holdership by rewarding the 50 largest holders with a private livestream concert. The creator might also incentivize holding tokens for the long haul by rewarding the top 50 longest-holding holders with a similar perk.
+The DAMM application we implement in this set of smart contracts involves creators minting their own tokens, and selling those tokens to fans. The platform generates revenue by taking a 1% transaction fee, while the region between *b(x)* and *s(x)* serves as a fundraising mechanism for the creator. This revenue can be used to fund a new album, tour, or other artistic project. In addition to benefitting from potential price appreciation (and the liquidity required to monetize that price appreciation), fans may receive additional perks for being tokenholders. For example, a creator might encourage token holdership by rewarding the 50 largest holders with a private livestream concert. A creator might also incentivize holding tokens for the long haul by rewarding the top 50 longest-holding holders with a similar perk.
 
 ### Platform-Created Tokens
 
-Alternatively, the platform itself can issue tokens. In that case, the DAMM could be a source of revenue which is not tied to transaction volume, and so may be conducive to applications in which users are likely to buy and hold the token. It is unclear that this is a compelling use case, however, since the DAMM necessarily reduces liquidity in order to crystallize revenue. Fans are more likely to approve of such a construct when that revenue is going towards the livelihood an artist they care about, and the production of art they will then enjoy.
+Alternatively, the platform itself can issue tokens. In that case, the DAMM could be a source of revenue which is not tied to transaction volume, and so may be conducive to applications in which users are likely to buy and hold tokens. It is unclear that this is a compelling use case, however, since the DAMM necessarily reduces liquidity in order to crystallize revenue. Fans are more likely to approve of such a construct when that revenue is going towards the livelihood an artist they care about, and the production of art they will then enjoy.
