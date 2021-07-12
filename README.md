@@ -23,6 +23,8 @@ By taking the area under this curve, we are able to compute the proceeds require
 
 ![Bonding Curve Transaction](bonding_curve_transaction.jpeg)
 
+\\[ a^2 = b^2 + c^2 \\]
+
 #### Existing Applications
 
 BitClout relies on an intermediary currency to monetize (since all revenue acts as liquidity pool)
