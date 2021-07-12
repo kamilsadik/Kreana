@@ -62,10 +62,13 @@ We achieve this using the Dynamic Automated Market Maker, which uses a continuou
 
 ![DAMM](damm.png)
 
-Mechanically, users buy tokens along the buy price function *b(x)* as long as the number of tokens outstanding is equal to the peak number of tokens in circulation to date (what we call maxSupply). When the outstanding supply of tokens is less than maxSupply, transactions (both buys and sales) occur along the sale price function *s(x)* intersecting the buy price function at *x*=*maxSupply*. There are infinitely many sale price functions. At any given point in time, we only use the sale price function intersecting the buy price function at *x*=*maxSupply*.
+Mechanically, users buy tokens along the buy price function *b(x)* as long as the number of tokens outstanding is equal to the peak number of tokens in circulation to date (what we call maxSupply). When the outstanding supply of tokens is less than maxSupply, transactions (both buys and sales) occur along the sale price function *s(x)* intersecting the buy price function at *x*=*maxSupply*. 
 
 The result is that the area under *s(x)* intersecting *b(x)* at *x*=*maxSupply* acts as the liquidity pool standing ready to buy back tokens, while the area between *b(x)* and *s(x)* is revenue that can be extracted from the pool.
 
+There are infinitely many sale price functions (one for each level of maxSupply). At any given point in time, we only use the sale price function intersecting the buy price function at *x*=*maxSupply*.
+
+![Infinitely many sale price functions](many_sale_fncs.png)
 
 ### Computation
 
