@@ -10,9 +10,9 @@ Creator Token Exchange allows a creator to mint an original token to sell to the
 
 ### Applications
 
-#### BitClout and its drawbacks
+-BitClout and its drawbacks
 
-#### Continuous Organizations and its drawbacks (wide and visible bid/offer, liquidity provider of last resort)
+-Continuous Organizations and its drawbacks (wide and visible bid/offer, liquidity provider of last resort)
 
 ## Dynamic Automated Market Maker
 
