@@ -31,3 +31,11 @@ Depiction of buy/sale price functions
 ### Computation
 
 Derivation of breakpoint, demonstrating how we can construct a sale price funtion for any buy price function (s.t certain constraints)
+
+## Use Case
+
+### Creator Tokens
+
+### Alternative Uses
+
+#### Proprietary platform (e.g., fantasy football, other platform where the platform itself would keep crystallized revenue)
