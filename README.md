@@ -34,7 +34,7 @@ It is worth noting that the price of BitClout is also determined by a bonding cu
 
 The chief drawback is the use of BitClout as an intermediary currency, and the illusion of liquidity in Creator Coins. When a user wishes to sell Creator Coins at a profit, he receives BitClout in exchange. He then needs to sell his BitClout off-platform (often on Discord) at as much as a 40% discount.
 
-![Creator Coin Bonding Curve](creator_coin_bonding_curve.png | width = 200)
+![Creator Coin Bonding Curve](creator_coin_bonding_curve.png | width = 100)
 
 Source: [*BitClout White Paper*](https://bitcloutwhitepaper.com/)
 
@@ -42,7 +42,7 @@ Source: [*BitClout White Paper*](https://bitcloutwhitepaper.com/)
 
 The Continuous Organizations approach, described in the [*Continuous Organizations Whitepaper*](https://github.com/C-ORG/whitepaper/) uses bonding curves as a fundraising mechanism forn organization. The key innovation is to have two separate bonding curves: one along which a user can buy tokens, and one along which a user can sell tokens:
 
-![Continuous Organizations Bonding Curve](continuous_organizations_bonding_curve.png | width = 200)
+![Continuous Organizations Bonding Curve](continuous_organizations_bonding_curve.png | width = 100)
 
 Source: [*Continuous Organizations Whitepaper*](https://github.com/C-ORG/whitepaper/)
 
