@@ -34,7 +34,7 @@ Depiction of buy/sale price functions
 
 Derivation of breakpoint, demonstrating how we can construct a sale price funtion for any buy price function (s.t certain constraints)
 
-## Use Case
+## Use Cases
 
 ### Creator Tokens
 
