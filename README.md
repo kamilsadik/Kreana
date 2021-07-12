@@ -2,7 +2,7 @@
 
 ## Overview
 
-Creator Token Exchange allows a creator to mint their own token to sell to their fans. In doing so, the exchange lets the token creator generate revenue in order to fund artistic projects, while also providing continuous and perpetual liquidity for buyers of the token. It achieves this dual objective using a [Dynamic Automated Market Maker](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf). The Dynamic Automated Market Maker (DAMM) is a novel variation of traditional bonding curve-based [automated market makers](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers), allowing for both revenue generation and liquidity provision.
+Creator Token Exchange allows a creator to mint their own token to sell to their fans. In doing so, the exchange lets the token creator generate revenue in order to fund artistic projects, while also providing continuous and perpetual liquidity for buyers of the token. It achieves this dual objective using a [Dynamic Automated Market Maker (DAMM)](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf): a novel variation of traditional bonding curve-based [automated market makers](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers), allowing for both revenue generation and liquidity provision.
 
 ## Background
 
