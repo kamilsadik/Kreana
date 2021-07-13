@@ -27748,12 +27748,12 @@
         }
       },
       "links": {},
-      "address": "0xC6710163347dD47B7F70F48B693179250996f4a1",
-      "transactionHash": "0x360f4e3f194f82897b4dc959fb964dffdb10345f82f3dade652ec5ebc6b5e523"
+      "address": "0xDb18922e8A748277a1F645178ba1380CdCF68277",
+      "transactionHash": "0x4b2a0429d59fe6defe9a6509cb53fcd331042638478bdac448c02339647c0d28"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-12T00:50:04.466Z",
+  "updatedAt": "2021-07-13T00:54:10.713Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Kamil Alizai Sadik",
