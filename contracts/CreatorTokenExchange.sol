@@ -20,8 +20,12 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 		uint totalProceeds = _totalProceeds(_tokenId, _amount);
 		// Require that user sends totalProceeds in order to transact
 		require(msg.value == totalProceeds);
+		// Compute buy proceeds
+		uint netProceeds = _buyProceeds(_tokenId, _amount);
+		// Update totalValueLocked mapping
+		totalValueLocked[_tokenId] += netProceeds;
 		// Update platform fee total
-		_platformFeeUpdater(_feeProceeds(_buyProceeds(_tokenId, _amount)));
+		_platformFeeUpdater(_feeProceeds(netProceeds));
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		_mint(msg.sender, _tokenId, _amount, "");
 		// Emit new transaction event
@@ -44,6 +48,8 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 		require(_seller == msg.sender);
 		// Compute sale proceeds required
 		uint proceedsRequired = _saleFunction(creatorTokens[_tokenId].outstanding, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
+		// Update totalValueLocked mapping
+		totalValueLocked[_tokenId] -= proceedsRequired;
 		// Compute fee
 		uint fee = proceedsRequired*platformFee/100;
 		// Add platform fee to obtain real proceedsRequired value

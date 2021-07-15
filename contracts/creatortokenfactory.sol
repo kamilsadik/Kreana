@@ -34,7 +34,7 @@ contract CreatorTokenFactory is Ownable {
 		uint outstanding;
 		uint maxSupply;
 	}
-
+I
 	// Array of all CreatorTokens
 	CreatorToken[] public creatorTokens;
 
@@ -48,6 +48,8 @@ contract CreatorTokenFactory is Ownable {
 	mapping(address => mapping(uint256 => uint256)) public userToHoldings;
 	// Mapping from account to operator approvals
 	mapping(address => mapping(address => bool)) internal approvals;
+	// Mapping from token to total value locked
+	mapping(uint => uint) public totalValueLocked;
 
 	/// @dev Creates a new creator token
 	/// @param _creatorAddress Address of the creator of the token

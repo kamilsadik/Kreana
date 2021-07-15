@@ -97,6 +97,12 @@ contract("CreatorTokenExchange", (accounts) => {
 	        const result = await contractInstance.creatorTokens(0);
 	        assert.equal(result.outstanding, 9501);
 	    })
+	    xit("should correctly update total value locked after a buy", async () => {
+
+	    })
+	    xit("should correctly update total value locked after a buy and a sale", async () => {
+
+	    })
 	})
 
 	context("post-transaction holdership mappings", async () => {
