@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./creatortokenformulas.sol";
 
-/// @title Computation of fees owed to platform, and payout of creator 
+/// @title Computation of fees owed to platform, and payout of creator
 /// @author Kamil Alizai Sadik
 contract CreatorTokenFees is CreatorTokenFormulas {
 
