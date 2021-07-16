@@ -97,11 +97,20 @@ contract("CreatorTokenExchange", (accounts) => {
 	        const result = await contractInstance.creatorTokens(0);
 	        assert.equal(result.outstanding, 9501);
 	    })
-	    xit("should correctly update total value locked after a buy", async () => {
-
+	    it("should correctly update total value locked after a buy", async () => {
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        let netProceeds = await contractInstance._buyProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        let totalValueLocked = await contractInstance.totalValueLocked(0);
+	        assert.equal(Number(netProceeds), Number(totalValueLocked));
 	    })
 	    xit("should correctly update total value locked after a buy and a sale", async () => {
-
+	    	await contractInstance.createCreatorToken(creator, "Protest The Hero", "PTH5", "This token will help us fund our next album.", {from: creator});
+	        let totalProceeds = await contractInstance._totalProceeds(0, 5000);
+	        let netProceeds = await contractInstance._buyProceeds(0, 5000);
+	        await contractInstance.buyCreatorToken(0, 5000, {from: user, value: totalProceeds});
+	        const result = await contractInstance.sellCreatorToken(0, 5000, user, {from: user});
 	    })
 	})
 
