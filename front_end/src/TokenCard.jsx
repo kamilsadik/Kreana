@@ -9,8 +9,8 @@ import Button from "@material-ui/core/Button";
 import ShareIcon from "@material-ui/icons/Share";
 import { Avatar, IconButton, CardMedia } from "@material-ui/core";
 
-const CoffeCard = props => {
-  const { avatarUrl, title, subtitle, description, imageUrl } = props;
+const TokenCard = props => {
+  const { address, name, symbol, description, verified, outstanding, maxSupply, avatarUrl, imageUrl } = props;
   return (
     <Card>
       <CardHeader
@@ -20,8 +20,8 @@ const CoffeCard = props => {
             <ShareIcon />
           </IconButton>
         }
-        title={title}
-        subheader={subtitle}
+        title={name}
+        subheader={"$"+symbol}
       />
       <CardMedia style={{ height: "150px" }} image={imageUrl} />
       <CardContent>
@@ -37,4 +37,4 @@ const CoffeCard = props => {
   );
 };
 
-export default CoffeCard;
+export default TokenCard;

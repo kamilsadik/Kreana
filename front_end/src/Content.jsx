@@ -1,20 +1,20 @@
 import React from "react";
-import CoffeCard from "./CoffeCard";
+import TokenCard from "./TokenCard";
 import { Grid } from "@material-ui/core";
-import coffeMakerList from "./constants";
+import tokenList from "./constants";
 
 const Content = () => {
-  const getCoffeMakerCard = coffeMakerObj => {
+  const getTokenCard = tokenObj => {
     return (
       <Grid item xs={12} sm={4}>
-        <CoffeCard {...coffeMakerObj} />
+        <TokenCard {...tokenObj} />
       </Grid>
     );
   };
 
   return (
     <Grid container spacing={2}>
-      {coffeMakerList.map(coffeMakerObj => getCoffeMakerCard(coffeMakerObj))}
+      {tokenList.map(tokenObj => getTokenCard(tokenObj))}
     </Grid>
   );
 };
