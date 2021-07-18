@@ -10,32 +10,65 @@ import ShareIcon from "@material-ui/icons/Share";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { Avatar, IconButton, CardMedia } from "@material-ui/core";
 
+const useStyles = makeStyles(() => ({
+    palette: {
+      primary: {
+        light: '#757ce8',
+        main: '#3f50b5',
+        dark: '#002884',
+        contrastText: '#fff',
+      },
+      secondary: {
+        light: '#ff7961',
+        main: '#f44336',
+        dark: '#ba000d',
+        contrastText: '#000',
+      },
+      buy: {
+        light: "#46d182",
+        main: "#46d182",
+        dark: "#46d182",
+        contrastText: "#46d182",
+      },
+      sell: {
+        light: "#f53b6a",
+        main: "#f53b6a",
+        dark: "#f53b6a",
+        contrastText: "#f53b6a",
+      }
+    },
+  }));
+
+const ConditionalWrapper = ({ condition, wrapper, children }) => 
+  condition ? wrapper(children) : children;
+
 const TokenCard = props => {
   const { address, name, symbol, description, verified, outstanding, maxSupply, avatarUrl, imageUrl } = props;
-  return (
-    <Card>
-      <CardHeader
-        avatar={<Avatar src={avatarUrl} />}
-        action={
-          <IconButton aria-label="settings">
-            <ShareIcon />
-          </IconButton>
-        }
-        title={name}
-        subheader={"$"+symbol}
-      />
-      <CardMedia style={{ height: "150px" }} image={imageUrl} />
-      <CardContent>
-        <Typography variant="body2" component="p">
-          {description}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">BUY</Button>
-        <Button size="small">SELL</Button>
-      </CardActions>
-    </Card>
-  );
+    return (
+        <Card>
+          <ConditionalWrapper
+          condition={verified}
+          wrapper={children => (<a action={<IconButton aria-label="settings"><CheckCircleIcon /></IconButton>}>{children}</a>)}
+          >
+          <CardHeader
+            avatar={<Avatar src={avatarUrl} />}
+            title={name}
+            action={<IconButton aria-label="settings"><CheckCircleIcon /></IconButton>}
+            subheader={"$"+symbol}
+          />
+          </ConditionalWrapper>
+          <CardMedia style={{ height: "150px" }} image={imageUrl} />
+          <CardContent>
+            <Typography variant="body2" component="p">
+              {description}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button size="small" color="buy">BUY</Button>
+            <Button size="small" color="sell">SELL</Button>
+          </CardActions>
+        </Card>
+    );
 };
 
 export default TokenCard;
