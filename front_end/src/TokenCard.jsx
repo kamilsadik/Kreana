@@ -7,6 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import ShareIcon from "@material-ui/icons/Share";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { Avatar, IconButton, CardMedia } from "@material-ui/core";
 
 const TokenCard = props => {
@@ -30,8 +31,8 @@ const TokenCard = props => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">BUY NOW</Button>
-        <Button size="small">OFFER</Button>
+        <Button size="small">BUY</Button>
+        <Button size="small">SELL</Button>
       </CardActions>
     </Card>
   );

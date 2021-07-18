@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
 import AcUnitRoundedIcon from "@material-ui/icons/AcUnitRounded";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { makeStyles } from "@material-ui/styles";
@@ -18,7 +18,7 @@ const Header = () => {
         <Typography className={classes.typographyStyles}>
           kreona
         </Typography>
-        <AttachMoneyIcon />
+        <Button size="small">BUY $KRNA</Button>
       </Toolbar>
     </AppBar>
   );
