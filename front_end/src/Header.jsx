@@ -16,7 +16,7 @@ const Header = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography className={classes.typographyStyles}>
-          kreona
+          kreana
         </Typography>
         <Button size="small">BUY $KRNA</Button>
       </Toolbar>

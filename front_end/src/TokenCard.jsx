@@ -46,23 +46,20 @@ const TokenCard = props => {
   const { address, name, symbol, description, verified, outstanding, maxSupply, avatarUrl, imageUrl } = props;
     return (
         <Card>
-          <ConditionalWrapper
-          condition={verified}
-          wrapper={children => (<a action={<IconButton aria-label="settings"><CheckCircleIcon /></IconButton>}>{children}</a>)}
-          >
           <CardHeader
             avatar={<Avatar src={avatarUrl} />}
             title={name}
-            action={<IconButton aria-label="settings"><CheckCircleIcon /></IconButton>}
+            action={verified? <IconButton aria-label="settings"><CheckCircleIcon /></IconButton> : null}
             subheader={"$"+symbol}
           />
-          </ConditionalWrapper>
           <CardMedia style={{ height: "150px" }} image={imageUrl} />
+          {/*
           <CardContent>
             <Typography variant="body2" component="p">
               {description}
             </Typography>
           </CardContent>
+          */}
           <CardActions>
             <Button size="small" color="buy">BUY</Button>
             <Button size="small" color="sell">SELL</Button>
