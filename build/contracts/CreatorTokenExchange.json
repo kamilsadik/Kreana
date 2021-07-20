@@ -28138,12 +28138,12 @@
         }
       },
       "links": {},
-      "address": "0x3F31647716331Bf7B4E687d6cc2BF72E56D18Af0",
-      "transactionHash": "0xeb383770d0378ae1f90b8509e6780e5a6956f557a4ab594e6f8dd271481d2961"
+      "address": "0x2A7E043635c47f450B106eC94E9BcD4c77174eF0",
+      "transactionHash": "0xb4bd7d3324ae9489658953586a22cd0473cbee8032d9e604e7aeff1111446962"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-16T00:51:57.031Z",
+  "updatedAt": "2021-07-20T00:31:52.860Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Kamil Alizai Sadik",
