@@ -63,9 +63,6 @@ const TokenCard = props => {
           */}
           <CardActions>
             <Button onClick={() => {
-              this.createCreatorToken(0x3CceA0520680098eA8e205ccD02b033E00Af3f79, "Protest The Hero", "PTH5", "This token will help us fund our next album.");
-              let totalProceeds = this._totalProceeds(0, 5000);
-              this.buyCreatorToken(0, 5000, {value: totalProceeds})
             }}
             size="small"
             color="buy">
