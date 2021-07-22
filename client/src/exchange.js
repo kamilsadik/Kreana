@@ -1,6 +1,6 @@
 import web3 from './web3';
 
-const address = '0x2A7E043635c47f450B106eC94E9BcD4c77174eF0';
+const address = '0xDB5F79f0961dF7581AB361F414602D958ED10ACE';
 
 const ABI = {
   "contractName": "CreatorTokenExchange",
