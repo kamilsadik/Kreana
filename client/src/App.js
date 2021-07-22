@@ -2,6 +2,7 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import Header from "./Header";
 import Content from "./Content";
+import Form from "./NewTokenForm";
 
 const App = () => {
   return (
