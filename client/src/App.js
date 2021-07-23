@@ -4,6 +4,12 @@ import Header from "./Header";
 import Content from "./Content";
 import Form from "./NewTokenForm";
 import Web3 from './web3';
+import { ABI } from './exchange';
+
+const web3 = new Web3(Web3.givenProvider);
+// contract address is provided by Truffle migration
+const contractAddr = '0xDB5F79f0961dF7581AB361F414602D958ED10ACE';
+const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
 
 class App extends Component {

@@ -1,8 +1,7 @@
 import web3 from './web3';
 
-const address = '0xDB5F79f0961dF7581AB361F414602D958ED10ACE';
-
-const ABI = {
+export const ABI = {
+{
   "contractName": "CreatorTokenExchange",
   "abi": [
     {
@@ -28142,12 +28141,12 @@ const ABI = {
         }
       },
       "links": {},
-      "address": "0x2A7E043635c47f450B106eC94E9BcD4c77174eF0",
-      "transactionHash": "0xb4bd7d3324ae9489658953586a22cd0473cbee8032d9e604e7aeff1111446962"
+      "address": "0xDB5F79f0961dF7581AB361F414602D958ED10ACE",
+      "transactionHash": "0x2d87745c37a22495a450bc51a03c6e30368e2d679644b4c7fd6baf38e70e5937"
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-07-20T00:31:52.860Z",
+  "updatedAt": "2021-07-22T01:02:15.188Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Kamil Alizai Sadik",
@@ -28333,5 +28332,4 @@ const ABI = {
     "version": 1
   }
 }
-
-export default new web3.eth.Contract(ABI, address);
+}
