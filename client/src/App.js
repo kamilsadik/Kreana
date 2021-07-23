@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Grid } from "@material-ui/core";
 import Header from "./Header";
 import Content from "./Content";
@@ -11,7 +11,27 @@ const web3 = new Web3(Web3.givenProvider);
 const contractAddr = '0xDB5F79f0961dF7581AB361F414602D958ED10ACE';
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
+function App() {
+  const [number, setNumber] = useState(0);
+  const [getNumber, setGetNumber] = useState('0x00');
 
+      return (
+    <Grid container direction="column">
+      <Grid item>
+        <Header />
+      </Grid>
+      <Grid item container>
+        <Grid item xs={false} sm={2} />
+        <Grid item xs={12} sm={8}>
+          <Content />
+        </Grid>
+        <Grid item xs={false} sm={2} />
+      </Grid>
+    </Grid>
+  );
+};
+
+{/*}
 class App extends Component {
   componentWillMount() {
     this.loadBlockchainData()
@@ -46,6 +66,7 @@ class App extends Component {
   );
   }
 }
+{*/}
 
 {/*}
 const Apps = () => {
