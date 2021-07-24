@@ -9,13 +9,6 @@ import Button from "@material-ui/core/Button";
 import ShareIcon from "@material-ui/icons/Share";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { Avatar, IconButton, CardMedia } from "@material-ui/core";
-import Web3 from './web3';
-import { ABI } from './ABI';
-
-const web3 = new Web3(Web3.givenProvider);
-// contract address is provided by Truffle migration
-const contractAddr = '0xDB5F79f0961dF7581AB361F414602D958ED10ACE';
-const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
 const useStyles = makeStyles(() => ({
     palette: {
@@ -49,19 +42,6 @@ const useStyles = makeStyles(() => ({
 const ConditionalWrapper = ({ condition, wrapper, children }) => 
   condition ? wrapper(children) : children;
 
-const handleCreateCreatorToken = async (e) => {
-  e.preventDefault();    
-  const accounts = await window.ethereum.enable();
-  const account = accounts[0];
-  const gas = await ContractInstance.methods.createCreatorToken('0x3CceA0520680098eA8e205ccD02b033E00Af3f79', 'Protest the Hero', 'PTH5', 'Help fund our new album')
-                      .estimateGas();
-  const result = await ContractInstance.methods.createCreatorToken('0x3CceA0520680098eA8e205ccD02b033E00Af3f79', 'Protest the Hero', 'PTH5', 'Help fund our new album').send({
-    from: account,
-    gas 
-  })
-  console.log(result);
-}
-
 const TokenCard = props => {
   const { address, name, symbol, description, verified, outstanding, maxSupply, avatarUrl, imageUrl } = props;
     return (
@@ -81,7 +61,8 @@ const TokenCard = props => {
           </CardContent>
           */}
           <CardActions>
-            <Button onClick={handleCreateCreatorToken}
+            <Button
+            //onClick={}
             size="small"
             color="buy">
             BUY
