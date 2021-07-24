@@ -33,7 +33,7 @@ contract CreatorTokenFormulas is CreatorTokenOwnership {
 	/// @param _maxSupply Peak level of supply of the token to date
 	/// @param _profitMargin percentage of total revenue generated routed to creator
 	/// @return Area under sale price function denoting total proceeds received when selling _amount tokens (before fees)
-	function _saleFunction(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator, uint _maxSupply, uint _profitMargin) internal pure returns (uint256) {
+	function _saleFunction(uint _startingSupply, uint _amount, uint _mNumerator, uint _mDenominator, uint _maxSupply, uint _profitMargin) public pure returns (uint256) {
 		// Calculate breakpoint and endSupply
 		(uint a, uint b, uint endSupply) = _breakpoint(_startingSupply, _amount, _mNumerator, _mDenominator, _maxSupply, _profitMargin);
 		// Initialize area under curve
