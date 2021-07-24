@@ -4,7 +4,7 @@ import Header from "./Header";
 import Content from "./Content";
 import Form from "./NewTokenForm";
 import Web3 from './web3';
-import { ABI } from './exchange';
+import { ABI } from './ABI';
 
 const web3 = new Web3(Web3.givenProvider);
 // contract address is provided by Truffle migration
@@ -31,7 +31,21 @@ function App() {
   );
 };
 
-{/*}
+const handleCreateCreatorToken = async (e) => {
+  e.preventDefault();    
+  const accounts = await window.ethereum.enable();
+  const account = accounts[0];
+  const gas = await ContractInstance.methods.createCreatorToken('0x3CceA0520680098eA8e205ccD02b033E00Af3f79', 'Protest the Hero', 'PTH5', 'Help fund our new album')
+                      .estimateGas();
+  const result = await ContractInstance.methods.createCreatorToken('0x3CceA0520680098eA8e205ccD02b033E00Af3f79', 'Protest the Hero', 'PTH5', 'Help fund our new album').send({
+    from: account,
+    gas 
+  })
+  console.log(result);
+}
+
+
+{/*
 class App extends Component {
   componentWillMount() {
     this.loadBlockchainData()
@@ -66,9 +80,9 @@ class App extends Component {
   );
   }
 }
-{*/}
+{*/
 
-{/*}
+/*}
 const Apps = () => {
     return (
     <Grid container direction="column">
@@ -85,7 +99,7 @@ const Apps = () => {
     </Grid>
   );
 };
-{*/}
+*/}
 
 
 export default App;

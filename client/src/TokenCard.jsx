@@ -43,6 +43,8 @@ const useStyles = makeStyles(() => ({
 const ConditionalWrapper = ({ condition, wrapper, children }) => 
   condition ? wrapper(children) : children;
 
+
+
 const TokenCard = props => {
   const { address, name, symbol, description, verified, outstanding, maxSupply, avatarUrl, imageUrl } = props;
     return (
@@ -63,7 +65,7 @@ const TokenCard = props => {
           */}
           <CardActions>
             <Button onClick={() => {
-              
+
             }}
             size="small"
             color="buy">
