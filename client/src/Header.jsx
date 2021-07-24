@@ -28,12 +28,14 @@ const handleBuyCreatorToken = async (e) => {
   e.preventDefault();    
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
-  const proceeds = await ContractInstance.methods._totalProceeds(0,5000).call();
-  const gas = await ContractInstance.methods.buyCreatorToken(0, 5000)
-                      .estimateGas();
+  const proceeds = await ContractInstance.methods._totalProceeds(0,5000).call({
+    from: account,
+  });
+  //const gas = await ContractInstance.methods.buyCreatorToken(0, 5000)
+  //                    .estimateGas();
   const result = await ContractInstance.methods.buyCreatorToken(0, 5000).send({
     from: account,
-    gas: gas,
+    gas: 2000000,
     value: proceeds
   })
   console.log(result);
