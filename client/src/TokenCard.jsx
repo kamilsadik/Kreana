@@ -49,59 +49,64 @@ const useStyles = makeStyles(() => ({
     },
   }));
 
-const ConditionalWrapper = ({ condition, wrapper, children }) => 
-  condition ? wrapper(children) : children;
-
 const web3 = new Web3(Web3.givenProvider);
 // contract address is provided by Truffle migration
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
-
-//const handleBuyCreatorToken = async (e) => {
-async function handleBuyCreatorToken(e, tokenId) {
-  e.preventDefault();    
-  const accounts = await window.ethereum.enable();
-  const account = accounts[0];
-  //const tokenId = 0;
-  const proceeds = await ContractInstance.methods._totalProceeds(tokenId, 5000).call({
-    from: account,
-  });
-  const gas = await ContractInstance.methods.buyCreatorToken(tokenId, 5000).estimateGas({
-    from: account,
-    value: proceeds
-  });
-  const result = await ContractInstance.methods.buyCreatorToken(tokenId, 5000).send({
-    from: account,
-    gas: gas,
-    value: proceeds
-  })
-  console.log(result);
-}
-
-//const handleSellCreatorToken = async (e) => {
-async function handleSellCreatorToken(e, tokenId) {
-  e.preventDefault();    
-  const accounts = await window.ethereum.enable();
-  const account = accounts[0];
-  //const tokenId = 0;
-  const gas = await ContractInstance.methods.sellCreatorToken(tokenId, 5000, account).estimateGas({
-    from: account,
-  });
-  const result = await ContractInstance.methods.sellCreatorToken(tokenId, 5000, account).send({
-    from: account
-  })
-  console.log(result);
-}
 
 const TokenCard = props => {
   const { address, name, symbol, description, verified, outstanding, maxSupply, tokenId, avatarUrl, imageUrl } = props;
 
   // These consts are used in the Dialog
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
+  const [buyOpen, setBuyOpen] = React.useState(false);
+  const [sellOpen, setSellOpen] = React.useState(false);
+  const handleClickBuyOpen = () => {
+    setBuyOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleBuyClose = () => {
+    setBuyOpen(false);
+  }
+  const handleClickSellOpen = () => {
+    setSellOpen(true);
+  }
+  const handleSellClose = () => {
+    setSellOpen(false);
+  }
+  //const handleBuyCreatorToken = async (e) => {
+  async function handleBuyCreatorToken(e, tokenId) {
+    e.preventDefault();    
+    const accounts = await window.ethereum.enable();
+    const account = accounts[0];
+    //const tokenId = 0;
+    const proceeds = await ContractInstance.methods._totalProceeds(tokenId, 5000).call({
+      from: account,
+    });
+    const gas = await ContractInstance.methods.buyCreatorToken(tokenId, 5000).estimateGas({
+      from: account,
+      value: proceeds
+    });
+    const result = await ContractInstance.methods.buyCreatorToken(tokenId, 5000).send({
+      from: account,
+      gas: gas,
+      value: proceeds
+    })
+    console.log(result);
+    handleBuyClose();
+  }
+
+  //const handleSellCreatorToken = async (e) => {
+  async function handleSellCreatorToken(e, tokenId) {
+    e.preventDefault();    
+    const accounts = await window.ethereum.enable();
+    const account = accounts[0];
+    //const tokenId = 0;
+    const gas = await ContractInstance.methods.sellCreatorToken(tokenId, 5000, account).estimateGas({
+      from: account,
+    });
+    const result = await ContractInstance.methods.sellCreatorToken(tokenId, 5000, account).send({
+      from: account
+    })
+    console.log(result);
+    handleSellClose();
   }
 
     return (
@@ -120,11 +125,11 @@ const TokenCard = props => {
           </CardContent>
           <CardActions>
             <div>
-              <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+              <Button variant="outlined" color="primary" onClick={handleClickBuyOpen}>
                 Buy
               </Button>
-              <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Transact</DialogTitle>
+              <Dialog open={buyOpen} onClose={handleBuyClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Buy Token</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
                     How many tokens do you wish to purchase?
@@ -139,7 +144,7 @@ const TokenCard = props => {
                   />
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleClose} color="primary">
+                  <Button onClick={handleBuyClose} color="primary">
                     Cancel
                   </Button>
                   <Button
@@ -151,20 +156,38 @@ const TokenCard = props => {
                 </DialogActions>
               </Dialog>
             </div>
-            <Button
-            value={tokenId}
-            onClick={(e) => handleBuyCreatorToken(e, tokenId)}
-            size="small"
-            color="buy">
-            BUY
-            </Button>
-            <Button
-            value={tokenId}
-            onClick={(e) => handleSellCreatorToken(e, tokenId)}
-            size="small"
-            color="sell">
-            SELL
-            </Button>
+            <div>
+              <Button variant="outlined" color="primary" onClick={handleClickSellOpen}>
+                Sell
+              </Button>
+              <Dialog open={sellOpen} onClose={handleSellClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Sell Token</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    How many tokens do you wish to sell?
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Quantity"
+                    type="email"
+                    fullWidth
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleSellClose} color="primary">
+                    Cancel
+                  </Button>
+                  <Button
+                  value={tokenId}
+                  onClick={(e) => handleSellCreatorToken(e, tokenId)}
+                  color="primary">
+                    Complete Transaction
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
           </CardActions>
         </Card>
     );

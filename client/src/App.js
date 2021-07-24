@@ -3,7 +3,6 @@ import { Grid } from "@material-ui/core";
 import Header from "./Header";
 import Content from "./Content";
 import NewTokenForm from "./NewTokenForm";
-import BuyDialog from "./BuyDialog.js";
 //import Web3 from './web3';
 //import { ABI } from './ABI';
 
@@ -15,8 +14,6 @@ function App() {
     <Grid container direction="column">
       <Grid item>
         <Header />
-        <BuyDialog>
-        </BuyDialog>
       </Grid>
       <Grid item container>
         <Grid item xs={false} sm={2} />
