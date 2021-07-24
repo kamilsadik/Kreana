@@ -43,6 +43,19 @@ const handleBuyCreatorToken = async (e) => {
   console.log(result);
 }
 
+const handleSellCreatorToken = async (e) => {
+  e.preventDefault();    
+  const accounts = await window.ethereum.enable();
+  const account = accounts[0];
+  const gas = await ContractInstance.methods.sellCreatorToken(0, 5000, account).estimateGas({
+    from: account,
+  });
+  const result = await ContractInstance.methods.sellCreatorToken(0, 5000, account).send({
+    from: account
+  })
+  console.log(result);
+}
+
 const useStyles = makeStyles(() => ({
   typographyStyles: {
     flex: 1
@@ -58,6 +71,7 @@ const Header = () => {
           kreana
         </Typography>
         <Button onClick={handleBuyCreatorToken} size="small">Buy Token</Button>
+        <Button onClick={handleSellCreatorToken} size="small">Sell Token</Button>
         <Button onClick={handleCreateCreatorToken} size="small">Create Creator Token</Button>
         <Button size="small">BUY $KRNA</Button>
       </Toolbar>
