@@ -49,11 +49,12 @@ const web3 = new Web3(Web3.givenProvider);
 // contract address is provided by Truffle migration
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
-const handleBuyCreatorToken = async (e) => {
+//const handleBuyCreatorToken = async (e) => {
+async function handleBuyCreatorToken(e, tokenId) {
   e.preventDefault();    
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
-  const tokenId = 0;
+  //const tokenId = 0;
   const proceeds = await ContractInstance.methods._totalProceeds(tokenId, 5000).call({
     from: account,
   });
