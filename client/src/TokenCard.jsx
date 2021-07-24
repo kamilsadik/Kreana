@@ -12,6 +12,13 @@ import { Avatar, IconButton, CardMedia } from "@material-ui/core";
 import Web3 from './web3';
 import { ABI } from './ABI';
 import { contractAddr } from './Address';
+// These imports are needed for the Dialog
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles(() => ({
     palette: {
@@ -70,11 +77,12 @@ async function handleBuyCreatorToken(e, tokenId) {
   console.log(result);
 }
 
-const handleSellCreatorToken = async (e) => {
+//const handleSellCreatorToken = async (e) => {
+async function handleSellCreatorToken(e, tokenId) {
   e.preventDefault();    
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
-  const tokenId = 0;
+  //const tokenId = 0;
   const gas = await ContractInstance.methods.sellCreatorToken(tokenId, 5000, account).estimateGas({
     from: account,
   });
@@ -86,6 +94,16 @@ const handleSellCreatorToken = async (e) => {
 
 const TokenCard = props => {
   const { address, name, symbol, description, verified, outstanding, maxSupply, tokenId, avatarUrl, imageUrl } = props;
+
+  // These consts are used in the Dialog
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  }
+
     return (
         <Card>
           <CardHeader
@@ -101,6 +119,38 @@ const TokenCard = props => {
             </Typography>
           </CardContent>
           <CardActions>
+            <div>
+              <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                Buy
+              </Button>
+              <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Transact</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    How many tokens do you wish to purchase?
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Quantity"
+                    type="email"
+                    fullWidth
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Cancel
+                  </Button>
+                  <Button
+                  value={tokenId}
+                  onClick={(e) => handleBuyCreatorToken(e, tokenId)}
+                  color="primary">
+                    Complete Transaction
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
             <Button
             value={tokenId}
             onClick={(e) => handleBuyCreatorToken(e, tokenId)}
@@ -110,7 +160,7 @@ const TokenCard = props => {
             </Button>
             <Button
             value={tokenId}
-            onClick={handleSellCreatorToken}
+            onClick={(e) => handleSellCreatorToken(e, tokenId)}
             size="small"
             color="sell">
             SELL
