@@ -7,8 +7,8 @@ import Form from "./NewTokenForm";
 //import { ABI } from './ABI';
 
 function App() {
-  const [number, setNumber] = useState(0);
-  const [getNumber, setGetNumber] = useState('0x00');
+//  const [number, setNumber] = useState(0);
+//  const [getNumber, setGetNumber] = useState('0x00');
 
       return (
     <Grid container direction="column">

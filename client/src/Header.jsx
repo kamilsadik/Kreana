@@ -19,20 +19,22 @@ const handleCreateCreatorToken = async (e) => {
                       .estimateGas();
   const result = await ContractInstance.methods.createCreatorToken('0x3CceA0520680098eA8e205ccD02b033E00Af3f79', 'Protest the Hero', 'PTH5', 'Help fund our new album').send({
     from: account,
-    gas 
+    gas: gas 
   })
   console.log(result);
 }
 
-const buyCreatorToken = async (e) => {
+const handleBuyCreatorToken = async (e) => {
   e.preventDefault();    
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
+  const proceeds = await ContractInstance.methods._totalProceeds(0,5000).call();
   const gas = await ContractInstance.methods.buyCreatorToken(0, 5000)
                       .estimateGas();
   const result = await ContractInstance.methods.buyCreatorToken(0, 5000).send({
     from: account,
-    gas 
+    gas: gas,
+    value: proceeds
   })
   console.log(result);
 }
@@ -51,8 +53,8 @@ const Header = () => {
         <Typography className={classes.typographyStyles}>
           kreana
         </Typography>
+        <Button onClick={handleBuyCreatorToken} size="small">Buy Token</Button>
         <Button onClick={handleCreateCreatorToken} size="small">Create Creator Token</Button>
-        <Button onClick={buyCreatorToken} size="small">Buy Token</Button>
         <Button size="small">BUY $KRNA</Button>
       </Toolbar>
     </AppBar>

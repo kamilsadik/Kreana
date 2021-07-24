@@ -10,6 +10,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { Avatar, IconButton, CardMedia } from "@material-ui/core";
 
+
 const useStyles = makeStyles(() => ({
     palette: {
       primary: {
