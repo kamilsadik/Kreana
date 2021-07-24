@@ -53,7 +53,7 @@ const handleBuyCreatorToken = async (e) => {
   e.preventDefault();    
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
-  const tokenId = e.target.value;
+  const tokenId = 0;
   const proceeds = await ContractInstance.methods._totalProceeds(tokenId, 5000).call({
     from: account,
   });
@@ -73,7 +73,7 @@ const handleSellCreatorToken = async (e) => {
   e.preventDefault();    
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
-  let tokenId = 0;
+  const tokenId = 0;
   const gas = await ContractInstance.methods.sellCreatorToken(tokenId, 5000, account).estimateGas({
     from: account,
   });
@@ -102,7 +102,7 @@ const TokenCard = props => {
           <CardActions>
             <Button
             value={tokenId}
-            onClick={handleBuyCreatorToken}
+            onClick={(e) => handleBuyCreatorToken(e, tokenId)}
             size="small"
             color="buy">
             BUY
