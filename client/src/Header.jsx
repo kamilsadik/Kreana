@@ -31,11 +31,13 @@ const handleBuyCreatorToken = async (e) => {
   const proceeds = await ContractInstance.methods._totalProceeds(0,5000).call({
     from: account,
   });
-  //const gas = await ContractInstance.methods.buyCreatorToken(0, 5000)
-  //                    .estimateGas();
+  const gas = await ContractInstance.methods.buyCreatorToken(0, 5000).estimateGas({
+    from: account,
+    value: proceeds
+  });
   const result = await ContractInstance.methods.buyCreatorToken(0, 5000).send({
     from: account,
-    gas: 2000000,
+    gas: gas,
     value: proceeds
   })
   console.log(result);
