@@ -71,7 +71,7 @@ const Header = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography className={classes.typographyStyles}>
-          kreana
+          CreatorTokenExchange
         </Typography>
         <div>
           <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
@@ -135,7 +135,7 @@ const Header = () => {
             </DialogActions>
           </Dialog>
         </div>
-        <Button size="small">BUY $KRNA</Button>
+        <Button size="small">BUY $CTE</Button>
       </Toolbar>
     </AppBar>
   );
