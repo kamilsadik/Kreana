@@ -14,23 +14,17 @@ const NewTokenForm = () => {
 	// Initialize empty array of Creator Tokens
 	let creatorTokenArray = [];
 
-	function handleCreatorTokens(e) {
-		const creatorTokenCount = ContractInstance.methods.getCreatorTokenCount().call();
-		for (let i = 0; i < creatorTokenCount; i++) {
-			const item = ContractInstance.methods.creatorTokens(i).call();
-			console.log(`publicData[${i}] = ${item}`);
-			creatorTokenArray.push(item);
-		}
-		//return (
-		//	creatorTokenArray
-		//);
+	const creatorTokenCount = ContractInstance.methods.getCreatorTokenCount().call();
+	for (let i = 0; i < creatorTokenCount; i++) {
+		const item = ContractInstance.methods.creatorTokens(i).call();
+		console.log(`publicData[${i}] = ${item}`);
+		creatorTokenArray.push(item);
 	}
 
   return (
   	<div>
  			hello
-  		{handleCreatorTokens()}
-  		{creatorTokenArray.map((item) => item)}
+  		{creatorTokenArray}
   		goodbye
   	</div>
   );
