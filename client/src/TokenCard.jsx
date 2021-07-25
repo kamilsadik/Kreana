@@ -76,7 +76,7 @@ const TokenCard = props => {
   }
 
   // Initialize state for user-specified amount in text field
-  const [amount, setAmount] = React.useState(0);
+  const [amount, setAmount] = React.useState('');
 
   // Invoke buyCreatorToken
   async function handleBuyCreatorToken(e, tokenId) {
@@ -161,6 +161,7 @@ const TokenCard = props => {
                     margin="dense"
                     id="name"
                     label="Quantity"
+                    placeholder="100"
                     type="number"
                     fullWidth
                     value={amount}
@@ -195,6 +196,7 @@ const TokenCard = props => {
                     margin="dense"
                     id="name"
                     label="Quantity"
+                    placeholder="100"
                     type="number"
                     fullWidth
                     value={amount}

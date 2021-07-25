@@ -41,13 +41,13 @@ contract CreatorTokenFactory is Ownable {
 	// Mapping from tokenId to creatorAddress
 	mapping (uint => address) public tokenToCreator;
 	// Mapping from tokenId to token value transferred to creator
-	mapping (uint => uint) internal tokenValueTransferred;
+	mapping (uint => uint) public tokenValueTransferred;
 	// Mapping from tokenId to mapping from address to quantity of tokenId held
 	mapping(uint256 => mapping(address => uint256)) public tokenHoldership;
 	// Mapping from user to mapping from tokenId to quantity of that token the user owns (to show a user's portfolio without having to iterate through tokenHoldership)
 	mapping(address => mapping(uint256 => uint256)) public userToHoldings;
 	// Mapping from account to operator approvals
-	mapping(address => mapping(address => bool)) internal approvals;
+	mapping(address => mapping(address => bool)) public approvals;
 	// Mapping from token to total value locked
 	mapping (uint => uint) public totalValueLocked;
 
