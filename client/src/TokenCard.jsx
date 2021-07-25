@@ -50,41 +50,47 @@ const useStyles = makeStyles(() => ({
   }));
 
 const web3 = new Web3(Web3.givenProvider);
-// contract address is provided by Truffle migration
+// Contract address is provided by Truffle migration
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
 const TokenCard = props => {
   const { address, name, symbol, description, verified, outstanding, maxSupply, tokenId, avatarUrl, imageUrl } = props;
 
-  // These consts are used in the Dialog
+  // Initalize open/closed state for buy dialog
   const [buyOpen, setBuyOpen] = React.useState(false);
-  const [sellOpen, setSellOpen] = React.useState(false);
   const handleClickBuyOpen = () => {
     setBuyOpen(true);
   };
   const handleBuyClose = () => {
     setBuyOpen(false);
   }
+
+  // Initialze open/closed state for sell dialog
+  const [sellOpen, setSellOpen] = React.useState(false);
   const handleClickSellOpen = () => {
     setSellOpen(true);
   }
   const handleSellClose = () => {
     setSellOpen(false);
   }
-  //const handleBuyCreatorToken = async (e) => {
-  async function handleBuyCreatorToken(e, tokenId) {
+
+  // Initialize state for user-specified amount in text field
+  const [amount, setAmount] = React.useState(0);
+
+  // Invoke buyCreatorToken
+  async function handleBuyCreatorToken(e, tokenId, amount) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
     //const tokenId = 0;
-    const proceeds = await ContractInstance.methods._totalProceeds(tokenId, 5000).call({
+    const proceeds = await ContractInstance.methods._totalProceeds(tokenId, amount).call({
       from: account,
     });
-    const gas = await ContractInstance.methods.buyCreatorToken(tokenId, 5000).estimateGas({
+    const gas = await ContractInstance.methods.buyCreatorToken(tokenId, amount).estimateGas({
       from: account,
       value: proceeds
     });
-    const result = await ContractInstance.methods.buyCreatorToken(tokenId, 5000).send({
+    const result = await ContractInstance.methods.buyCreatorToken(tokenId, amount).send({
       from: account,
       gas: gas,
       value: proceeds
@@ -93,16 +99,16 @@ const TokenCard = props => {
     handleBuyClose();
   }
 
-  //const handleSellCreatorToken = async (e) => {
-  async function handleSellCreatorToken(e, tokenId) {
+  // Invoke sellCreatorToken
+  async function handleSellCreatorToken(e, tokenId, ) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
     //const tokenId = 0;
-    const gas = await ContractInstance.methods.sellCreatorToken(tokenId, 5000, account).estimateGas({
+    const gas = await ContractInstance.methods.sellCreatorToken(tokenId, amount, account).estimateGas({
       from: account,
     });
-    const result = await ContractInstance.methods.sellCreatorToken(tokenId, 5000, account).send({
+    const result = await ContractInstance.methods.sellCreatorToken(tokenId, amount, account).send({
       from: account
     })
     console.log(result);
@@ -141,6 +147,8 @@ const TokenCard = props => {
                     label="Quantity"
                     type="email"
                     fullWidth
+                    value={amount}
+                    onChange={(event) => {setAmount(event.target.value)}}
                   />
                 </DialogContent>
                 <DialogActions>
@@ -149,7 +157,7 @@ const TokenCard = props => {
                   </Button>
                   <Button
                   value={tokenId}
-                  onClick={(e) => handleBuyCreatorToken(e, tokenId)}
+                  onClick={(e) => handleBuyCreatorToken(e, tokenId, amount)}
                   color="primary">
                     Complete Transaction
                   </Button>
@@ -173,6 +181,8 @@ const TokenCard = props => {
                     label="Quantity"
                     type="email"
                     fullWidth
+                    value={amount}
+                    onChange={(event) => {setAmount(event.target.value)}}
                   />
                 </DialogContent>
                 <DialogActions>
@@ -181,7 +191,7 @@ const TokenCard = props => {
                   </Button>
                   <Button
                   value={tokenId}
-                  onClick={(e) => handleSellCreatorToken(e, tokenId)}
+                  onClick={(e) => handleSellCreatorToken(e, tokenId, amount)}
                   color="primary">
                     Complete Transaction
                   </Button>
