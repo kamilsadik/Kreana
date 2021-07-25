@@ -78,7 +78,7 @@ const TokenCard = props => {
   const [amount, setAmount] = React.useState(0);
 
   // Invoke buyCreatorToken
-  async function handleBuyCreatorToken(e, tokenId, amount) {
+  async function handleBuyCreatorToken(e, tokenId) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
@@ -97,10 +97,24 @@ const TokenCard = props => {
     })
     console.log(result);
     handleBuyClose();
+    setAmount(0);
+  }
+
+  // Compute proceeds required for transaction
+  async function handleTotalBuyProceeds(e, tokenId) {
+    e.preventDefault();
+    const accounts = await window.ethereum.enable();
+    const account = accounts[0];
+    const result = await ContractInstance.methods._totalProceeds(tokenId, amount).call({
+      from: account,
+    });
+    return (
+      result
+    );
   }
 
   // Invoke sellCreatorToken
-  async function handleSellCreatorToken(e, tokenId, ) {
+  async function handleSellCreatorToken(e, tokenId) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
@@ -113,6 +127,7 @@ const TokenCard = props => {
     })
     console.log(result);
     handleSellClose();
+    setAmount(0);
   }
 
     return (
