@@ -160,7 +160,7 @@ const TokenCard = props => {
                     margin="dense"
                     id="name"
                     label="Quantity"
-                    type="email"
+                    type="number"
                     fullWidth
                     value={amount}
                     onChange={(event) => {setAmount(event.target.value)}}
@@ -172,7 +172,7 @@ const TokenCard = props => {
                   </Button>
                   <Button
                   value={tokenId}
-                  onClick={(e) => handleBuyCreatorToken(e, tokenId, amount)}
+                  onClick={(e) => handleBuyCreatorToken(e, tokenId)}
                   color="primary">
                     Complete Transaction
                   </Button>
@@ -194,7 +194,7 @@ const TokenCard = props => {
                     margin="dense"
                     id="name"
                     label="Quantity"
-                    type="email"
+                    type="number"
                     fullWidth
                     value={amount}
                     onChange={(event) => {setAmount(event.target.value)}}
@@ -206,7 +206,7 @@ const TokenCard = props => {
                   </Button>
                   <Button
                   value={tokenId}
-                  onClick={(e) => handleSellCreatorToken(e, tokenId, amount)}
+                  onClick={(e) => handleSellCreatorToken(e, tokenId)}
                   color="primary">
                     Complete Transaction
                   </Button>
