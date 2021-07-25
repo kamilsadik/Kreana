@@ -15,16 +15,17 @@ const NewTokenForm = () => {
 	let creatorTokenArray = ['broseph'];
 	let creatorTokenCount = 5;
 
-	function handleCreatorToken() {
-		creatorTokenCount = Number(ContractInstance.methods.getCreatorTokenCount().call());
+	async function handleCreatorToken() {
+		creatorTokenCount = Number(await ContractInstance.methods.getCreatorTokenCount().call());
 		for (let i = 0; i < creatorTokenCount; i++) {
-			const item = (ContractInstance.methods.creatorTokens(i).call()).toString();
+			const item = (await ContractInstance.methods.creatorTokens(i).call()).toString();
 			console.log(`publicData[${i}] = ${item}`);
 			creatorTokenArray.push(item);
 		}
+		return (
+			creatorTokenArray
+		);
 	}
-
-	handleCreatorToken();
 
   return (
   	<div>
