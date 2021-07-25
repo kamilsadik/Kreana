@@ -11,27 +11,30 @@ const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
 const NewTokenForm = () => {
 
-	// Initialize state for array of Creator Tokens
-	const creatorTokenArray = [];
+	// Initialize empty array of Creator Tokens
+	let creatorTokenArray = [];
 
-	const creatorTokenCount = ContractInstance.methods.getCreatorTokenCount();
-	for (let i = 0; i < creatorTokenCount; i++) {
-		const item = ContractInstance.methods.creatorTokens(i);
-		console.log(`publicData[${i}] = ${item}`);
-		creatorTokenArray.push(item);
+	function handleCreatorTokens(e) {
+		const creatorTokenCount = ContractInstance.methods.getCreatorTokenCount().call();
+		for (let i = 0; i < creatorTokenCount; i++) {
+			const item = ContractInstance.methods.creatorTokens(i).call();
+			console.log(`publicData[${i}] = ${item}`);
+			creatorTokenArray.push(item);
+		}
+		//return (
+		//	creatorTokenArray
+		//);
 	}
 
   return (
   	<div>
-  	  {creatorTokenArray.map(item => (<p>{item.name}</p>))}
+ 			hello
+  		{handleCreatorTokens()}
+  		{creatorTokenArray.map((item) => item)}
+  		goodbye
   	</div>
   );
-  //(
-  //	'hello',
-  //	arr,
-  //	'goodbye'
-  //  (e) => handleCreatorTokens(e)
-  //);
+
 };
 
 export default NewTokenForm;
