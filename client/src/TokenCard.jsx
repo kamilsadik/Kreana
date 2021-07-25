@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import ShareIcon from "@material-ui/icons/Share";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { Avatar, IconButton, CardMedia } from "@material-ui/core";
+// These imports are needed to implement Web3, and to connect the React client to the Ethereum server
 import Web3 from './web3';
 import { ABI } from './ABI';
 import { contractAddr } from './Address';

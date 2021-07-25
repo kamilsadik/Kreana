@@ -15,6 +15,8 @@ function App() {
       <Grid item>
         <Header />
       </Grid>
+      <NewTokenForm>
+      </NewTokenForm>
       <Grid item container>
         <Grid item xs={false} sm={2} />
         <Grid item xs={12} sm={8}>

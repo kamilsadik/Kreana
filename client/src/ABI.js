@@ -961,6 +961,19 @@ export const ABI =
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getCreatorTokenCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -1924,6 +1937,19 @@ export const ABI =
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getCreatorTokenCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -2578,6 +2604,19 @@ export const ABI =
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getCreatorTokenCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "string",
@@ -3059,6 +3098,19 @@ export const ABI =
       {
         "internalType": "uint256",
         "name": "maxSupply",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCreatorTokenCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -3846,6 +3898,19 @@ export const ABI =
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getCreatorTokenCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -4351,6 +4416,19 @@ export const ABI =
       {
         "internalType": "uint256",
         "name": "maxSupply",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCreatorTokenCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -5082,6 +5160,19 @@ export const ABI =
       {
         "internalType": "uint256",
         "name": "maxSupply",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCreatorTokenCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
         "type": "uint256"
       }
     ],

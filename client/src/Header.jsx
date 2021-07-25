@@ -41,7 +41,7 @@ const Header = () => {
   const [description, setDescription] = React.useState('');
 
   async function handleCreateCreatorToken(e) {
-    e.preventDefault();    
+    e.preventDefault();
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
     const gas = await ContractInstance.methods.createCreatorToken(
