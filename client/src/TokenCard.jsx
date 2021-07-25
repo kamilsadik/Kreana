@@ -98,7 +98,7 @@ const TokenCard = props => {
     })
     console.log(result);
     handleBuyClose();
-    setAmount(0);
+    setAmount('');
   }
 
   // Compute proceeds required for transaction
@@ -128,7 +128,7 @@ const TokenCard = props => {
     })
     console.log(result);
     handleSellClose();
-    setAmount(0);
+    setAmount('');
   }
 
     return (
