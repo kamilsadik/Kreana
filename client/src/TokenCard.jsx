@@ -83,7 +83,6 @@ const TokenCard = props => {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    //const tokenId = 0;
     const proceeds = await ContractInstance.methods._totalProceeds(tokenId, amount).call({
       from: account,
     });
@@ -119,7 +118,6 @@ const TokenCard = props => {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    //const tokenId = 0;
     const gas = await ContractInstance.methods.sellCreatorToken(tokenId, amount, account).estimateGas({
       from: account,
     });

@@ -33,7 +33,7 @@ export default [
     maxSupply: 0,
     tokenId: 2,
     avatarUrl: "https://media.pitchfork.com/photos/5929b133c0084474cd0c1d92/1:1/w_600/df5bb71a.jpg",
-    imageUrl: "https://lh3.googleusercontent.com/proxy/tScvfTaKkdq_kPcMvp927hRcXpvvsBfkQygEdSz7tCHF9RZyjvNia6Gxm9rBv1bF0CSDgKSYD-xEql8j1YXknj-u3lI8TgmnsEAxbIc"
+    imageUrl: "http://www.opeth.com/images/2019/09/10/band2019bw.jpg"
   },
   {
     address: "0x3CceA0520680098eA8e205ccD02b033E00Af3f79",
