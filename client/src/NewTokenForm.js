@@ -13,7 +13,7 @@ const NewTokenForm = () => {
 
 	// Initialize empty array of Creator Tokens
 	let creatorTokenCount = 0;
-	let creatorTokenArray = ['cat'];
+	let creatorTokenArray = ['cats'];
 
 	ContractInstance.methods.getCreatorTokenCount().call().then(value => (creatorTokenCount = value));
 
