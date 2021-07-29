@@ -15,10 +15,10 @@ const NewTokenForm = () => {
 	let creatorTokenCount = 0;
 	let creatorTokenArray = ['cats'];
 
-	ContractInstance.methods.getCreatorTokenCount().call().then(value => (creatorTokenCount = value));
+	//ContractInstance.methods.getCreatorTokenCount().call().then(value => (creatorTokenCount = value));
 
-//	async function handleCreatorToken() {
-//		creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
+	async function handleCreatorToken() {
+		await ContractInstance.methods.getCreatorTokenCount().call().then(value => (creatorTokenCount = value));;
 		//for (let i = 0; i < creatorTokenCount; i++) {
 		//	const item = await ContractInstance.methods.creatorTokens(i).call();
 		//	console.log(`publicData[${i}] = ${item}`);
@@ -27,9 +27,9 @@ const NewTokenForm = () => {
 		//return (
 		//	creatorTokenArray
 		//);
-	//}
+	}
 
-	//handleCreatorToken();
+	handleCreatorToken();
 
   return (
   	<div>
