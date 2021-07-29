@@ -14,8 +14,11 @@ const NewTokenForm = () => {
 	// Initialize empty array of Creator Tokens
 	let creatorTokenCount = 0;
 	let creatorTokenArray = ['cats'];
+	let token = 1;
 
 	//ContractInstance.methods.getCreatorTokenCount().call().then(value => (creatorTokenCount = value));
+	ContractInstance.methods.getToken(5).call().then(value => (token = value));
+
 
 	async function handleCreatorToken() {
 		await ContractInstance.methods.getCreatorTokenCount().call().then(value => (creatorTokenCount = value));;
@@ -34,6 +37,7 @@ const NewTokenForm = () => {
   return (
   	<div>
  			hello
+ 			{token}
  			{creatorTokenCount}
  			{creatorTokenArray}
   		goodbye
