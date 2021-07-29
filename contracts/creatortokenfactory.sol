@@ -75,4 +75,11 @@ contract CreatorTokenFactory is Ownable {
 		// Return length of creatorTokens array
 		return creatorTokens.length;
 	}
+
+	/// @dev Returns token with a particular id
+	/// @param _id Id of desired token
+	/// @return CreatorToken
+	function getToken(uint _id) public view returns (CreatorToken memory) {
+		return creatorTokens[_id];
+	}
 }
