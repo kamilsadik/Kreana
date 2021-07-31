@@ -73,7 +73,7 @@ contract CreatorTokenFactory is Ownable {
 
 	/// @dev Returns the current length of the creatorTokens array
 	/// @return uint representing number of unique Creator Tokens
-	function getCreatorTokenCount() external view returns (uint) {
+	function getCreatorTokenCount() external constant returns (uint) {
 		// Return length of creatorTokens array
 		return creatorTokens.length;
 	}

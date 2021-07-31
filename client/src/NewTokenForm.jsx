@@ -12,8 +12,6 @@ const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 const NewTokenForm = () => {
 
 	// Initialize empty array of Creator Tokens
-	//let creatorTokenCount = 0;
-
 	let tokens = []
 	let creatorTokenCount = 10;
 
@@ -33,7 +31,7 @@ const NewTokenForm = () => {
 		console.log(tokens);
 	}
 
-	//handleCreatorTokenCount();
+	handleCreatorTokenCount();
 	handleCreatorTokens();
 
 	return (
