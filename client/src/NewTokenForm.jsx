@@ -17,17 +17,21 @@ const NewTokenForm = () => {
 	async function handleCreatorTokenCount() {
 		const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
 		console.log(creatorTokenCount);
+		return(creatorTokenCount)
 	}
 
-	async function handleCreatorTokens() {
-		for (let i=0; i<2; i++) {
+	async function handleCreatorTokenArray(qty) {
+		for (let i=0; i<qty; i++) {
 			const token = await ContractInstance.methods.creatorTokens(i).call();
 			tokens.push(token);
 		}
 		console.log(tokens);
 	}
 
-	handleCreatorTokenCount();
+	async function handleCreatorTokens(){
+		await handleCreatorTokenArray(await handleCreatorTokenCount());
+	}
+
 	handleCreatorTokens();
 
 	return (
