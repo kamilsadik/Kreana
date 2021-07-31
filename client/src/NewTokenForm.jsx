@@ -15,12 +15,12 @@ const NewTokenForm = () => {
 	let tokens = [];
 
 	async function handleCreatorTokenCount() {
-		const creatorTokenCount = await ContractInstance.methods.numCreatorTokens().call();
+		const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
 		console.log(creatorTokenCount);
 	}
 
 	async function handleCreatorTokens() {
-		for (let i=0; i<70; i++) {
+		for (let i=0; i<2; i++) {
 			const token = await ContractInstance.methods.creatorTokens(i).call();
 			tokens.push(token);
 		}
