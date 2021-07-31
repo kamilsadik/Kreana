@@ -3,6 +3,7 @@ import { Grid } from "@material-ui/core";
 import Header from "./Header";
 import Content from "./Content";
 import NewTokenForm from "./NewTokenForm";
+import OwnerDashboard from "./OwnerDashboard.js";
 //import Web3 from './web3';
 //import { ABI } from './ABI';
 
@@ -24,6 +25,8 @@ function App() {
       </Grid>
       <NewTokenForm>
       </NewTokenForm>
+      <OwnerDashboard>
+      </OwnerDashboard>
     </Grid>
   );
 };
