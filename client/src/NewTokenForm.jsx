@@ -12,8 +12,7 @@ const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 const NewTokenForm = () => {
 
 	// Initialize empty array of Creator Tokens
-	let tokens = []
-	let creatorTokenCount = 70;
+	let tokens = [];
 
 	async function handleCreatorTokenCount() {
 		const creatorTokenCount = await ContractInstance.methods.numCreatorTokens().call();
@@ -21,7 +20,7 @@ const NewTokenForm = () => {
 	}
 
 	async function handleCreatorTokens() {
-		for (let i=0; i<creatorTokenCount; i++) {
+		for (let i=0; i<70; i++) {
 			const token = await ContractInstance.methods.creatorTokens(i).call();
 			tokens.push(token);
 		}
