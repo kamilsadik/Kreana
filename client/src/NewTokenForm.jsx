@@ -13,10 +13,10 @@ const NewTokenForm = () => {
 
 	// Initialize empty array of Creator Tokens
 	let tokens = []
-	let creatorTokenCount = 69;
+	let creatorTokenCount = 70;
 
 	async function handleCreatorTokenCount() {
-		const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
+		const creatorTokenCount = await ContractInstance.methods.numCreatorTokens().call();
 		console.log(creatorTokenCount);
 	}
 
@@ -24,9 +24,6 @@ const NewTokenForm = () => {
 		for (let i=0; i<creatorTokenCount; i++) {
 			const token = await ContractInstance.methods.creatorTokens(i).call();
 			tokens.push(token);
-			//console.log(token.creatorAddress);
-			//console.log(token);
-			//console.log('token0', JSON.stringify(token));
 		}
 		console.log(tokens);
 	}

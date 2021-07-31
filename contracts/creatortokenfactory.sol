@@ -16,6 +16,8 @@ contract CreatorTokenFactory is Ownable {
 	uint public totalPlatformFees = 0;
 	// Variable to track platform fees owed, but not yet paid to owner
 	uint public platformFeesOwed = 0;
+	// Variable to track number of unique creator tokens
+	uint public numCreatorTokens = 0;
 
 	// Profit margin (percentage of total revenue) directed toward creator
 	uint profitMargin = 20;
@@ -65,29 +67,9 @@ contract CreatorTokenFactory is Ownable {
 		tokenToCreator[id] = _creatorAddress;
 		// Map from token id to amount of value transferred (0 at inception)
 		tokenValueTransferred[id] = 0;
+		// Increment number of creator tokens
+		numCreatorTokens++;
 		// Emit token creation event
 		emit NewCreatorToken(id, _creatorAddress, _name, _symbol, _description, false, 0, 0);
-	}
-
-	uint public numCreatorTokens = creatorTokens.length;
-
-	/// @dev Returns the current length of the creatorTokens array
-	/// @return uint representing number of unique Creator Tokens
-	function getCreatorTokenCount() external constant returns (uint) {
-		// Return length of creatorTokens array
-		return creatorTokens.length;
-	}
-
-	/// @dev Returns token with a particular id
-	/// @param _id Id of desired token
-	/// @return CreatorToken
-	function getToken(uint _id) external view returns (CreatorToken memory) {
-		return creatorTokens[_id];
-	}
-
-	/// @dev Returns entire array of tokens
-	/// @return CreatorToken[]
-	function getCreatorTokens() external view returns (CreatorToken[] memory) {
-		return creatorTokens;
 	}
 }
