@@ -69,6 +69,8 @@ contract CreatorTokenFactory is Ownable {
 		emit NewCreatorToken(id, _creatorAddress, _name, _symbol, _description, false, 0, 0);
 	}
 
+	uint public numCreatorTokens = creatorTokens.length;
+
 	/// @dev Returns the current length of the creatorTokens array
 	/// @return uint representing number of unique Creator Tokens
 	function getCreatorTokenCount() external view returns (uint) {

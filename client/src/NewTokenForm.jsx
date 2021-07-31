@@ -11,47 +11,34 @@ const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
 const NewTokenForm = () => {
 
-
-	//function getTokenDetails(id) {
-	//	return ContractInstance.methods.creatorTokens(id).call()
-	//}
-
-	//function displayTokens(id) {
-	//	getTokenDetails(id).then(function(token) {
-	//		return token.name
-	//	});
-	//}
-
 	// Initialize empty array of Creator Tokens
 	//let creatorTokenCount = 0;
-	//let creatorTokenArray = ['cats'];
-	//let token = 1;
 
-	//creatorTokenCount = ContractInstance.methods.getCreatorTokenCount().call();
-	//ContractInstance.methods.getCreatorTokenCount().call().then(value => (creatorTokenCount = value));
-	//ContractInstance.methods.getToken(5).call().then(value => (token = value));
+	let tokens = []
+	let creatorTokenCount = 10;
 
+	async function handleCreatorTokenCount() {
+		const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
+		console.log(creatorTokenCount);
+	}
 
-	//function handleCreatorToken() {
-		//ContractInstance.methods.getCreatorTokens().call().then(var tokens = ContractInstance.creatorTokens)
-		//tokens = ContractInstance.methods.getCreatorTokens().call();
-		//creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
-		//let creatorToken0 = await ContractInstance.methods.creatorTokens(0).call();
-		//for (let i = 0; i < creatorTokenCount; i++) {
-		//	const item = await ContractInstance.methods.creatorTokens(i).call();
-		//	console.log(`publicData[${i}] = ${item}`);
-		//	creatorTokenArray.push(item);
-		//}
-		//return (
-		//	creatorTokenCount
-		//);
-	//}
+	async function handleCreatorTokens() {
+		for (let i=0; i<creatorTokenCount; i++) {
+			const token = await ContractInstance.methods.creatorTokens(0).call();
+			tokens.push(token);
+			//console.log(token.creatorAddress);
+			//console.log(token);
+			//console.log('token0', JSON.stringify(token));
+		}
+		console.log(tokens);
+	}
 
-	//handleCreatorToken();
+	//handleCreatorTokenCount();
+	handleCreatorTokens();
 
-  return (
-  	null
-  );
+	return (
+		null
+	);
 
 };
 
