@@ -1,3 +1,3 @@
 import web3 from './web3';
 
-export const contractAddr = '0xDB5F79f0961dF7581AB361F414602D958ED10ACE';
+export const contractAddr = '0x12C9C7eF185e1D9375574196beead2ac897C25cd';

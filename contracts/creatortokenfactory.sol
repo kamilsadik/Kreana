@@ -64,7 +64,7 @@ contract CreatorTokenFactory is Ownable {
 		// Create token id
 		uint id = creatorTokens.length - 1;
 		// Update number of creator tokens
-		numCreatorTokens = id+1;
+		//numCreatorTokens = id+1;
 		// Map from token id to creator's address
 		tokenToCreator[id] = _creatorAddress;
 		// Map from token id to amount of value transferred (0 at inception)
