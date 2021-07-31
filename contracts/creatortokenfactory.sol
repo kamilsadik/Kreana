@@ -63,13 +63,20 @@ contract CreatorTokenFactory is Ownable {
 		creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, false, 0, 0));
 		// Create token id
 		uint id = creatorTokens.length - 1;
+		// Update number of creator tokens
+		numCreatorTokens = id+1;
 		// Map from token id to creator's address
 		tokenToCreator[id] = _creatorAddress;
 		// Map from token id to amount of value transferred (0 at inception)
 		tokenValueTransferred[id] = 0;
-		// Update number of creator tokens
-		numCreatorTokens = id+1;
 		// Emit token creation event
 		emit NewCreatorToken(id, _creatorAddress, _name, _symbol, _description, false, 0, 0);
+	}
+
+	/// @dev Returns the current length of the creatorTokens array
+	/// @return uint representing number of unique Creator Tokens
+	function getCreatorTokenCount() external view returns (uint) {
+		// Return length of creatorTokens array
+		return creatorTokens.length;
 	}
 }
