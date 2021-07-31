@@ -103,7 +103,9 @@ const OwnerDashboard = props => {
 		open={verificationOpen}
 		onClose={handleVerificationClose}
 		aria-labelledby="form-dialog-title">
-		  <DialogTitle id="form-dialog-title">Verify Token</DialogTitle>
+		  <DialogTitle id="form-dialog-title">
+		  Verify Token
+		  </DialogTitle>
 		  <DialogContent>
 		    <DialogContentText>
 		      Which token do you wish to verify?

@@ -2,8 +2,8 @@ import React, { Component, useState } from "react";
 import { Grid } from "@material-ui/core";
 import Header from "./Header";
 import Content from "./Content";
-import NewTokenForm from "./NewTokenForm";
-import OwnerDashboard from "./OwnerDashboard.js";
+import NewTokenForm from "./NewTokenForm.jsx";
+import OwnerDashboard from "./OwnerDashboard.jsx";
 //import Web3 from './web3';
 //import { ABI } from './ABI';
 
