@@ -36,7 +36,7 @@ const NewTokenForm = () => {
 	}
 
   return (
-  	handleCreatorToken()
+  	null
   );
 
 };
