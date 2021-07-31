@@ -78,6 +78,9 @@ const TokenCard = props => {
   // Initialize state for user-specified amount in text field
   const [amount, setAmount] = React.useState('');
 
+  // Initialize state for transaction proceeds required
+  const [transactionProceeds, setTransactionProceeds] = React.useState(0);
+
   // Invoke buyCreatorToken
   async function handleBuyCreatorToken(e, tokenId) {
     e.preventDefault();    
@@ -101,11 +104,11 @@ const TokenCard = props => {
   }
 
   // Compute proceeds required for transaction
-  async function handleTotalBuyProceeds(e, tokenId) {
+  async function handleTotalBuyProceeds(e, tokenId, qty) {
     e.preventDefault();
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    const result = await ContractInstance.methods._totalProceeds(tokenId, amount).call({
+    const result = await ContractInstance.methods._totalProceeds(tokenId, qty).call({
       from: account,
     });
     return (
@@ -165,6 +168,10 @@ const TokenCard = props => {
                     value={amount}
                     onChange={(event) => {setAmount(event.target.value)}}
                   />
+                <DialogContentText>
+                  Total Transaction Value: <br></br>
+                  Price per Token: 
+                </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleBuyClose} color="primary">
@@ -200,6 +207,10 @@ const TokenCard = props => {
                     value={amount}
                     onChange={(event) => {setAmount(event.target.value)}}
                   />
+                <DialogContentText>
+                  Total Transaction Value: <br></br>
+                  Price per Token: 
+                </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleSellClose} color="primary">
