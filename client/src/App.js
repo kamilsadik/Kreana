@@ -4,6 +4,7 @@ import Header from "./Header";
 import Content from "./Content";
 import Inventory from "./Inventory.jsx";
 import OwnerDashboard from "./OwnerDashboard.jsx";
+import UserHoldings from "./UserHoldings.jsx";
 //import Web3 from './web3';
 //import { ABI } from './ABI';
 
@@ -25,6 +26,8 @@ function App() {
       </Grid>
       <Inventory>
       </Inventory>
+      <UserHoldings>
+      </UserHoldings>
       <OwnerDashboard>
       </OwnerDashboard>
     </Grid>

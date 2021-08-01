@@ -8,10 +8,10 @@ const web3 = new Web3(Web3.givenProvider);
 // Contract address is provided by Truffle migration
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
-const Inventory = () => {
+const UserHoldings = () => {
 
 	// Initialize empty array of Creator Tokens
-	let tokens = [];
+	let holdings = [];
 
 	async function handleCreatorTokenCount() {
 		const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
@@ -19,19 +19,21 @@ const Inventory = () => {
 		return(creatorTokenCount)
 	}
 
-	async function handleCreatorTokenArray(qty) {
+	async function handleUserHoldingMapping(qty) {
+		const accounts = await window.ethereum.enable();
+		const account = accounts[0];
 		for (let i=0; i<qty; i++) {
-			const token = await ContractInstance.methods.creatorTokens(i).call();
-			tokens.push(token);
+			const userHoldings = await ContractInstance.methods.userToHoldings(account, i).call();
+			holdings.push(userHoldings);
 		}
-		console.log(tokens);
+		console.log(holdings);
 	}
 
-	async function handleCreatorTokens(){
-		await handleCreatorTokenArray(await handleCreatorTokenCount());
+	async function handleUserHoldings(){
+		await handleUserHoldingMapping(await handleCreatorTokenCount());
 	}
 
-	handleCreatorTokens();
+	handleUserHoldings();
 
 	return (
 		null
@@ -39,4 +41,4 @@ const Inventory = () => {
 
 };
 
-export default Inventory;
+export default UserHoldings;

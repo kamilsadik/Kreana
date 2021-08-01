@@ -83,11 +83,12 @@ const TokenCard = props => {
   const [transactionProceeds, setTransactionProceeds] = React.useState(0);
 
   const handleTransactionAmount = (amt) => {
+    amt = Math.round(amt);
     if (amt == 0) {
       setAmount('');
     }
     else {
-      setAmount(Math.round(amt));
+      setAmount(amt);
     }
   }
 
@@ -110,19 +111,6 @@ const TokenCard = props => {
     })
     console.log(result);
     handleBuyClose();
-  }
-
-  // Compute proceeds required for transaction
-  async function handleTotalBuyProceeds(e, tokenId) {
-    e.preventDefault();
-    const accounts = await window.ethereum.enable();
-    const account = accounts[0];
-    const result = await ContractInstance.methods._totalProceeds(tokenId, amount).call({
-      from: account,
-    });
-    return (
-      result
-    );
   }
 
   // Invoke sellCreatorToken
