@@ -64,6 +64,7 @@ const TokenCard = props => {
   };
   const handleBuyClose = () => {
     setBuyOpen(false);
+    setAmount('');
   }
 
   // Initialze open/closed state for sell dialog
@@ -73,6 +74,7 @@ const TokenCard = props => {
   }
   const handleSellClose = () => {
     setSellOpen(false);
+    setAmount('');
   }
 
   // Initialize state for user-specified amount in text field
@@ -100,7 +102,6 @@ const TokenCard = props => {
     })
     console.log(result);
     handleBuyClose();
-    setAmount('');
   }
 
   // Compute proceeds required for transaction
@@ -129,7 +130,6 @@ const TokenCard = props => {
     })
     console.log(result);
     handleSellClose();
-    setAmount('');
   }
 
     return (
@@ -155,7 +155,8 @@ const TokenCard = props => {
                 <DialogTitle id="form-dialog-title">Buy Token</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                    How many tokens do you wish to purchase?
+                    How many tokens do you wish to purchase?<br></br>
+                    (Note: Must be a whole number of tokens)
                   </DialogContentText>
                   <TextField
                     autoFocus
@@ -166,7 +167,7 @@ const TokenCard = props => {
                     type="number"
                     fullWidth
                     value={amount}
-                    onChange={(event) => {setAmount(event.target.value)}}
+                    onChange={(event) => {setAmount(Math.round(event.target.value))}}
                   />
                 <DialogContentText>
                   Total Transaction Value: <br></br>
@@ -194,7 +195,8 @@ const TokenCard = props => {
                 <DialogTitle id="form-dialog-title">Sell Token</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                    How many tokens do you wish to sell?
+                    How many tokens do you wish to sell?<br></br>
+                    (Note: Must be a whole number of tokens)
                   </DialogContentText>
                   <TextField
                     autoFocus
@@ -205,7 +207,7 @@ const TokenCard = props => {
                     type="number"
                     fullWidth
                     value={amount}
-                    onChange={(event) => {setAmount(event.target.value)}}
+                    onChange={(event) => {setAmount(Math.round(event.target.value))}}
                   />
                 <DialogContentText>
                   Total Transaction Value: <br></br>
