@@ -79,9 +79,17 @@ const TokenCard = props => {
 
   // Initialize state for user-specified amount in text field
   const [amount, setAmount] = React.useState('');
-
   // Initialize state for transaction proceeds required
   const [transactionProceeds, setTransactionProceeds] = React.useState(0);
+
+  const handleTransactionAmount = (amt) => {
+    if (amt == 0) {
+      setAmount('');
+    }
+    else {
+      setAmount(Math.round(amt));
+    }
+  }
 
   // Invoke buyCreatorToken
   async function handleBuyCreatorToken(e, tokenId) {
@@ -105,11 +113,11 @@ const TokenCard = props => {
   }
 
   // Compute proceeds required for transaction
-  async function handleTotalBuyProceeds(e, tokenId, qty) {
+  async function handleTotalBuyProceeds(e, tokenId) {
     e.preventDefault();
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    const result = await ContractInstance.methods._totalProceeds(tokenId, qty).call({
+    const result = await ContractInstance.methods._totalProceeds(tokenId, amount).call({
       from: account,
     });
     return (
@@ -167,7 +175,7 @@ const TokenCard = props => {
                     type="number"
                     fullWidth
                     value={amount}
-                    onChange={(event) => {setAmount(Math.round(event.target.value))}}
+                    onChange={(event) => {handleTransactionAmount(event.target.value)}}
                   />
                 <DialogContentText>
                   Total Transaction Value: <br></br>
@@ -181,7 +189,8 @@ const TokenCard = props => {
                   <Button
                   value={tokenId}
                   onClick={(e) => handleBuyCreatorToken(e, tokenId)}
-                  color="primary">
+                  color="primary"
+                  disabled={amount==''}>
                     Complete Transaction
                   </Button>
                 </DialogActions>
@@ -207,7 +216,7 @@ const TokenCard = props => {
                     type="number"
                     fullWidth
                     value={amount}
-                    onChange={(event) => {setAmount(Math.round(event.target.value))}}
+                    onChange={(event) => {handleTransactionAmount(event.target.value)}}
                   />
                 <DialogContentText>
                   Total Transaction Value: <br></br>
@@ -221,7 +230,8 @@ const TokenCard = props => {
                   <Button
                   value={tokenId}
                   onClick={(e) => handleSellCreatorToken(e, tokenId)}
-                  color="primary">
+                  color="primary"
+                  disabled={amount==''}>
                     Complete Transaction
                   </Button>
                 </DialogActions>
