@@ -9,7 +9,7 @@ const web3 = new Web3(Web3.givenProvider);
 // Contract address is provided by Truffle migration
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
-const NewTokenForm = () => {
+const Inventory = () => {
 
 	// Initialize empty array of Creator Tokens
 	let tokens = [];
@@ -40,4 +40,4 @@ const NewTokenForm = () => {
 
 };
 
-export default NewTokenForm;
+export default Inventory;

@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import { Grid } from "@material-ui/core";
 import Header from "./Header";
 import Content from "./Content";
-import NewTokenForm from "./NewTokenForm.jsx";
+import Inventory from "./Inventory.jsx";
 import OwnerDashboard from "./OwnerDashboard.jsx";
 //import Web3 from './web3';
 //import { ABI } from './ABI';
@@ -23,8 +23,8 @@ function App() {
         </Grid>
         <Grid item xs={false} sm={2} />
       </Grid>
-      <NewTokenForm>
-      </NewTokenForm>
+      <Inventory>
+      </Inventory>
       <OwnerDashboard>
       </OwnerDashboard>
     </Grid>
