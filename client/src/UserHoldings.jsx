@@ -11,7 +11,7 @@ const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 const UserHoldings = () => {
 
 	// Initialize empty array of Creator Tokens
-	let holdings = [];
+	let userHoldings = [];
 
 	async function handleCreatorTokenCount() {
 		const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
@@ -23,10 +23,10 @@ const UserHoldings = () => {
 		const accounts = await window.ethereum.enable();
 		const account = accounts[0];
 		for (let i=0; i<qty; i++) {
-			const userHoldings = await ContractInstance.methods.userToHoldings(account, i).call();
-			holdings.push(userHoldings);
+			const holdings = await ContractInstance.methods.userToHoldings(account, i).call();
+			userHoldings.push(holdings);
 		}
-		console.log(holdings);
+		console.log(userHoldings);
 	}
 
 	async function handleUserHoldings(){
