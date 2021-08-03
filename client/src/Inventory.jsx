@@ -8,10 +8,10 @@ const web3 = new Web3(Web3.givenProvider);
 // Contract address is provided by Truffle migration
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
-const Inventory = () => {
+// Initialize empty array of Creator Tokens
+let tokens = [];
 
-	// Initialize empty array of Creator Tokens
-	let tokens = [];
+const Inventory = () => {
 
 	async function handleCreatorTokenCount() {
 		const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
@@ -28,7 +28,7 @@ const Inventory = () => {
 	}
 
 	async function handleCreatorTokens(){
-		await handleCreatorTokenArray(await handleCreatorTokenCount());
+		handleCreatorTokenArray(await handleCreatorTokenCount());
 	}
 
 	handleCreatorTokens();
@@ -40,3 +40,4 @@ const Inventory = () => {
 };
 
 export default Inventory;
+export { tokens };

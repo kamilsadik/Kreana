@@ -2,6 +2,7 @@ import React from "react";
 import TokenCard from "./TokenCard";
 import { Grid } from "@material-ui/core";
 import tokenList from "./constants";
+import { tokens } from "./Inventory.jsx";
 
 const Content = () => {
 
