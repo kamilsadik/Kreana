@@ -35,6 +35,7 @@ const Inventory = () => {
 
 	return (
 		null
+		//handleCreatorTokens()
 	);
 
 };
