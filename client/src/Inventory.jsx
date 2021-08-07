@@ -34,16 +34,16 @@ const Inventory = () => {
 
 	handleCreatorTokens();
 
-	//return (
-	//	null
+	return (
+		null
 		//handleCreatorTokens()
-	//);
-	return new Promise((resolve, reject) => {
+	);
+	//return new Promise((resolve, reject) => {
 	    // Where someAsyncFunction takes a callback, i.e. api call
-	    handleCreatorTokens(data => {
-	        resolve(data)
-	    })
-	})
+	//    handleCreatorTokens(data => {
+	//        resolve(data)
+	//    })
+	//})
 
 };
 
