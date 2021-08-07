@@ -16,7 +16,7 @@ const Inventory = () => {
 	async function handleCreatorTokenCount() {
 		const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
 		console.log(creatorTokenCount);
-		return(creatorTokenCount)
+		return(creatorTokenCount);
 	}
 
 	async function handleCreatorTokenArray(qty) {
@@ -29,14 +29,21 @@ const Inventory = () => {
 
 	async function handleCreatorTokens(){
 		handleCreatorTokenArray(await handleCreatorTokenCount());
+		return(tokens);
 	}
 
 	handleCreatorTokens();
 
-	return (
-		null
+	//return (
+	//	null
 		//handleCreatorTokens()
-	);
+	//);
+	return new Promise((resolve, reject) => {
+	    // Where someAsyncFunction takes a callback, i.e. api call
+	    handleCreatorTokens(data => {
+	        resolve(data)
+	    })
+	})
 
 };
 
