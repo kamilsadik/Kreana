@@ -4,21 +4,27 @@ import Header from "./Header";
 import Content from "./Content";
 import OwnerDashboard from "./OwnerDashboard.jsx";
 import DisplayHoldings from "./DisplayHoldings.jsx";
-//import Web3 from './web3';
-//import { ABI } from './ABI';
 
 function App() {
-//  const [number, setNumber] = useState(0);
-//  const [getNumber, setGetNumber] = useState('0x00');
-
-
-      return (
+  return (
     <Grid container direction="column">
+
       <Grid item>
         <Header />
       </Grid>
-      <DisplayHoldings>
-      </DisplayHoldings>
+
+      <br></br>
+
+      <Grid item container>
+        <Grid item xs={false} sm={2} />
+        <Grid item xs={12} sm={8}>
+          <DisplayHoldings />
+        </Grid>
+        <Grid item xs={false} sm={2} />
+      </Grid>
+
+      <br></br>
+
       <Grid item container>
         <Grid item xs={false} sm={2} />
         <Grid item xs={12} sm={8}>
@@ -26,8 +32,10 @@ function App() {
         </Grid>
         <Grid item xs={false} sm={2} />
       </Grid>
+
       <OwnerDashboard>
       </OwnerDashboard>
+
     </Grid>
   );
 };

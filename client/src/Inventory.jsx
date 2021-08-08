@@ -21,13 +21,11 @@ async function handleCreatorTokenArray(qty) {
 		const token = await ContractInstance.methods.creatorTokens(i).call();
 		tokens.push(token);
 	}
-	//console.log(tokens);
 	return(tokens);
 }
 
 async function handleCreatorTokens(){
 	return(handleCreatorTokenArray(await handleCreatorTokenCount()));
-	//return(tokens);
 }
 
 const Inventory = () => {
