@@ -13,12 +13,20 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+
 
 const useStyles = makeStyles(() => ({
   typographyStyles: {
     flex: 1
   }
 }));
+
+const darkTheme = createTheme({
+  palette: {
+    type: 'dark',
+  },
+});
 
 const web3 = new Web3(Web3.givenProvider);
 // Contract address is provided by Truffle migration
@@ -68,76 +76,78 @@ const Header = () => {
 
   const classes = useStyles();
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography className={classes.typographyStyles}>
-          CreatorTokenExchange
-        </Typography>
-        <div>
-          <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
-            Create Your Own Token
-          </Button>
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">New Creator Token</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                What is your name?
-              </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Name"
-                placeholder="e.g., Protest the Hero"
-                type="text"
-                fullWidth
-                value={name}
-                onChange={(event) => {setName(event.target.value)}}
-              />
-              <DialogContentText>
-                What do you want the symbol of your token to be?
-              </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Symbol"
-                placeholder="e.g., PTH5"
-                type="text"
-                fullWidth
-                value={symbol}
-                onChange={(event) => {setSymbol(event.target.value)}}
-              />
-              <DialogContentText>
-                Provide a brief description of your token.
-              </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Description"
-                placeholder="e.g., This token will fund our new album."
-                type="text"
-                fullWidth
-                value={description}
-                onChange={(event) => {setDescription(event.target.value)}}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button
-              onClick={(e) => handleCreateCreatorToken(e)}
-              color="primary">
-                Create Token
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-        <Button size="small">BUY $CTE</Button>
-      </Toolbar>
-    </AppBar>
+    <ThemeProvider theme={darkTheme}>
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <Typography className={classes.typographyStyles}>
+            CreatorTokenExchange
+          </Typography>
+          <div>
+            <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
+              Create Your Own Token
+            </Button>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">New Creator Token</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  What is your name?
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Name"
+                  placeholder="e.g., Protest the Hero"
+                  type="text"
+                  fullWidth
+                  value={name}
+                  onChange={(event) => {setName(event.target.value)}}
+                />
+                <DialogContentText>
+                  What do you want the symbol of your token to be?
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Symbol"
+                  placeholder="e.g., PTH5"
+                  type="text"
+                  fullWidth
+                  value={symbol}
+                  onChange={(event) => {setSymbol(event.target.value)}}
+                />
+                <DialogContentText>
+                  Provide a brief description of your token.
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Description"
+                  placeholder="e.g., This token will fund our new album."
+                  type="text"
+                  fullWidth
+                  value={description}
+                  onChange={(event) => {setDescription(event.target.value)}}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button
+                onClick={(e) => handleCreateCreatorToken(e)}
+                color="primary">
+                  Create Token
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+          <Button size="small">BUY $CTE</Button>
+        </Toolbar>
+      </AppBar>
+    </ThemeProvider>
   );
 };
 

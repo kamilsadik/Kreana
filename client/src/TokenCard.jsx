@@ -20,6 +20,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+
 
 const useStyles = makeStyles(() => ({
     palette: {
@@ -39,16 +41,22 @@ const useStyles = makeStyles(() => ({
         light: "#46d182",
         main: "#46d182",
         dark: "#46d182",
-        contrastText: "#46d182",
+        contrastText: "#fff",
       },
       sell: {
         light: "#f53b6a",
         main: "#f53b6a",
         dark: "#f53b6a",
-        contrastText: "#f53b6a",
+        contrastText: "#fff",
       }
     },
   }));
+
+const darkTheme = createTheme({
+  palette: {
+    type: 'dark',
+  },
+});
 
 const web3 = new Web3(Web3.givenProvider);
 // Contract address is provided by Truffle migration
@@ -129,6 +137,7 @@ const TokenCard = props => {
   }
 
     return (
+      <ThemeProvider theme={darkTheme}>
         <Card>
           <CardHeader
             avatar={<Avatar src={avatarUrl} />}
@@ -144,7 +153,7 @@ const TokenCard = props => {
           </CardContent>
           <CardActions>
             <div>
-              <Button variant="outlined" color="primary" onClick={handleClickBuyOpen}>
+              <Button variant="outlined" color="secondary" onClick={handleClickBuyOpen}>
                 Buy
               </Button>
               <Dialog open={buyOpen} onClose={handleBuyClose} aria-labelledby="form-dialog-title">
@@ -185,7 +194,7 @@ const TokenCard = props => {
               </Dialog>
             </div>
             <div>
-              <Button variant="outlined" color="primary" onClick={handleClickSellOpen}>
+              <Button variant="outlined" color="secondary" onClick={handleClickSellOpen}>
                 Sell
               </Button>
               <Dialog open={sellOpen} onClose={handleSellClose} aria-labelledby="form-dialog-title">
@@ -227,6 +236,7 @@ const TokenCard = props => {
             </div>
           </CardActions>
         </Card>
+      </ThemeProvider>
     );
 };
 
