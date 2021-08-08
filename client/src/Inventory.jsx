@@ -8,43 +8,36 @@ const web3 = new Web3(Web3.givenProvider);
 // Contract address is provided by Truffle migration
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
-// Initialize empty array of Creator Tokens
-let tokens = [];
+async function handleCreatorTokenCount() {
+	const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
+	console.log(creatorTokenCount);
+	return(creatorTokenCount);
+}
+
+async function handleCreatorTokenArray(qty) {
+	// Initialize empty array of Creator Tokens
+	let tokens = [];
+	for (let i=0; i<qty; i++) {
+		const token = await ContractInstance.methods.creatorTokens(i).call();
+		tokens.push(token);
+	}
+	//console.log(tokens);
+	return(tokens);
+}
+
+async function handleCreatorTokens(){
+	return(handleCreatorTokenArray(await handleCreatorTokenCount()));
+	//return(tokens);
+}
 
 const Inventory = () => {
-
-	async function handleCreatorTokenCount() {
-		const creatorTokenCount = await ContractInstance.methods.getCreatorTokenCount().call();
-		console.log(creatorTokenCount);
-		return(creatorTokenCount);
-	}
-
-	async function handleCreatorTokenArray(qty) {
-		for (let i=0; i<qty; i++) {
-			const token = await ContractInstance.methods.creatorTokens(i).call();
-			tokens.push(token);
-		}
-		console.log(tokens);
-	}
-
-	async function handleCreatorTokens(){
-		handleCreatorTokenArray(await handleCreatorTokenCount());
-		return(tokens);
-	}
-
-	handleCreatorTokens();
-
 	return (
 		null
-		//handleCreatorTokens()
 	);
-
-	//return new Promise((resolve, reject) => {
-	//	handleCreatorTokens(data => {
-	//		resolve(data)
-	//	})
-	//})
 };
 
+const tokens = handleCreatorTokens();
+
+
 export default Inventory;
-//export { tokens };
+export { tokens };

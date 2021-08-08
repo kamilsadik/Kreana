@@ -1,10 +1,18 @@
-import React from "react";
+import React, { Component, useState, useEffect } from "react";
 import TokenCard from "./TokenCard";
 import { Grid } from "@material-ui/core";
 import tokenList from "./constants";
 import { tokens } from "./Inventory.jsx";
 
 const Content = () => {
+
+  const [tokenState, setTokenState] = useState([]);
+
+  console.log(tokens);
+  window.tokens=tokens;
+  useEffect(async () => {
+    setTokenState(await tokens)
+  }, []);
 
   const getTokenCard = tokenObj => {
     return (
@@ -16,7 +24,7 @@ const Content = () => {
 
   return (
     <Grid container spacing={2}>
-      {tokenList.map(tokenObj => getTokenCard(tokenObj))}
+      {tokenState.map(tokenObj => getTokenCard(tokenObj))}
     </Grid>
   );
 };
