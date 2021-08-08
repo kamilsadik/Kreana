@@ -26,6 +26,8 @@ const DisplayHoldings = () => {
     return(holdingsMap);
   }
 
+  const holdingsMap = mapHoldings(holdingsState, tokenState);
+
   return (
     <Grid container spacing={1}>
       {holdingsState}
