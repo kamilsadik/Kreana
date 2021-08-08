@@ -29,22 +29,22 @@ const Inventory = () => {
 
 	async function handleCreatorTokens(){
 		handleCreatorTokenArray(await handleCreatorTokenCount());
-		//return(tokens);
+		return(tokens);
 	}
 
-	//handleCreatorTokens();
+	handleCreatorTokens();
 
-	//return (
-	//	null
+	return (
+		null
 		//handleCreatorTokens()
-	//);
+	);
 
-	return new Promise((resolve, reject) => {
-		handleCreatorTokens(data => {
-			resolve(data)
-		})
-	})
+	//return new Promise((resolve, reject) => {
+	//	handleCreatorTokens(data => {
+	//		resolve(data)
+	//	})
+	//})
 };
 
 export default Inventory;
-export { tokens };
+//export { tokens };

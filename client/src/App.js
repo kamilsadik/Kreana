@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core";
 import Header from "./Header";
 import Content from "./Content";
 import Inventory from "./Inventory.jsx";
-import { tokens } from "./Inventory.jsx";
+//import { tokens } from "./Inventory.jsx";
 import OwnerDashboard from "./OwnerDashboard.jsx";
 import UserHoldings from "./UserHoldings.jsx";
 //import Web3 from './web3';
@@ -27,8 +27,6 @@ function App() {
       </Grid>
       <Inventory>
       </Inventory>
-      <tokens>
-      </tokens>
       <UserHoldings>
       </UserHoldings>
       <OwnerDashboard>
