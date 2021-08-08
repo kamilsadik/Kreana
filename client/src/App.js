@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core";
 import Header from "./Header";
 import Content from "./Content";
 import OwnerDashboard from "./OwnerDashboard.jsx";
-import UserHoldings from "./UserHoldings.jsx";
+import DisplayHoldings from "./DisplayHoldings.jsx";
 //import Web3 from './web3';
 //import { ABI } from './ABI';
 
@@ -17,6 +17,8 @@ function App() {
       <Grid item>
         <Header />
       </Grid>
+      <DisplayHoldings>
+      </DisplayHoldings>
       <Grid item container>
         <Grid item xs={false} sm={2} />
         <Grid item xs={12} sm={8}>
@@ -24,8 +26,6 @@ function App() {
         </Grid>
         <Grid item xs={false} sm={2} />
       </Grid>
-      <UserHoldings>
-      </UserHoldings>
       <OwnerDashboard>
       </OwnerDashboard>
     </Grid>
