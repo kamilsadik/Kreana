@@ -7,13 +7,19 @@ const DisplayHoldings = () => {
 
   const [holdingsState, setHoldingsState] = useState([]);
   console.log(userHoldings);
-  useEffect(async () => {
-    setHoldingsState(await userHoldings)
+  useEffect(() => {
+    async function fetchData() {
+      setHoldingsState(await userHoldings);
+    }
+    fetchData();
   }, []);
 
   const [tokenState, setTokenState] = useState([]);
-  useEffect(async () => {
-    setTokenState(await tokens)
+  useEffect(() => {
+    async function fetchData() {
+      setTokenState(await tokens);
+    }
+    fetchData();
   }, []);
 
   function mapHoldings(holdings, tokens) {

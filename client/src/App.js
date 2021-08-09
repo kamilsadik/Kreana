@@ -24,8 +24,9 @@ function App() {
           <Header />
         </Grid>
 
-{/*
-    <br></br>
+
+        <br></br>
+        
         <Grid item container>
           <Grid item xs={false} sm={2} />
           <Grid item xs={12} sm={8}>
@@ -33,7 +34,6 @@ function App() {
           </Grid>
           <Grid item xs={false} sm={2} />
         </Grid>
-*/}
 
         <br></br>
 

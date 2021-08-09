@@ -10,8 +10,11 @@ const Content = () => {
 
   console.log(tokens);
   window.tokens=tokens;
-  useEffect(async () => {
-    setTokenState(await tokens)
+  useEffect(() => {
+    async function fetchData() {
+      setTokenState(await tokens);
+    }
+    fetchData();
   }, []);
 
   const getTokenCard = tokenObj => {
