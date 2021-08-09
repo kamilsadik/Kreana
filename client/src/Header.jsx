@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
 import AcUnitRoundedIcon from "@material-ui/icons/AcUnitRounded";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { makeStyles } from "@material-ui/styles";
+import DisplayHoldings from "./DisplayHoldings.jsx";
 import Web3 from './web3';
 import { ABI } from './ABI';
 import { contractAddr } from './Address';
@@ -41,6 +42,14 @@ const Header = () => {
   }
   const handleClose = () => {
     setOpen(false);
+  }
+
+  const [holdingsOpen, setHoldingsOpen] = React.useState(false);
+  const handleHoldingsOpen = () => {
+    setHoldingsOpen(true);
+  }
+  const handleHoldingsClose = () => {
+    setHoldingsOpen(false);
   }
 
   // Initialize state for new Creator Token attributes
@@ -82,9 +91,10 @@ const Header = () => {
           <Typography className={classes.typographyStyles}>
             CreatorTokenExchange
           </Typography>
+
           <div>
             <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
-              Create Your Own Token
+              Create A Token
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">New Creator Token</DialogTitle>
@@ -144,7 +154,19 @@ const Header = () => {
               </DialogActions>
             </Dialog>
           </div>
-          <Button size="small">BUY $CTE</Button>
+
+          <div>
+            <Button variant="outlined" color="secondary" onClick={handleHoldingsOpen}>
+              View Holdings
+            </Button>
+            <Dialog open={holdingsOpen} onClose={handleHoldingsClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">Your Token Holdings</DialogTitle>
+              <DialogContent>
+
+              </DialogContent>
+            </Dialog>
+          </div>
+
         </Toolbar>
       </AppBar>
     </ThemeProvider>
