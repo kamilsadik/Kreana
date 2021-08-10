@@ -22,8 +22,18 @@ const DisplayHoldings = () => {
     fetchData();
   }, []);
 
+  const getTokenAmount = tokenAmountObj => {
+    return (
+      <div>
+        {tokenAmountObj}
+      </div>
+    );
+  };
+
   return (
-    holdingsState
+    <div>
+      {holdingsState.map(tokenAmountObj => getTokenAmount(tokenAmountObj))}
+    </div>
   );
 };
 
