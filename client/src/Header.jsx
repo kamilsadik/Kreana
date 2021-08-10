@@ -3,7 +3,10 @@ import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
 import AcUnitRoundedIcon from "@material-ui/icons/AcUnitRounded";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { makeStyles } from "@material-ui/styles";
+
+import DenseTable from "./HoldingsTable.jsx";
 import DisplayHoldings from "./DisplayHoldings.jsx";
+
 import Web3 from './web3';
 import { ABI } from './ABI';
 import { contractAddr } from './Address';
@@ -162,7 +165,8 @@ const Header = () => {
             <Dialog open={holdingsOpen} onClose={handleHoldingsClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Your Token Holdings</DialogTitle>
               <DialogContent>
-                yo doody head
+                <DisplayHoldings />
+                <DenseTable />
               </DialogContent>
             </Dialog>
           </div>
