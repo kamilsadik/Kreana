@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,6 +8,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import DisplayHoldings from "./DisplayHoldings.jsx";
+import { userHoldings } from "./UserHoldings.jsx";
+import { tokens } from "./Inventory.jsx";
 
 const useStyles = makeStyles({
   table: {
@@ -20,11 +22,9 @@ function createData(token, amountHeld) {
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Token 1', 300),
+  createData('Token 2', 237),
+  createData('Toknen 3', 262),
 ];
 
 export default function DenseTable() {
