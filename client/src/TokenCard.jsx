@@ -63,7 +63,18 @@ const web3 = new Web3(Web3.givenProvider);
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
 const TokenCard = props => {
-  const { address, name, symbol, description, verified, outstanding, maxSupply, tokenId, avatarUrl, imageUrl } = props;
+  const {
+    address,
+    name,
+    symbol,
+    description,
+    verified,
+    outstanding,
+    maxSupply,
+    tokenId,
+    //avatarUrl,
+    //imageUrl
+  } = props;
 
   // Initalize open/closed state for buy dialog
   const [buyOpen, setBuyOpen] = React.useState(false);
@@ -140,12 +151,12 @@ const TokenCard = props => {
       <ThemeProvider theme={darkTheme}>
         <Card>
           <CardHeader
-            avatar={<Avatar src={avatarUrl} />}
+            //avatar={<Avatar src={avatarUrl} />}
             title={name}
             action={verified? <IconButton aria-label="settings"><CheckCircleIcon /></IconButton> : null}
             subheader={"$"+symbol}
           />
-          <CardMedia style={{ height: "150px" }} image={imageUrl} />
+          {/*<CardMedia style={{ height: "150px" }} image={imageUrl} />*/}
           <CardContent>
             <Typography variant="body2" component="p">
               {description}

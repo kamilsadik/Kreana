@@ -32,9 +32,11 @@ const DisplayHoldings = () => {
 
   return (
     <div>
-      {holdingsState.map(tokenAmountObj => getTokenAmount(tokenAmountObj))}
+      {tokenState.map(obj => <div>obj</div>)}
     </div>
   );
 };
 
 export default DisplayHoldings;
+
+//      {holdingsState.map(tokenAmountObj => getTokenAmount(tokenAmountObj))}
