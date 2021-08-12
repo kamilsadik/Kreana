@@ -979,6 +979,11 @@ export const ABI =
         "internalType": "uint256",
         "name": "maxSupply",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -2011,6 +2016,11 @@ export const ABI =
         "internalType": "uint256",
         "name": "maxSupply",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -2560,6 +2570,11 @@ export const ABI =
       {
         "internalType": "uint256",
         "name": "maxSupply",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
@@ -3290,6 +3305,11 @@ export const ABI =
       {
         "internalType": "uint256",
         "name": "maxSupply",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
@@ -4140,6 +4160,11 @@ export const ABI =
         "internalType": "uint256",
         "name": "maxSupply",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -4720,6 +4745,11 @@ export const ABI =
       {
         "internalType": "uint256",
         "name": "maxSupply",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
@@ -5520,6 +5550,11 @@ export const ABI =
       {
         "internalType": "uint256",
         "name": "maxSupply",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
