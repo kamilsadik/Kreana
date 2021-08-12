@@ -27,7 +27,7 @@ const Content = () => {
 
   return (
     <Grid container spacing={2}>
-      {tokenList.map(tokenObj => getTokenCard(tokenObj))}
+      {tokenState.map(tokenObj => getTokenCard(tokenObj))}
     </Grid>
   );
 };
