@@ -4,7 +4,7 @@ export default [
     name: "Protest the Hero",
     symbol: "PTH5",
     description: "This token will fund our next album",
-    verified: false,
+    verified: true,
     outstanding: 0,
     maxSupply: 0,
     tokenId: 0,
