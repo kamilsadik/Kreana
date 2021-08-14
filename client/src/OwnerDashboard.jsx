@@ -43,6 +43,16 @@ const OwnerDashboard = () => {
     console.log(result);
   }
 
+  async function getTotalPlatformFees() {
+  	const totalPlatformFees = await ContractInstance.methods.totalPlatformFees().call();
+  	return(totalPlatformFees);
+  }
+
+  async function getPlatformFeesOwed() {
+  	const platformFeesOwed = await ContractInstance.methods.totalPlatformFees().call();
+  	return(platformFeesOwed);
+  }
+
   async function handlePayoutPlatformFees(e) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
@@ -103,44 +113,44 @@ const OwnerDashboard = () => {
 
 	return (
 		<div>
-		<Button variant="outlined" color="primary" onClick={handleClickVerificationOpen}>
-		  Verify a Token
-		</Button>
-		<Dialog
-		open={verificationOpen}
-		onClose={handleVerificationClose}
-		aria-labelledby="form-dialog-title">
-		  <DialogTitle id="form-dialog-title">
-		  Verify Token
-		  </DialogTitle>
-		  <DialogContent>
-		    <DialogContentText>
-		      Which token do you wish to verify?
-		    </DialogContentText>
-		    <TextField
-		      autoFocus
-		      margin="dense"
-		      id="name"
-		      label="Token"
-		      placeholder="0"
-		      type="number"
-		      fullWidth
-		      onChange={(event) => {setCurrToken(event.target.value)}}
-		    />
-		  </DialogContent>
-		  <DialogActions>
-		    <Button
-		    onClick={handleVerificationClose}
-		    color="primary">
-		      Cancel
-		    </Button>
-		    <Button
-		    onClick={(e) => handleChangeVerification(e, currToken)}
-		    color="primary">
-		      Verify
-		    </Button>
-		  </DialogActions>
-		</Dialog>
+			<Button variant="outlined" color="primary" onClick={handleClickVerificationOpen}>
+			  Verify a Token
+			</Button>
+			<Dialog
+			open={verificationOpen}
+			onClose={handleVerificationClose}
+			aria-labelledby="form-dialog-title">
+			  <DialogTitle id="form-dialog-title">
+			  Verify Token
+			  </DialogTitle>
+			  <DialogContent>
+			    <DialogContentText>
+			      Which token do you wish to verify?
+			    </DialogContentText>
+			    <TextField
+			      autoFocus
+			      margin="dense"
+			      id="name"
+			      label="Token"
+			      placeholder="0"
+			      type="number"
+			      fullWidth
+			      onChange={(event) => {setCurrToken(event.target.value)}}
+			    />
+			  </DialogContent>
+			  <DialogActions>
+			    <Button
+			    onClick={handleVerificationClose}
+			    color="primary">
+			      Cancel
+			    </Button>
+			    <Button
+			    onClick={(e) => handleChangeVerification(e, currToken)}
+			    color="primary">
+			      Verify
+			    </Button>
+			  </DialogActions>
+			</Dialog>
 		</div>
 	);
 }
