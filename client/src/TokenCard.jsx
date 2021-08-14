@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -111,6 +111,12 @@ const TokenCard = props => {
       setAmount(amt);
     }
   }
+
+  async function getBuyProceeds(e, creatorTokenId) {
+  }
+
+  const [buyProceeds, setBuyProceeds] = React.useState(0);
+
 
   // Invoke buyCreatorToken
   async function handleBuyCreatorToken(e, creatorTokenId) {
