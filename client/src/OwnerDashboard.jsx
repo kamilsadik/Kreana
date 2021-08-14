@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { tokens } from "./Inventory.jsx";
 // These imports are needed to implement Web3, and to connect the React client to the Ethereum server
 import Web3 from './web3';
 import { ABI } from './ABI';
@@ -16,17 +17,38 @@ const web3 = new Web3(Web3.givenProvider);
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
 const OwnerDashboard = props => {
+	const {
+	  address,
+	  name,
+	  symbol,
+	  description,
+	  verified,
+	  outstanding,
+	  maxSupply,
+	  lastPrice,
+	  creatorTokenId,
+	  //avatarUrl,
+	  //imageUrl
+	} = props;
 
-  const { address, name, symbol, description, verified, outstanding, maxSupply, tokenId, avatarUrl, imageUrl } = props;
+	const [tokenState, setTokenState] = useState([]);
+	console.log(tokens);
+	window.tokens=tokens;
+	useEffect(() => {
+	  async function fetchData() {
+	    setTokenState(await tokens);
+	  }
+	  fetchData();
+	}, []);
 
-  // Initalize open/closed state for verification dialog
-  const [verificationOpen, setVerificationOpen] = React.useState(false);
-  const handleClickVerificationOpen = () => {
-    setVerificationOpen(true);
-  };
-  const handleVerificationClose = () => {
-    setVerificationOpen(false);
-  }
+	// Initalize open/closed state for verification dialog
+	const [verificationOpen, setVerificationOpen] = React.useState(false);
+	const handleClickVerificationOpen = () => {
+	  setVerificationOpen(true);
+	};
+	const handleVerificationClose = () => {
+	  setVerificationOpen(false);
+	}
 
   async function handleWithdraw(e) {
     e.preventDefault();    
@@ -81,14 +103,14 @@ const OwnerDashboard = props => {
   }
 
   // For simplicity, right now calling this automatically sets verification status to true
-  async function handleChangeVerification(e, tokenId) {
+  async function handleChangeVerification(e, creatorTokenId) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    const gas = await ContractInstance.methods.changeVerification(tokenId, true).estimateGas({
+    const gas = await ContractInstance.methods.changeVerification(creatorTokenId, true).estimateGas({
       from: account,
     });
-    const result = await ContractInstance.methods.changeVerification(tokenId, true).send({
+    const result = await ContractInstance.methods.changeVerification(creatorTokenId, true).send({
       from: account
     })
     console.log(result);
@@ -127,8 +149,8 @@ const OwnerDashboard = props => {
 		      Cancel
 		    </Button>
 		    <Button
-		    value={tokenId}
-		    onClick={(e) => handleChangeVerification(e, tokenId)}
+		    value={creatorTokenId}
+		    onClick={(e) => handleChangeVerification(e, creatorTokenId)}
 		    color="primary">
 		      Verify
 		    </Button>
