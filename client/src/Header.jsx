@@ -4,7 +4,7 @@ import AcUnitRoundedIcon from "@material-ui/icons/AcUnitRounded";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { makeStyles } from "@material-ui/styles";
 
-import DenseTable from "./HoldingsTable.jsx";
+import HoldingsTable from "./HoldingsTable.jsx";
 import DisplayHoldings from "./DisplayHoldings.jsx";
 
 import Web3 from './web3';
@@ -166,7 +166,7 @@ const Header = () => {
               <DialogTitle id="form-dialog-title">Your Token Holdings</DialogTitle>
               <DialogContent>
                 <DisplayHoldings />
-                <DenseTable />
+                <HoldingsTable />
               </DialogContent>
             </Dialog>
           </div>

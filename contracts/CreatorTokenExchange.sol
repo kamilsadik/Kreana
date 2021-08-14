@@ -10,7 +10,7 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 	constructor(string memory uri) CreatorTokenComputation(uri) { }
 
 	// Event that fires when a new transaction occurs
-	event NewTransaction(address indexed account, uint amount, string transactionType, uint tokenId, string name, string symbol);
+	event NewTransaction(address indexed account, uint amount, uint price, string transactionType, uint tokenId, string name, string symbol);
 
 	/// @dev Allows user to buy a given CreatorToken from the platform
 	/// @param _tokenId ID of the token being transacted
@@ -28,8 +28,10 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 		_platformFeeUpdater(_feeProceeds(netProceeds));
 		// Mint _amount tokens at the user's address (note this increases token amount outstanding)
 		_mint(msg.sender, _tokenId, _amount, "");
+		// Update lastPrice at which token has traded
+		creatorTokens[_tokenId].lastPrice = netProceeds/_amount;
 		// Emit new transaction event
-		emit NewTransaction(msg.sender, _amount, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
+		emit NewTransaction(msg.sender, _amount, creatorTokens[_tokenId].lastPrice, "buy", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 		// Check if new outstanding amount of token is greater than maxSupply
 		if (creatorTokens[_tokenId].outstanding > creatorTokens[_tokenId].maxSupply) {
 			// Update maxSupply
@@ -50,6 +52,8 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 		uint proceedsRequired = _saleFunction(creatorTokens[_tokenId].outstanding, _amount, mNumerator, mDenominator, creatorTokens[_tokenId].maxSupply, profitMargin);
 		// Update totalValueLocked mapping
 		totalValueLocked[_tokenId] -= proceedsRequired;
+		// Update lastPrice at which token has traded
+		creatorTokens[_tokenId].lastPrice = proceedsRequired/_amount;
 		// Compute fee
 		uint fee = proceedsRequired*platformFee/100;
 		// Add platform fee to obtain real proceedsRequired value
@@ -61,6 +65,6 @@ contract CreatorTokenExchange is CreatorTokenComputation {
 		// Update platform fee total
 		_platformFeeUpdater(fee);
 		// Emit new transaction event
-		emit NewTransaction(msg.sender, _amount, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
+		emit NewTransaction(msg.sender, _amount, creatorTokens[_tokenId].lastPrice, "sell", _tokenId, creatorTokens[_tokenId].name, creatorTokens[_tokenId].symbol);
 	}
 }

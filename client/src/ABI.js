@@ -982,7 +982,12 @@ export const ABI =
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "lastPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "creatorTokenId",
         "type": "uint256"
       }
     ],
@@ -1507,6 +1512,12 @@ export const ABI =
       },
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "string",
         "name": "transactionType",
         "type": "string"
@@ -1667,7 +1678,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -1686,7 +1698,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -1730,7 +1743,8 @@ export const ABI =
       }
     ],
     "stateMutability": "pure",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -1754,7 +1768,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -1778,7 +1793,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -1802,7 +1818,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -1826,7 +1843,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2019,12 +2037,18 @@ export const ABI =
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "lastPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "creatorTokenId",
         "type": "uint256"
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -2037,7 +2061,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2061,7 +2086,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -2074,7 +2100,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -2087,7 +2114,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2113,7 +2141,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -2223,7 +2252,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2247,7 +2277,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2266,7 +2297,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2285,7 +2317,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -2298,7 +2331,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2317,7 +2351,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2349,7 +2384,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2373,7 +2409,8 @@ export const ABI =
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
@@ -2404,7 +2441,8 @@ export const ABI =
     "name": "buyCreatorToken",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
+    "type": "function",
+    "payable": true
   },
   {
     "inputs": [
@@ -2427,7 +2465,8 @@ export const ABI =
     "name": "sellCreatorToken",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
+    "type": "function",
+    "payable": true
   },
   {
     "anonymous": false,
@@ -2574,7 +2613,12 @@ export const ABI =
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "lastPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "creatorTokenId",
         "type": "uint256"
       }
     ],
@@ -3309,7 +3353,12 @@ export const ABI =
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "lastPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "creatorTokenId",
         "type": "uint256"
       }
     ],
@@ -4163,7 +4212,12 @@ export const ABI =
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "lastPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "creatorTokenId",
         "type": "uint256"
       }
     ],
@@ -4749,7 +4803,12 @@ export const ABI =
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "lastPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "creatorTokenId",
         "type": "uint256"
       }
     ],
@@ -5554,7 +5613,12 @@ export const ABI =
       },
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "lastPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "creatorTokenId",
         "type": "uint256"
       }
     ],

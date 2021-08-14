@@ -35,7 +35,8 @@ contract CreatorTokenFactory is Ownable {
 		bool verified;
 		uint outstanding;
 		uint maxSupply;
-		uint tokenId;
+		uint lastPrice;
+		uint creatorTokenId;
 	}
 
 	// Array of all CreatorTokens
@@ -63,7 +64,7 @@ contract CreatorTokenFactory is Ownable {
 		// Create token id
 		uint id = creatorTokens.length;
 		// Add token to creatorTokens array
-		creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, false, 0, 0, id));
+		creatorTokens.push(CreatorToken(_creatorAddress, _name, _symbol, _description, false, 0, 0, 0, id));
 		// Update number of creator tokens
 		//numCreatorTokens = id+1;
 		// Map from token id to creator's address

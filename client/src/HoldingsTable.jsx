@@ -27,7 +27,11 @@ const rows = [
   createData('Toknen 3', 262),
 ];
 
-export default function DenseTable() {
+const HoldingsTable = props => {
+  const {
+
+  } = props;
+
   const classes = useStyles();
 
   return (
@@ -52,4 +56,8 @@ export default function DenseTable() {
       </Table>
     </TableContainer>
   );
+
+
 }
+
+export default HoldingsTable

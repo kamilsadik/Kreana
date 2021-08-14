@@ -71,7 +71,8 @@ const TokenCard = props => {
     verified,
     outstanding,
     maxSupply,
-    tokenId,
+    lastPrice,
+    creatorTokenId,
     //avatarUrl,
     //imageUrl
   } = props;
@@ -112,18 +113,18 @@ const TokenCard = props => {
   }
 
   // Invoke buyCreatorToken
-  async function handleBuyCreatorToken(e, tokenId) {
+  async function handleBuyCreatorToken(e, creatorTokenId) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    const proceeds = await ContractInstance.methods._totalProceeds(tokenId, amount).call({
+    const proceeds = await ContractInstance.methods._totalProceeds(creatorTokenId, amount).call({
       from: account,
     });
-    const gas = await ContractInstance.methods.buyCreatorToken(tokenId, amount).estimateGas({
+    const gas = await ContractInstance.methods.buyCreatorToken(creatorTokenId, amount).estimateGas({
       from: account,
       value: proceeds
     });
-    const result = await ContractInstance.methods.buyCreatorToken(tokenId, amount).send({
+    const result = await ContractInstance.methods.buyCreatorToken(creatorTokenId, amount).send({
       from: account,
       gas: gas,
       value: proceeds
@@ -133,14 +134,14 @@ const TokenCard = props => {
   }
 
   // Invoke sellCreatorToken
-  async function handleSellCreatorToken(e, tokenId) {
+  async function handleSellCreatorToken(e, creatorTokenId) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
-    const gas = await ContractInstance.methods.sellCreatorToken(tokenId, amount, account).estimateGas({
+    const gas = await ContractInstance.methods.sellCreatorToken(creatorTokenId, amount, account).estimateGas({
       from: account,
     });
-    const result = await ContractInstance.methods.sellCreatorToken(tokenId, amount, account).send({
+    const result = await ContractInstance.methods.sellCreatorToken(creatorTokenId, amount, account).send({
       from: account
     })
     console.log(result);
@@ -159,6 +160,8 @@ const TokenCard = props => {
           {/*<CardMedia style={{ height: "150px" }} image={imageUrl} />*/}
           <CardContent>
             <Typography variant="body2" component="p">
+              {"Last Price: "+(lastPrice/1000000000000000000).toFixed(6)+" ETH"}<br />
+              {"Tokens Outstanding: "+outstanding}<br />
               {description}
             </Typography>
           </CardContent>
@@ -195,8 +198,8 @@ const TokenCard = props => {
                     Cancel
                   </Button>
                   <Button
-                  value={tokenId}
-                  onClick={(e) => handleBuyCreatorToken(e, tokenId)}
+                  value={creatorTokenId}
+                  onClick={(e) => handleBuyCreatorToken(e, creatorTokenId)}
                   color="primary"
                   disabled={amount==''}>
                     Complete Transaction
@@ -236,8 +239,8 @@ const TokenCard = props => {
                     Cancel
                   </Button>
                   <Button
-                  value={tokenId}
-                  onClick={(e) => handleSellCreatorToken(e, tokenId)}
+                  value={creatorTokenId}
+                  onClick={(e) => handleSellCreatorToken(e, creatorTokenId)}
                   color="primary"
                   disabled={amount==''}>
                     Complete Transaction
