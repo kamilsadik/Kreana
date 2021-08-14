@@ -32,46 +32,6 @@ const OwnerDashboard = () => {
     console.log(result);
   }
 
-  async function getTotalPlatformFees() {
-  	const totalPlatformFees = await ContractInstance.methods.totalPlatformFees().call();
-  	return(totalPlatformFees);
-  }
-
-  const [totalPlatformFees, setTotalPlatformFees] = useState(0);
-  useEffect(() => {
-    async function fetchData() {
-      setTotalPlatformFees(await getTotalPlatformFees());
-    }
-    fetchData();
-  }, []);
-
-  async function getPlatformFeesOwed() {
-  	const platformFeesOwed = await ContractInstance.methods.totalPlatformFees().call();
-  	return(platformFeesOwed);
-  }
-
-  const [platformFeesOwed, setPlatformFeesOwed] = useState(0);
-  useEffect(() => {
-    async function fetchData() {
-      setPlatformFeesOwed(await getPlatformFeesOwed());
-    }
-    fetchData();
-  }, []);
-
-  async function handlePayoutPlatformFees(e) {
-    e.preventDefault();    
-    const accounts = await window.ethereum.enable();
-    const account = accounts[0];
-    const gas = await ContractInstance.methods.payoutPlatformFees(account).estimateGas({
-      from: account,
-    });
-    const result = await ContractInstance.methods.payoutPlatformFees(account).send({
-      from: account,
-      gas: gas
-    })
-    console.log(result);
-  }
-
   async function handleChangePlatformFee(e, newFee) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
@@ -100,6 +60,7 @@ const OwnerDashboard = () => {
     console.log(result);
   }
 
+  // Set state containing token to be verified
   const [currToken, setCurrToken] = React.useState(0);
 
   // Initalize open/closed state for verification dialog
@@ -127,10 +88,93 @@ const OwnerDashboard = () => {
     handleVerificationClose();
   }
 
+  async function getTotalPlatformFees() {
+  	const totalPlatformFees = await ContractInstance.methods.totalPlatformFees().call();
+  	return(totalPlatformFees);
+  }
+
+  const [totalPlatformFees, setTotalPlatformFees] = useState(0);
+  useEffect(() => {
+    async function fetchData() {
+      setTotalPlatformFees(await getTotalPlatformFees());
+    }
+    fetchData();
+  }, []);
+
+  async function getPlatformFeesOwed() {
+  	const platformFeesOwed = await ContractInstance.methods.platformFeesOwed().call();
+  	return(platformFeesOwed);
+  }
+
+  const [platformFeesOwed, setPlatformFeesOwed] = useState(0);
+  useEffect(() => {
+    async function fetchData() {
+      setPlatformFeesOwed(await getPlatformFeesOwed());
+    }
+    fetchData();
+  }, []);
+
+  // Initalize open/closed state for platform fee payout dialog
+  const [payoutPlatformFeeOpen, setPayoutPlatformFeeOpen] = React.useState(false);
+  const handleClickPayoutPlatformFeeOpen = () => {
+    setPayoutPlatformFeeOpen(true);
+  };
+  const handlePayoutPlatformFeeClose = () => {
+    setPayoutPlatformFeeOpen(false);
+  }
+
+  async function handlePayoutPlatformFees(e) {
+    e.preventDefault();    
+    const accounts = await window.ethereum.enable();
+    const account = accounts[0];
+    const gas = await ContractInstance.methods.payoutPlatformFees(account).estimateGas({
+      from: account,
+    });
+    const result = await ContractInstance.methods.payoutPlatformFees(account).send({
+      from: account,
+      gas: gas
+    })
+    console.log(result);
+    handlePayoutPlatformFeeClose();
+  }
+
 	return (
 		<div>
-		Total Platform Fees Generated: {totalPlatformFees/1000000000000000000} ETH<br />
-		Platform Fees Yet To Be Withdrawn: {platformFeesOwed/1000000000000000000} ETH<br /><br />
+
+			Total Platform Fees Generated: {totalPlatformFees/1000000000000000000} ETH<br />
+			Platform Fees Yet To Be Withdrawn: {platformFeesOwed/1000000000000000000} ETH<br /><br />
+
+			<Button variant="outlined" color="primary" onClick={handleClickPayoutPlatformFeeOpen}>
+			  Payout Platform Fees
+			</Button>
+			<Dialog
+			open={payoutPlatformFeeOpen}
+			onClose={handlePayoutPlatformFeeClose}
+			aria-labelledby="form-dialog-title">
+			  <DialogTitle id="form-dialog-title">
+			  Confirm platform fee payout.
+			  </DialogTitle>
+			  <DialogContent>
+			    <DialogContentText>
+			      Payout {platformFeesOwed/1000000000000000000} ETH
+			    </DialogContentText>
+			  </DialogContent>
+			  <DialogActions>
+			    <Button
+			    onClick={handlePayoutPlatformFeeClose}
+			    color="primary">
+			      Cancel
+			    </Button>
+			    <Button
+			    onClick={(e) => handlePayoutPlatformFees(e)}
+			    color="primary">
+			      Confirm
+			    </Button>
+			  </DialogActions>
+			</Dialog>
+
+			<br />
+
 			<Button variant="outlined" color="primary" onClick={handleClickVerificationOpen}>
 			  Verify a Token
 			</Button>
