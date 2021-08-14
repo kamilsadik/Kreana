@@ -49,14 +49,23 @@ const HoldingsTable = props => {
     fetchData();
   }, []);
 
-  function createData(token, amountHeld) {
-    return { token, amountHeld };
+  function createData(token, amountHeld, value) {
+    return { token, amountHeld, value };
   }
 
   const rows = [
-    createData(tokenState.map(tokenObj => tokenObj.symbol)[0], holdingsState[0]),
-    createData(tokenState.map(tokenObj => tokenObj.symbol)[1], holdingsState[1]),
-    createData(tokenState.map(tokenObj => tokenObj.symbol)[2], holdingsState[2]),
+    createData(
+      tokenState.map(tokenObj => tokenObj.symbol)[0],
+      holdingsState[0],
+      (holdingsState[0]*tokenState.map(tokenObj => tokenObj.lastPrice)[0]/1000000000000000000).toFixed(6)),
+    createData(
+      tokenState.map(tokenObj => tokenObj.symbol)[1],
+      holdingsState[1],
+      (holdingsState[1]*tokenState.map(tokenObj => tokenObj.lastPrice)[1]/1000000000000000000).toFixed(6)),
+    createData(
+      tokenState.map(tokenObj => tokenObj.symbol)[2],
+      holdingsState[2],
+      (holdingsState[2]*tokenState.map(tokenObj => tokenObj.lastPrice)[2]/1000000000000000000).toFixed(6)),
   ];
 
   return (
@@ -66,6 +75,7 @@ const HoldingsTable = props => {
           <TableRow>
             <TableCell>Token</TableCell>
             <TableCell align="right">Holdings</TableCell>
+            <TableCell align="right">Value (ETH)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -75,6 +85,8 @@ const HoldingsTable = props => {
                 {row.token}
               </TableCell>
               <TableCell align="right">{row.amountHeld}</TableCell>
+              <TableCell align="right">{row.value}</TableCell>
+
             </TableRow>
           ))}
         </TableBody>
