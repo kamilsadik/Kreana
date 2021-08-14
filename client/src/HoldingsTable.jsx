@@ -62,13 +62,16 @@ const HoldingsTable = props => {
 
   // Add user's holdings of each token to array of rows
   for (let i=0; i<holdingsState.length; i++) {
-    rows.push(
-      createData(
-        tokenState.map(tokenObj => tokenObj.symbol)[i],
-        holdingsState[i],
-        (holdingsState[i]*tokenState.map(tokenObj => tokenObj.lastPrice)[i]/1000000000000000000).toFixed(6)
+    // Only include a row for tokens the user actually owns
+    if (holdingsState[i] != 0) {
+      rows.push(
+        createData(
+          tokenState.map(tokenObj => tokenObj.symbol)[i],
+          holdingsState[i],
+          (holdingsState[i]*tokenState.map(tokenObj => tokenObj.lastPrice)[i]/1000000000000000000).toFixed(6)
+        )
       )
-    )
+    }
     // Update total number of tokens user holds
     totalUserTokens+=holdingsState[i];
     // Update total value of user's tokens
