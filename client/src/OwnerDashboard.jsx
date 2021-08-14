@@ -18,17 +18,6 @@ const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
 const OwnerDashboard = () => {
 
-	const [currToken, setCurrToken] = React.useState(0);
-
-	// Initalize open/closed state for verification dialog
-	const [verificationOpen, setVerificationOpen] = React.useState(false);
-	const handleClickVerificationOpen = () => {
-	  setVerificationOpen(true);
-	};
-	const handleVerificationClose = () => {
-	  setVerificationOpen(false);
-	}
-
   async function handleWithdraw(e) {
     e.preventDefault();    
     const accounts = await window.ethereum.enable();
@@ -48,10 +37,26 @@ const OwnerDashboard = () => {
   	return(totalPlatformFees);
   }
 
+  const [totalPlatformFees, setTotalPlatformFees] = useState(0);
+  useEffect(() => {
+    async function fetchData() {
+      setTotalPlatformFees(await getTotalPlatformFees());
+    }
+    fetchData();
+  }, []);
+
   async function getPlatformFeesOwed() {
   	const platformFeesOwed = await ContractInstance.methods.totalPlatformFees().call();
   	return(platformFeesOwed);
   }
+
+  const [platformFeesOwed, setPlatformFeesOwed] = useState(0);
+  useEffect(() => {
+    async function fetchData() {
+      setPlatformFeesOwed(await getPlatformFeesOwed());
+    }
+    fetchData();
+  }, []);
 
   async function handlePayoutPlatformFees(e) {
     e.preventDefault();    
@@ -95,6 +100,17 @@ const OwnerDashboard = () => {
     console.log(result);
   }
 
+  const [currToken, setCurrToken] = React.useState(0);
+
+  // Initalize open/closed state for verification dialog
+  const [verificationOpen, setVerificationOpen] = React.useState(false);
+  const handleClickVerificationOpen = () => {
+    setVerificationOpen(true);
+  };
+  const handleVerificationClose = () => {
+    setVerificationOpen(false);
+  }
+
   // For simplicity, right now calling this automatically sets verification status to true
   async function handleChangeVerification(e, creatorTokenId) {
     e.preventDefault();    
@@ -113,6 +129,8 @@ const OwnerDashboard = () => {
 
 	return (
 		<div>
+		Total Platform Fees Generated: {totalPlatformFees/1000000000000000000} ETH<br />
+		Platform Fees Yet To Be Withdrawn: {platformFeesOwed/1000000000000000000} ETH<br /><br />
 			<Button variant="outlined" color="primary" onClick={handleClickVerificationOpen}>
 			  Verify a Token
 			</Button>
