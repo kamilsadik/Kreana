@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
@@ -51,6 +51,18 @@ const useStyles = makeStyles(() => ({
       }
     },
   }));
+
+const BuyTextTypography = withStyles({
+  root: {
+    color: "#46d182"
+  }
+})(Typography);
+
+const SellTextTypography = withStyles({
+  root: {
+    color: "#f53b6a"
+  }
+})(Typography);
 
 const darkTheme = createTheme({
   palette: {
@@ -173,8 +185,10 @@ const TokenCard = props => {
           </CardContent>
           <CardActions>
             <div>
-              <Button variant="outlined" color="secondary" onClick={handleClickBuyOpen}>
-                Buy
+              <Button variant="outlined" onClick={handleClickBuyOpen} fullWidth="true">
+                <BuyTextTypography>
+                  Buy
+                </BuyTextTypography>
               </Button>
               <Dialog open={buyOpen} onClose={handleBuyClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Buy Token</DialogTitle>
@@ -214,8 +228,10 @@ const TokenCard = props => {
               </Dialog>
             </div>
             <div>
-              <Button variant="outlined" color="secondary" onClick={handleClickSellOpen}>
-                Sell
+              <Button variant="outlined" color="secondary" onClick={handleClickSellOpen} fullWidth="true">
+                <SellTextTypography>
+                  Sell
+                </SellTextTypography>
               </Button>
               <Dialog open={sellOpen} onClose={handleSellClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Sell Token</DialogTitle>
