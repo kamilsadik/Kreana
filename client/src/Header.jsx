@@ -165,7 +165,6 @@ const Header = () => {
             <Dialog open={holdingsOpen} onClose={handleHoldingsClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Your Token Holdings</DialogTitle>
               <DialogContent>
-                <DisplayHoldings />
                 <HoldingsTable />
               </DialogContent>
             </Dialog>

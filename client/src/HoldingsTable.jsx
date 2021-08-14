@@ -7,7 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import DisplayHoldings from "./DisplayHoldings.jsx";
+//import DisplayHoldings from "./DisplayHoldings.jsx";
 import { userHoldings } from "./UserHoldings.jsx";
 import { tokens } from "./Inventory.jsx";
 
@@ -17,22 +17,39 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(token, amountHeld) {
-  return { token, amountHeld };
-}
-
-const rows = [
-  createData('Token 1', 300),
-  createData('Token 2', 237),
-  createData('Toknen 3', 262),
-];
-
 const HoldingsTable = props => {
   const {
 
   } = props;
 
   const classes = useStyles();
+
+  const [holdingsState, setHoldingsState] = useState([]);
+  console.log(userHoldings);
+  useEffect(() => {
+    async function fetchData() {
+      setHoldingsState(await userHoldings);
+    }
+    fetchData();
+  }, []);
+
+  const [tokenState, setTokenState] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      setTokenState(await tokens);
+    }
+    fetchData();
+  }, []);
+
+  function createData(token, amountHeld) {
+    return { token, amountHeld };
+  }
+
+  const rows = [
+    createData('Token 0', holdingsState[0]),
+    createData('Token 1', holdingsState[1]),
+    createData('Toknen 2', holdingsState[2]),
+  ];
 
   return (
     <TableContainer component={Paper}>
