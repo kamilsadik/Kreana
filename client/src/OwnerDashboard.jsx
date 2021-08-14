@@ -18,7 +18,7 @@ const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
 const OwnerDashboard = () => {
 
-	let creatorTokenId;
+	const [currToken, setCurrToken] = React.useState(0);
 
 	// Initalize open/closed state for verification dialog
 	const [verificationOpen, setVerificationOpen] = React.useState(false);
@@ -125,6 +125,7 @@ const OwnerDashboard = () => {
 		      placeholder="0"
 		      type="number"
 		      fullWidth
+		      onChange={(event) => {setCurrToken(event.target.value)}}
 		    />
 		  </DialogContent>
 		  <DialogActions>
@@ -134,8 +135,7 @@ const OwnerDashboard = () => {
 		      Cancel
 		    </Button>
 		    <Button
-		    value={creatorTokenId}
-		    onClick={(e) => handleChangeVerification(e, 1)}
+		    onClick={(e) => handleChangeVerification(e, currToken)}
 		    color="primary">
 		      Verify
 		    </Button>
