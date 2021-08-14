@@ -53,20 +53,28 @@ const HoldingsTable = props => {
     return { token, amountHeld, value };
   }
 
-  const rows = [
-    createData(
-      tokenState.map(tokenObj => tokenObj.symbol)[0],
-      holdingsState[0],
-      (holdingsState[0]*tokenState.map(tokenObj => tokenObj.lastPrice)[0]/1000000000000000000).toFixed(6)),
-    createData(
-      tokenState.map(tokenObj => tokenObj.symbol)[1],
-      holdingsState[1],
-      (holdingsState[1]*tokenState.map(tokenObj => tokenObj.lastPrice)[1]/1000000000000000000).toFixed(6)),
-    createData(
-      tokenState.map(tokenObj => tokenObj.symbol)[2],
-      holdingsState[2],
-      (holdingsState[2]*tokenState.map(tokenObj => tokenObj.lastPrice)[2]/1000000000000000000).toFixed(6)),
-  ];
+  // Initialize empty array of rows
+  const rows = [];
+  // Initialize total number of tokens user holds
+  let totalUserTokens = 0;
+  // Initialize total value of user tokens
+  let totalUserValue = 0;
+
+  // Add user's holdings of each token to array of rows
+  for (let i=0; i<holdingsState.length; i++) {
+    rows.push(
+      createData(
+        tokenState.map(tokenObj => tokenObj.symbol)[i],
+        holdingsState[i],
+        (holdingsState[i]*tokenState.map(tokenObj => tokenObj.lastPrice)[i]/1000000000000000000).toFixed(6)
+      )
+    )
+    // Update total number of tokens user holds
+    totalUserTokens+=holdingsState[i];
+    // Update total value of user's tokens
+    totalUserValue+=(holdingsState[i]*tokenState.map(tokenObj => tokenObj.lastPrice)[i]/1000000000000000000);
+  }
+
 
   return (
     <TableContainer component={Paper}>
