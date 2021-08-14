@@ -19,7 +19,15 @@ const useStyles = makeStyles({
 
 const HoldingsTable = props => {
   const {
-
+    address,
+    name,
+    symbol,
+    description,
+    verified,
+    outstanding,
+    maxSupply,
+    lastPrice,
+    creatorTokenId,
   } = props;
 
   const classes = useStyles();
@@ -46,9 +54,9 @@ const HoldingsTable = props => {
   }
 
   const rows = [
-    createData('Token 0', holdingsState[0]),
-    createData('Token 1', holdingsState[1]),
-    createData('Toknen 2', holdingsState[2]),
+    createData(tokenState.map(tokenObj => tokenObj.symbol)[0], holdingsState[0]),
+    createData(tokenState.map(tokenObj => tokenObj.symbol)[1], holdingsState[1]),
+    createData(tokenState.map(tokenObj => tokenObj.symbol)[2], holdingsState[2]),
   ];
 
   return (
