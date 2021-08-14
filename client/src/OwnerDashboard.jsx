@@ -16,30 +16,9 @@ const web3 = new Web3(Web3.givenProvider);
 // Contract address is provided by Truffle migration
 const ContractInstance = new web3.eth.Contract(ABI, contractAddr);
 
-const OwnerDashboard = props => {
-	const {
-	  address,
-	  name,
-	  symbol,
-	  description,
-	  verified,
-	  outstanding,
-	  maxSupply,
-	  lastPrice,
-	  creatorTokenId,
-	  //avatarUrl,
-	  //imageUrl
-	} = props;
+const OwnerDashboard = () => {
 
-	const [tokenState, setTokenState] = useState([]);
-	console.log(tokens);
-	window.tokens=tokens;
-	useEffect(() => {
-	  async function fetchData() {
-	    setTokenState(await tokens);
-	  }
-	  fetchData();
-	}, []);
+	let creatorTokenId;
 
 	// Initalize open/closed state for verification dialog
 	const [verificationOpen, setVerificationOpen] = React.useState(false);
@@ -58,7 +37,8 @@ const OwnerDashboard = props => {
       from: account,
     });
     const result = await ContractInstance.methods.withdraw(account).send({
-      from: account
+      from: account,
+      gas: gas
     })
     console.log(result);
   }
@@ -71,7 +51,8 @@ const OwnerDashboard = props => {
       from: account,
     });
     const result = await ContractInstance.methods.payoutPlatformFees(account).send({
-      from: account
+      from: account,
+      gas: gas
     })
     console.log(result);
   }
@@ -84,7 +65,8 @@ const OwnerDashboard = props => {
       from: account,
     });
     const result = await ContractInstance.methods.changePlatformFee(newFee).send({
-      from: account
+      from: account,
+      gas: gas
     })
     console.log(result);
   }
@@ -97,7 +79,8 @@ const OwnerDashboard = props => {
       from: account,
     });
     const result = await ContractInstance.methods.changeProfitMargin(newProfitMargin).send({
-      from: account
+      from: account,
+      gas: gas
     })
     console.log(result);
   }
@@ -111,9 +94,11 @@ const OwnerDashboard = props => {
       from: account,
     });
     const result = await ContractInstance.methods.changeVerification(creatorTokenId, true).send({
-      from: account
+      from: account,
+      gas: gas
     })
     console.log(result);
+    handleVerificationClose();
   }
 
 	return (
@@ -150,7 +135,7 @@ const OwnerDashboard = props => {
 		    </Button>
 		    <Button
 		    value={creatorTokenId}
-		    onClick={(e) => handleChangeVerification(e, creatorTokenId)}
+		    onClick={(e) => handleChangeVerification(e, 0)}
 		    color="primary">
 		      Verify
 		    </Button>
