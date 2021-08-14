@@ -135,7 +135,7 @@ const OwnerDashboard = () => {
 		    </Button>
 		    <Button
 		    value={creatorTokenId}
-		    onClick={(e) => handleChangeVerification(e, 0)}
+		    onClick={(e) => handleChangeVerification(e, 1)}
 		    color="primary">
 		      Verify
 		    </Button>
