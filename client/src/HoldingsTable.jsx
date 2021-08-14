@@ -73,11 +73,19 @@ const HoldingsTable = props => {
       )
     }
     // Update total number of tokens user holds
-    totalUserTokens+=holdingsState[i];
+    totalUserTokens+=Number(holdingsState[i]);
     // Update total value of user's tokens
     totalUserValue+=(holdingsState[i]*tokenState.map(tokenObj => tokenObj.lastPrice)[i]/1000000000000000000);
   }
 
+  // Add row showing holding totals
+  rows.push(
+    createData(
+      'TOTAL',
+      totalUserTokens,
+      totalUserValue.toFixed(6)
+    )
+  )
 
   return (
     <TableContainer component={Paper}>
@@ -97,7 +105,6 @@ const HoldingsTable = props => {
               </TableCell>
               <TableCell align="right">{row.amountHeld}</TableCell>
               <TableCell align="right">{row.value}</TableCell>
-
             </TableRow>
           ))}
         </TableBody>
