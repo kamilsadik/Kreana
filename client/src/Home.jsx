@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, ImageBackground, View, Text } from "react";
 import { Grid } from "@material-ui/core";
 import Header from "./Header";
 import Content from "./Content";
@@ -6,7 +6,7 @@ import DisplayHoldings from "./DisplayHoldings.jsx";
 import Footer from "./Footer.jsx";
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import "./styles.css";
 
 const darkTheme = createTheme({
   palette: {
@@ -23,7 +23,7 @@ function Home() {
 					<Header />
 		        </Grid>
 
-		        <img src={require('./assets/img/milkyway.jpg')} />
+		        <img src={require('./assets/img/background.jpg')} className="photo"/>
 
 		        <br></br>
 
@@ -35,6 +35,9 @@ function Home() {
     				<Grid item xs={false} sm={2} />
 		        </Grid>
 		    </Grid>
+		    <br /><br /><br /><br /><br />
+		    <Footer />
+		    <br /><br /><br />
 		</ThemeProvider>
 	);
 }
