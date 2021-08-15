@@ -6,6 +6,10 @@ import OwnerDashboard from "./OwnerDashboard.jsx";
 import DisplayHoldings from "./DisplayHoldings.jsx";
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Home from "./Home.jsx";
+import Owner from "./Owner.jsx";
+
 
 
 const darkTheme = createTheme({
@@ -16,41 +20,14 @@ const darkTheme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline/>
-      <Grid container direction="column">
-
-        <Grid item>
-          <Header />
-        </Grid>
-
-        <br></br>
-        
-{/*
-        <Grid item container>
-          <Grid item xs={false} sm={2} />
-          <Grid item xs={12} sm={8}>
-            <DisplayHoldings />
-          </Grid>
-          <Grid item xs={false} sm={2} />
-        </Grid>
-
-        <br></br>
-*/}
-
-        <Grid item container>
-          <Grid item xs={false} sm={2} />
-          <Grid item xs={12} sm={8}>
-            <Content />
-          </Grid>
-          <Grid item xs={false} sm={2} />
-        </Grid>
-
-        <OwnerDashboard>
-        </OwnerDashboard>
-
-      </Grid>
-    </ThemeProvider>
+    <div className="App">
+      <Router>
+        <Switch>
+          <Route path="/" exact component={() => <Home />} />
+          <Route path="/owner" exact component={() => <Owner />} />
+        </Switch>
+      </Router>
+    </div>
   );
 };
 

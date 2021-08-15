@@ -91,8 +91,11 @@ const Header = () => {
     <ThemeProvider theme={darkTheme}>
       <AppBar position="static" color="dark">
         <Toolbar>
+        
           <Typography className={classes.typographyStyles}>
-            Kreana
+            <Button size="large" disableElevation="true" disableFocusRipple="true" disableRipple="true" href="/">
+              Kreana
+            </Button>
           </Typography>
 
           <div>
