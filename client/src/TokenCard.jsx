@@ -22,36 +22,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
-
-const useStyles = makeStyles(() => ({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#3f50b5',
-        dark: '#002884',
-        contrastText: '#fff',
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#f44336',
-        dark: '#ba000d',
-        contrastText: '#000',
-      },
-      buy: {
-        light: "#46d182",
-        main: "#46d182",
-        dark: "#46d182",
-        contrastText: "#fff",
-      },
-      sell: {
-        light: "#f53b6a",
-        main: "#f53b6a",
-        dark: "#f53b6a",
-        contrastText: "#fff",
-      }
-    },
-  }));
-
 const BuyTextTypography = withStyles({
   root: {
     color: "#46d182"
