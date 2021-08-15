@@ -6,7 +6,7 @@ function Footer() {
       <footer>
         <div class="container">
           <p class="m-0 text-center text-white">
-            Copyright &copy; Your Website 2020
+            Copyright &copy; Kreana 2021
           </p>
         </div>
       </footer>
