@@ -89,10 +89,10 @@ const Header = () => {
   const classes = useStyles();
   return (
     <ThemeProvider theme={darkTheme}>
-      <AppBar position="static" color="primary">
+      <AppBar position="static" color="dark">
         <Toolbar>
           <Typography className={classes.typographyStyles}>
-            CreatorTokenExchange
+            Kreana
           </Typography>
 
           <div>
@@ -104,7 +104,6 @@ const Header = () => {
               <DialogContent>
                 <DialogContentText>
                   What is your name?
-                </DialogContentText>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -116,9 +115,9 @@ const Header = () => {
                   value={name}
                   onChange={(event) => {setName(event.target.value)}}
                 />
+                </DialogContentText>
                 <DialogContentText>
                   What do you want the symbol of your token to be?
-                </DialogContentText>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -130,9 +129,9 @@ const Header = () => {
                   value={symbol}
                   onChange={(event) => {setSymbol(event.target.value)}}
                 />
+                </DialogContentText>
                 <DialogContentText>
                   Provide a brief description of your token.
-                </DialogContentText>
                 <TextField
                   autoFocus
                   margin="dense"
@@ -144,6 +143,7 @@ const Header = () => {
                   value={description}
                   onChange={(event) => {setDescription(event.target.value)}}
                 />
+                </DialogContentText>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary">
@@ -157,7 +157,7 @@ const Header = () => {
               </DialogActions>
             </Dialog>
           </div>
-
+          &nbsp;&nbsp;&nbsp;
           <div>
             <Button variant="outlined" color="secondary" onClick={handleHoldingsOpen}>
               View Holdings

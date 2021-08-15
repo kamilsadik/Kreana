@@ -94,11 +94,17 @@ const TokenCard = props => {
     }
   }
 
-  async function getBuyProceeds(e, creatorTokenId) {
+  async function getBuyProceeds(creatorTokenId) {
+    const buyProceeds = await ContractInstance.methods._totalProceeds(creatorTokenId, amount).call();
+    return(buyProceeds);
   }
 
   const [buyProceeds, setBuyProceeds] = React.useState(0);
 
+  const handlePreBuyAmount = async(amt) => {
+    handleTransactionAmount(amt);
+    //setBuyProceeds(getBuyProceeds(creatorTokenId));
+  }
 
   // Invoke buyCreatorToken
   async function handleBuyCreatorToken(e, creatorTokenId) {
@@ -147,13 +153,13 @@ const TokenCard = props => {
           />
           {/*<CardMedia style={{ height: "150px" }} image={imageUrl} />*/}
           <CardContent>
-            <Typography variant="body2" component="p">
+            <Typography variant="body4" component="p">
               {"Last Price: "+(lastPrice/1000000000000000000).toFixed(6)+" ETH"}<br />
-              {"Tokens Outstanding: "+outstanding}<br />
+              {"Tokens Outstanding: "+outstanding}<br /><br />
               {description}
             </Typography>
           </CardContent>
-          <CardActions>
+          <CardActions style={{justifyContent: 'center'}}>
             <div>
               <Button variant="outlined" onClick={handleClickBuyOpen} fullWidth="true">
                 <BuyTextTypography>
@@ -176,11 +182,11 @@ const TokenCard = props => {
                     type="number"
                     fullWidth
                     value={amount}
-                    onChange={(event) => {handleTransactionAmount(event.target.value)}}
+                    onChange={(event) => {handlePreBuyAmount(event.target.value)}}
                   />
                 <DialogContentText>
-                  Total Transaction Value: <br></br>
-                  Price per Token: 
+                  {/*Total Transaction Value: <br></br>
+                  Price per Token: */}
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -197,6 +203,7 @@ const TokenCard = props => {
                 </DialogActions>
               </Dialog>
             </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <div>
               <Button variant="outlined" color="secondary" onClick={handleClickSellOpen} fullWidth="true">
                 <SellTextTypography>
@@ -222,8 +229,8 @@ const TokenCard = props => {
                     onChange={(event) => {handleTransactionAmount(event.target.value)}}
                   />
                 <DialogContentText>
-                  Total Transaction Value: <br></br>
-                  Price per Token: 
+                  {/*Total Transaction Value: <br></br>
+                  Price per Token: */}
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
