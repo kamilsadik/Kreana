@@ -91,7 +91,7 @@ const Header = () => {
     <ThemeProvider theme={darkTheme}>
       <AppBar position="static" color="dark">
         <Toolbar>
-        
+
           <Typography className={classes.typographyStyles}>
             <Button size="large" disableElevation="true" disableFocusRipple="true" disableRipple="true" href="/">
               Kreana
@@ -116,6 +116,7 @@ const Header = () => {
                   type="text"
                   fullWidth
                   value={name}
+                  color="secondary"
                   onChange={(event) => {setName(event.target.value)}}
                 />
                 </DialogContentText>
@@ -130,6 +131,7 @@ const Header = () => {
                   type="text"
                   fullWidth
                   value={symbol}
+                  color="secondary"
                   onChange={(event) => {setSymbol(event.target.value)}}
                 />
                 </DialogContentText>
@@ -144,17 +146,18 @@ const Header = () => {
                   type="text"
                   fullWidth
                   value={description}
+                  color="secondary"
                   onChange={(event) => {setDescription(event.target.value)}}
                 />
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose} color="secondary">
                   Cancel
                 </Button>
                 <Button
                 onClick={(e) => handleCreateCreatorToken(e)}
-                color="primary">
+                color="secondary">
                   Create Token
                 </Button>
               </DialogActions>
