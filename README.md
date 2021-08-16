@@ -1,8 +1,8 @@
-# Creator Token Exchange
+# Kreana
 
 ## Overview
 
-Creator Token Exchange is a platform that allows creators to mint their own tokens to sell to their fans. The exchange lets the token creator generate revenue in order to fund artistic projects, while also providing continuous and perpetual liquidity for buyers of the token. It achieves this dual objective using a [Dynamic Automated Market Maker (DAMM)](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf): a novel variation of traditional bonding curve-based [automated market makers](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers).
+Kreana is a platform that allows creators to mint their own tokens to sell to their fans. The exchange lets the token creator generate revenue in order to fund artistic projects, while also providing continuous and perpetual liquidity for buyers of the token. It achieves this dual objective using a [Dynamic Automated Market Maker (DAMM)](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf): a novel variation of traditional bonding curve-based [automated market makers](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers).
 
 ## Background
 
