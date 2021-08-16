@@ -56,7 +56,7 @@ function Home() {
 		    </Grid>
 		    
 		    <br /><br /><br /><br />
-		    <Footer />
+		    {/*<Footer />*/}
 		    <br /><br /><br />
 		</ThemeProvider>
 	);
