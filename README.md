@@ -2,7 +2,7 @@
 
 ## Overview
 
-Kreana is a platform that allows creators to mint their own tokens to sell to their fans. The exchange lets the token creator generate revenue in order to fund artistic projects, while also providing continuous and perpetual liquidity for buyers of the token. It achieves this dual objective using a [Dynamic Automated Market Maker (DAMM)](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf): a novel variation of traditional bonding curve-based [automated market makers](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers).
+Kreana is a platform that allows creators to mint their own ERC-1155 token to sell to their fans. The exchange lets the token creator generate revenue in order to fund artistic projects, while also providing continuous and perpetual liquidity for buyers of the token. It achieves this dual objective using a [Dynamic Automated Market Maker (DAMM)](https://github.com/kamilsadik/CreatorTokenExchange/blob/main/damm_paper_draft.pdf): a novel variation of the traditional bonding curve-based [automated market maker](https://www.gemini.com/cryptopedia/amm-what-are-automated-market-makers).
 
 ## Background
 
@@ -30,7 +30,7 @@ Bonding curves offer the advantage of guaranteed liquidity for any number of tok
 
 It is worth noting that the price of BitClout is also determined by a bonding curve-like function -- BitClout.com simply does not provide liquidity on the BitClout currency, allowing them to crystallize all proceeds from the sale of BitClout currency as profit.
 
-The chief drawback is the use of BitClout as an intermediary currency, and the illusion of liquidity in Creator Coins. When a user wishes to sell Creator Coins at a profit, he receives BitClout in exchange. He then needs to sell his BitClout off-platform (often on Discord) at as much as a 40% discount.
+The chief drawback is the use of BitClout as an intermediary currency. When a user wishes to sell Creator Coins at a profit, he receives BitClout in exchange. He then needs to sell his BitClout off-platform.
 
 ![Creator Coin Bonding Curve](creator_coin_bonding_curve.png)
 
@@ -84,4 +84,4 @@ The DAMM application we implement in this set of smart contracts involves creato
 
 ### Platform-Created Tokens
 
-Alternatively, the platform itself can issue tokens. In that case, the DAMM could be a source of revenue which is not tied to transaction volume, and so may be conducive to applications in which users are likely to buy and hold tokens. It is unclear that this is a compelling use case, however, since the DAMM necessarily reduces liquidity in order to crystallize revenue. Fans are more likely to approve of such a construct when that revenue is going towards the livelihood an artist they care about, and the production of art they will then enjoy.
+Alternatively, the platform itself can issue tokens. In that case, the DAMM could be a source of revenue which is not tied to transaction volume, and so may be conducive to applications in which users are likely to buy and hold tokens. It is unclear that this is a compelling use case, however, since the DAMM necessarily reduces liquidity in order to crystallize revenue. Fans are more likely to approve of such a construct when that revenue is going towards the livelihood of an artist they care about, and the production of art they will then enjoy.
