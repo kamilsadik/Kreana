@@ -22,7 +22,7 @@ Source: [Yos Riady, *Bonding Curves Explained*](https://yos.io/2018/11/10/bondin
 
 Bonding curves offer the advantage of guaranteed liquidity for any number of tokens at any point in time. They have the drawback of greater price slippage than liquid order book-based markets. Crucially, the entire area under the bonding curve acts as a liquidity pool (i.e., none of the area under the curve can be harvested as revenue).
 
-### Existing Applications of Bonding Curves
+### Existing Applications of Bonding Curves in the Creator Economy
 
 #### BitClout
 
