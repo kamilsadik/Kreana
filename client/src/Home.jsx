@@ -1,5 +1,8 @@
 import React, { Component, useState, useEffect, ImageBackground, View, Text } from "react";
+import Paper from '@material-ui/core/Paper';
+
 import { Grid } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import Header from "./Header";
 import Content from "./Content";
 import DisplayHoldings from "./DisplayHoldings.jsx";
@@ -13,6 +16,12 @@ const darkTheme = createTheme({
     type: 'dark',
   },
 });
+
+const styles = {
+	paperContainer: {
+		backgroundImage: './assets/img/background.jpg',
+	}
+}
 
 function Home() {
 	return (

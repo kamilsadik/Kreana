@@ -52,38 +52,13 @@
 	"buffers":
 	[
 		{
-			"file": "/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/front_end/package-lock.json",
-			"settings":
-			{
-				"buffer_size": 596689,
-				"line_ending": "Unix"
-			},
-			"undo_stack":
-			[
-			]
-		},
-		{
-			"file": "/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/front_end/package.json",
-			"settings":
-			{
-				"buffer_size": 696,
-				"line_ending": "Unix"
-			},
-			"undo_stack":
-			[
-			]
-		},
-		{
 			"file": "App.js",
 			"settings":
 			{
-				"buffer_size": 492,
+				"buffer_size": 906,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
-			},
-			"undo_stack":
-			[
-			]
+			}
 		}
 	],
 	"build_system": "",
@@ -191,8 +166,14 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/front_end"
+	],
 	"file_history":
 	[
+		"/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/front_end/package.json",
+		"/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/front_end/package-lock.json",
 		"/Users/kamilalizaisadik/Library/Application Support/Sublime Text 3/Packages/User/View In Browser.sublime-settings",
 		"/Users/kamilalizaisadik/Library/Application Support/Sublime Text 3/Packages/View In Browser/View In Browser.sublime-settings",
 		"/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/src/serviceWorker.js",
@@ -318,9 +299,7 @@
 		"/Users/kamilalizaisadik/Desktop/DuoBlitz/inbeat_jsons/results_81.json",
 		"/Users/kamilalizaisadik/Desktop/DuoBlitz/inbeat_jsons/results_82.json",
 		"/Users/kamilalizaisadik/Desktop/DuoBlitz/inbeat_jsons/results_83.json",
-		"/Users/kamilalizaisadik/Desktop/DuoBlitz/inbeat_jsons/results_84.json",
-		"/Users/kamilalizaisadik/Desktop/DuoBlitz/inbeat_jsons/results_85.json",
-		"/Users/kamilalizaisadik/Desktop/DuoBlitz/inbeat_jsons/results_86.json"
+		"/Users/kamilalizaisadik/Desktop/DuoBlitz/inbeat_jsons/results_84.json"
 	],
 	"find":
 	{
@@ -361,82 +340,20 @@
 			[
 				{
 					"buffer": 0,
-					"file": "/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/front_end/package-lock.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 596689,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								142,
-								142
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JSON/JSON.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"stack_multiselect": false,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/front_end/package.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 696,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								460,
-								460
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JSON/JSON.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"stack_multiselect": false,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
 					"file": "App.js",
 					"selected": true,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 492,
+						"buffer_size": 906,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								436,
-								436
+								0,
+								0
 							]
 						],
 						"settings":

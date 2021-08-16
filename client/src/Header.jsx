@@ -89,11 +89,17 @@ const Header = () => {
   const classes = useStyles();
   return (
     <ThemeProvider theme={darkTheme}>
-      <AppBar position="static" color="dark">
+      <AppBar position="fixed" color="dark">
         <Toolbar>
 
           <Typography className={classes.typographyStyles}>
-            <Button size="large" disableElevation="true" disableFocusRipple="true" disableRipple="true" href="/">
+            <Button
+            size="large"
+            disableElevation="true"
+            disableFocusRipple="true"
+            disableRipple="true"
+            style={{ backgroundColor: 'transparent' }}
+            href="/">
               Kreana
             </Button>
           </Typography>
