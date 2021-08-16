@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Header from "./Header";
 import Content from "./Content";
 import DisplayHoldings from "./DisplayHoldings.jsx";
+import FrequentlyAskedQuestions from "./FrequentlyAskedQuestions.jsx";
 import Footer from "./Footer.jsx";
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -43,7 +44,18 @@ function Home() {
     				</Grid>
     				<Grid item xs={false} sm={2} />
 		        </Grid>
+				
+				<br /><br /><br />
+		        
+		        <Grid item container>
+		        	<Grid item xs={false} sm={2} />
+	        		<Grid item xs={12} sm={8}>
+	        			<FrequentlyAskedQuestions />
+    				</Grid>
+    				<Grid item xs={false} sm={2} />
+		        </Grid>
 		    </Grid>
+		    
 		    <br /><br /><br /><br /><br />
 		    <Footer />
 		    <br /><br /><br />
