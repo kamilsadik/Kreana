@@ -21,7 +21,7 @@ const data = {
         },
         {
             title: "What do I need in order to get started?",
-            content: `In order to create a token, or to buy and sell a creator's token, you'll need an Ethereum wallet that allows you
+            content: `In order to create a token, or to buy and sell a creator's token, you'll need an Etherdeum wallet that allows you
             to interact with Ethereum blockchain apps. We recommend <a href="https://metamask.io/index.html" target="_blank">MetaMask</a>, an easy-to-use wallet
             built into your browser. Once you've set up your wallet, you'll just need to buy some ETH in order to transact.`,
         },
