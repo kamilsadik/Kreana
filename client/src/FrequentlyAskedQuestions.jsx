@@ -37,7 +37,7 @@ const data = {
         },
         {
             title: "Where can I get help or send suggestions?",
-            content: `We'd love to hear from you! You can reach us at <a href="mailto:hello@kreana.xyz">Email Us</a>.`,
+            content: `We'd love to hear from you! You can reach us at <a href="mailto:hello@kreana.xyz">hello@kreana.xyz</a>.`,
         },
     ],
 };

@@ -56,7 +56,7 @@ function Home() {
 		        </Grid>
 		    </Grid>
 		    
-		    <br /><br /><br /><br /><br />
+		    <br /><br /><br /><br />
 		    <Footer />
 		    <br /><br /><br />
 		</ThemeProvider>
