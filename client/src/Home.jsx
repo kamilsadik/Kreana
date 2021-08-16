@@ -35,7 +35,7 @@ function Home() {
 
 		        <img src={require('./assets/img/background.jpg')} className="photo"/>
 
-		        <br></br>
+		        <br /><br />
 
 		        <Grid item container>
 		        	<Grid item xs={false} sm={2} />

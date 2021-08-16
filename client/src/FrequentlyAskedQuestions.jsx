@@ -37,7 +37,7 @@ const data = {
         },
         {
             title: "Where can I get help or send suggestions?",
-            content: `We'd love to hear from you! You can reach us at <a href="mailto:hello@kreana.xyz">hello@kreana.xyz</a>.`,
+            content: `We'd love to hear from you! You can reach us at <a href="mailto:hello@kreana.xyz" target="_blank">hello@kreana.xyz</a>.`,
         },
     ],
 };
@@ -46,7 +46,7 @@ const styles = {
     bgColor: 'transparent',
     titleTextColor: "white",
     rowTitleColor: "white",
-    rowContentColor: 'white',
+    rowContentColor: "#FFFFFFB3",
     arrowColor: "white",
     rowContentPaddingLeft: "20px",
     rowContentPaddingBottom: "15px",

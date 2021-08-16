@@ -58,7 +58,10 @@
 				"buffer_size": 906,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
-			}
+			},
+			"undo_stack":
+			[
+			]
 		}
 	],
 	"build_system": "",
@@ -166,10 +169,6 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
-	"expanded_folders":
-	[
-		"/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/front_end"
-	],
 	"file_history":
 	[
 		"/Users/kamilalizaisadik/DeFi/Dynamic Automated Market Maker/CreatorTokenExchange/front_end/package.json",
@@ -352,8 +351,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								906,
+								906
 							]
 						],
 						"settings":
