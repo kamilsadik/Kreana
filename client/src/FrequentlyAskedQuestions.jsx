@@ -15,7 +15,7 @@ const data = {
         {
             title: "How does it work?",
             content: `Kreana uses a novel mechanism called a Dynamic Automated Market Maker (DAMM). The DAMM is a variation of the
-            traditional bonding curve, allowing for a fixed percentage of the liquidity pool to be routed toward a fundraising goal,
+            traditional bonding curve which allows for a fixed percentage of the liquidity pool to be routed toward a fundraising goal,
             while the remainder of the pool serves to provide smooth and continuous liquidity on the underlying token. Creator tokens
             conform to the ERC-1155 token standard.`,
         },
