@@ -62,6 +62,7 @@ const Header = () => {
 
   async function handleCreateCreatorToken(e) {
     e.preventDefault();
+    handleClose();
     const accounts = await window.ethereum.enable();
     const account = accounts[0];
     const gas = await ContractInstance.methods.createCreatorToken(
@@ -80,7 +81,6 @@ const Header = () => {
         gas: gas 
     })
     console.log(result);
-    handleClose();
     setName('');
     setSymbol('');
     setDescription('');

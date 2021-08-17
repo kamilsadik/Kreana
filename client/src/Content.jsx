@@ -19,7 +19,7 @@ const Content = () => {
 
   const getTokenCard = tokenObj => {
     return (
-      <Grid item xs={12} sm={4} lg={3}>
+      <Grid item xs={12} sm={4} lg={3} alignItems="stretch">
         <TokenCard {...tokenObj} />
       </Grid>
     );
