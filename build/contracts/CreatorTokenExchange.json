@@ -29638,8 +29638,8 @@
         }
       },
       "links": {},
-      "address": "0x2c9414F6ba280cf829416F32aA0f6F30A63C2c73",
-      "transactionHash": "0xc915171eff4c0b9ae314a925f2d245fc66699096fbff03ed84f889c7fdb09afe"
+      "address": "0x2AB5175970398ddfE217115E353c5C314fe472A0",
+      "transactionHash": "0xd9c364349f86314ffe9fac5180dde3bdddb0c7412ffeda382cc52ebe9abd1905"
     },
     "5777": {
       "events": {
@@ -30060,7 +30060,7 @@
     }
   },
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-08-17T01:03:03.099Z",
+  "updatedAt": "2021-08-17T01:17:03.307Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Kamil Alizai Sadik",
